@@ -1,0 +1,102 @@
+{
+    "type": "record",
+    "name": "BlockRecord",
+    "fields": [
+        {
+            "name": "canonical",
+            "type": "boolean"
+        },
+        {
+            "name": "height",
+            "type": "int"
+        },
+        {
+            "name": "hash",
+            "type": "string"
+        },
+        {
+            "name": "index_block_hash",
+            "type": "string"
+        },
+        {
+            "name": "parent_block_hash",
+            "type": "string"
+        },
+        {
+            "name": "burn_block_time",
+            "type": "long"
+        },
+        {
+            "name": "burn_block_time_iso",
+            "type": "string"
+        },
+        {
+            "name": "burn_block_hash",
+            "type": "string"
+        },
+        {
+            "name": "burn_block_height",
+            "type": "long"
+        },
+        {
+            "name": "miner_txid",
+            "type": "string"
+        },
+        {
+            "name": "parent_microblock_hash",
+            "type": "string"
+        },
+        {
+            "name": "parent_microblock_sequence",
+            "type": "int"
+        },
+        {
+            "name": "txs",
+            "type": {
+                "type": "array",
+                "items": "string"
+            }
+        },
+        {
+            "name": "microblocks_accepted",
+            "type": {
+                "type": "array",
+                "items": "string"
+            }
+        },
+        {
+            "name": "microblocks_streamed",
+            "type": {
+                "type": "array",
+                "items": "string"
+            }
+        },
+        {
+            "name": "execution_cost_read_count",
+            "type": "int"
+        },
+        {
+            "name": "execution_cost_read_length",
+            "type": "int"
+        },
+        {
+            "name": "execution_cost_runtime",
+            "type": "int"
+        },
+        {
+            "name": "execution_cost_write_count",
+            "type": "int"
+        },
+        {
+            "name": "execution_cost_write_length",
+            "type": "int"
+        },
+        {
+            "name": "microblock_tx_count",
+            "type": {
+                "type": "map",
+                "values": "int"
+            }
+        }
+    ]
+}

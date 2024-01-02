@@ -1,0 +1,358 @@
+{
+  "type": "record",
+  "name": "TransactionRecord",
+  "namespace": "com.example",
+  "fields": [
+    {
+      "name": "tx_id",
+      "type": "string"
+    },
+    {
+      "name": "nonce",
+      "type": "int"
+    },
+    {
+      "name": "fee_rate",
+      "type": "string"
+    },
+    {
+      "name": "sender_address",
+      "type": "string"
+    },
+    {
+      "name": "sponsored",
+      "type": "boolean"
+    },
+    {
+      "name": "post_condition_mode",
+      "type": "string"
+    },
+    {
+      "name": "post_conditions",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "PostConditionsRecord",
+          "fields": [
+            {
+              "name": "type",
+              "type": "string"
+            },
+            {
+              "name": "condition_code",
+              "type": "string"
+            },
+            {
+              "name": "amount",
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            {
+              "name": "principal",
+              "type": {
+                "type": "record",
+                "name": "PrincipalRecord",
+                "fields": [
+                  {
+                    "name": "type_id",
+                    "type": "string"
+                  },
+                  {
+                    "name": "address",
+                    "type": [
+                      "null",
+                      "string"
+                    ]
+                  },
+                  {
+                    "name": "contract_name",
+                    "type": [
+                      "null",
+                      "string"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "name": "asset",
+              "type": [
+                "null",
+                {
+                  "type": "record",
+                  "name": "AssetRecord",
+                  "fields": [
+                    {
+                      "name": "asset_name",
+                      "type": "string"
+                    },
+                    {
+                      "name": "contract_address",
+                      "type": "string"
+                    },
+                    {
+                      "name": "contract_name",
+                      "type": "string"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "asset_value",
+              "type": [
+                "null",
+                {
+                  "type": "record",
+                  "name": "AssetValueRecord",
+                  "fields": [
+                    {
+                      "name": "hex",
+                      "type": "string"
+                    },
+                    {
+                      "name": "repr",
+                      "type": "string"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "anchor_mode",
+      "type": "string"
+    },
+    {
+      "name": "is_unanchored",
+      "type": "boolean"
+    },
+    {
+      "name": "block_hash",
+      "type": "string"
+    },
+    {
+      "name": "parent_block_hash",
+      "type": "string"
+    },
+    {
+      "name": "block_height",
+      "type": "long"
+    },
+    {
+      "name": "burn_block_time",
+      "type": "long"
+    },
+    {
+      "name": "burn_block_time_iso",
+      "type": "string"
+    },
+    {
+      "name": "parent_burn_block_time",
+      "type": "long"
+    },
+    {
+      "name": "parent_burn_block_time_iso",
+      "type": "string"
+    },
+    {
+      "name": "canonical",
+      "type": "boolean"
+    },
+    {
+      "name": "tx_index",
+      "type": "int"
+    },
+    {
+      "name": "tx_status",
+      "type": "string"
+    },
+    {
+      "name": "tx_result",
+      "type": {
+        "type": "record",
+        "name": "TxResult",
+        "fields": [
+          {
+            "name": "hex",
+            "type": "string"
+          },
+          {
+            "name": "repr",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "microblock_hash",
+      "type": "string"
+    },
+    {
+      "name": "microblock_sequence",
+      "type": "int"
+    },
+    {
+      "name": "microblock_canonical",
+      "type": "boolean"
+    },
+    {
+      "name": "event_count",
+      "type": "int"
+    },
+    {
+      "name": "events",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "EventRecord",
+          "fields": [
+            {
+              "name": "event_index",
+              "type": "int"
+            },
+            {
+              "name": "event_type",
+              "type": "string"
+            },
+            {
+              "name": "tx_id",
+              "type": "string"
+            },
+            {
+              "name": "asset",
+              "type": {
+                "type": "record",
+                "name": "Asset",
+                "fields": [
+                  {
+                    "name": "asset_event_type",
+                    "type": "string"
+                  },
+                  {
+                    "name": "sender",
+                    "type": "string"
+                  },
+                  {
+                    "name": "recipient",
+                    "type": "string"
+                  },
+                  {
+                    "name": "amount",
+                    "type": "string"
+                  },
+                  {
+                    "name": "memo",
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "execution_cost_read_count",
+      "type": "int"
+    },
+    {
+      "name": "execution_cost_read_length",
+      "type": "int"
+    },
+    {
+      "name": "execution_cost_runtime",
+      "type": "int"
+    },
+    {
+      "name": "execution_cost_write_count",
+      "type": "int"
+    },
+    {
+      "name": "execution_cost_write_length",
+      "type": "int"
+    },
+    {
+      "name": "tx_type",
+      "type": "string"
+    },
+    {
+      "name": "token_transfer",
+      "type": [
+        "null",
+        {
+          "type": "record",
+          "name": "TokenTransferRecord",
+          "fields": [
+            {
+              "name": "recipient_address",
+              "type": "string"
+            },
+            {
+              "name": "amount",
+              "type": "string"
+            },
+            {
+              "name": "memo",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "coinbase_payload",
+      "type": [
+        "null",
+        {
+          "type": "record",
+          "name": "CoinbasePayloadRecord",
+          "fields": [
+            {
+              "name": "data",
+              "type": "string"
+            },
+            {
+              "name": "alt_recipient",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "smart_contract",
+      "type": [
+        "null",
+        {
+          "type": "record",
+          "name": "SmartContractRecord",
+          "fields": [
+            {
+              "name": "clarity_version",
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            {
+              "name": "contract_id",
+              "type": "string"
+            },
+            {
+              "name": "source_code",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
