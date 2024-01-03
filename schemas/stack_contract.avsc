@@ -1,0 +1,37 @@
+{
+    "type": "record",
+    "name": "Contract",
+    "fields": [
+        {
+            "name": "tx_id",
+            "type": "string"
+        },
+        {
+            "name": "canonical",
+            "type": "boolean"
+        },
+        {
+            "name": "contract_id",
+            "type": "string"
+        },
+        {
+            "name": "block_height",
+            "type": "long"
+        },
+        {
+            "name": "clarity_version",
+            "type": [
+                "null",
+                "long"
+            ]
+        },
+        {
+            "name": "source_code",
+            "type": "string"
+        },
+        {
+            "name": "abi",
+            "type": "string"
+        }
+    ]
+}
