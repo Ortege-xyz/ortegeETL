@@ -49,6 +49,7 @@ from ethereumetl.cli.stream import stream
 
 @click.group()
 def evm():
+    """All commands related with evm chains."""
     pass
 
 
