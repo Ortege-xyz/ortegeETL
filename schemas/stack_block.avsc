@@ -8,7 +8,7 @@
         },
         {
             "name": "height",
-            "type": "int"
+            "type": "long"
         },
         {
             "name": "hash",
@@ -48,7 +48,7 @@
         },
         {
             "name": "parent_microblock_sequence",
-            "type": "int"
+            "type": "long"
         },
         {
             "name": "txs",
@@ -73,29 +73,29 @@
         },
         {
             "name": "execution_cost_read_count",
-            "type": "int"
+            "type": "long"
         },
         {
             "name": "execution_cost_read_length",
-            "type": "int"
+            "type": "long"
         },
         {
             "name": "execution_cost_runtime",
-            "type": "int"
+            "type": "long"
         },
         {
             "name": "execution_cost_write_count",
-            "type": "int"
+            "type": "long"
         },
         {
             "name": "execution_cost_write_length",
-            "type": "int"
+            "type": "long"
         },
         {
             "name": "microblock_tx_count",
             "type": {
                 "type": "map",
-                "values": "int"
+                "values": "long"
             }
         }
     ]

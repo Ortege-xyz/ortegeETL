@@ -9,7 +9,7 @@
     },
     {
       "name": "nonce",
-      "type": "int"
+      "type": "long"
     },
     {
       "name": "fee_rate",
@@ -167,7 +167,7 @@
     },
     {
       "name": "tx_index",
-      "type": "int"
+      "type": "long"
     },
     {
       "name": "tx_status",
@@ -196,7 +196,7 @@
     },
     {
       "name": "microblock_sequence",
-      "type": "int"
+      "type": "long"
     },
     {
       "name": "microblock_canonical",
@@ -204,7 +204,7 @@
     },
     {
       "name": "event_count",
-      "type": "int"
+      "type": "long"
     },
     {
       "name": "events",
@@ -216,7 +216,7 @@
           "fields": [
             {
               "name": "event_index",
-              "type": "int"
+              "type": "long"
             },
             {
               "name": "event_type",
@@ -261,23 +261,23 @@
     },
     {
       "name": "execution_cost_read_count",
-      "type": "int"
+      "type": "long"
     },
     {
       "name": "execution_cost_read_length",
-      "type": "int"
+      "type": "long"
     },
     {
       "name": "execution_cost_runtime",
-      "type": "int"
+      "type": "long"
     },
     {
       "name": "execution_cost_write_count",
-      "type": "int"
+      "type": "long"
     },
     {
       "name": "execution_cost_write_length",
-      "type": "int"
+      "type": "long"
     },
     {
       "name": "tx_type",
