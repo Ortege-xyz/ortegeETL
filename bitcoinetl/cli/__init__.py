@@ -30,20 +30,20 @@ from bitcoinetl.cli.stream import stream
 
 
 @click.group()
-@click.version_option(version='1.5.2')
 @click.pass_context
-def cli(ctx):
+def btc(ctx):
+    """All commands related with btc chains."""
     pass
 
 
 # export
-cli.add_command(export_blocks_and_transactions, "export_blocks_and_transactions")
-cli.add_command(enrich_transactions, "enrich_transactions")
-cli.add_command(export_all, "export_all")
+btc.add_command(export_blocks_and_transactions, "export_blocks_and_transactions")
+btc.add_command(enrich_transactions, "enrich_transactions")
+btc.add_command(export_all, "export_all")
 
 # streaming
-cli.add_command(stream, "stream")
+btc.add_command(stream, "stream")
 
 # utils
-cli.add_command(filter_items, "filter_items")
-cli.add_command(get_block_range_for_date, "get_block_range_for_date")
+btc.add_command(filter_items, "filter_items")
+btc.add_command(get_block_range_for_date, "get_block_range_for_date")

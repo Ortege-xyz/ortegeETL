@@ -26,6 +26,7 @@ logging_basic_config()
 import click
 
 from ethereumetl.cli import evm
+from bitcoinetl.cli import btc
 
 
 @click.group()
@@ -41,3 +42,4 @@ def todo():
 
 # cli.add_command(todo, "todo")
 cli.add_command(evm)
+cli.add_command(btc)
