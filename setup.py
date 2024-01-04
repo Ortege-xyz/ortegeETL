@@ -10,7 +10,7 @@ def read(fname):
 long_description = read('README.md') if os.path.isfile("README.md") else ""
 
 setup(
-    name='ortege-etl',
+    name='ortegeetl',
     version='1.0.0',
     author='Ortege',
     author_email='',
