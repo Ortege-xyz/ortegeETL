@@ -1,6 +1,6 @@
 class StackTransaction(object):
     def __init__(self):
-        self.tx_id = None
+        self.hash = None
         self.nonce = None
         self.fee_rate = None
         self.sender_address = None
@@ -9,13 +9,11 @@ class StackTransaction(object):
         self.post_conditions = None
         self.anchor_mode = None
         self.is_unanchored = None
+        self.block_number = None
         self.block_hash = None
+        self.block_timestamp = None
         self.parent_block_hash = None
-        self.block_height = None
-        self.burn_block_time = None
-        self.burn_block_time_iso = None
         self.parent_burn_block_time = None
-        self.parent_burn_block_time_iso = None
         self.canonical = None
         self.tx_index = None
         self.tx_status = None
@@ -38,3 +36,4 @@ class StackTransaction(object):
         self.token_transfer = None
         self.coinbase_payload = None
         self.smart_contract = None
+        self.contract_call = None

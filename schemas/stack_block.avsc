@@ -7,7 +7,7 @@
             "type": "boolean"
         },
         {
-            "name": "height",
+            "name": "number",
             "type": "long"
         },
         {
@@ -23,12 +23,8 @@
             "type": "string"
         },
         {
-            "name": "burn_block_time",
+            "name": "timestamp",
             "type": "long"
-        },
-        {
-            "name": "burn_block_time_iso",
-            "type": "string"
         },
         {
             "name": "burn_block_hash",
@@ -51,7 +47,7 @@
             "type": "long"
         },
         {
-            "name": "txs",
+            "name": "transactions",
             "type": {
                 "type": "array",
                 "items": "string"
