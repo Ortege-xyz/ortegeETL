@@ -25,9 +25,10 @@ from blockchainetl.atomic_counter import AtomicCounter
 from blockchainetl.exporters import CsvItemExporter, JsonLinesItemExporter
 from blockchainetl.file_utils import get_file_handle, close_silently
 from blockchainetl.jobs.exporters.converters.composite_item_converter import CompositeItemConverter
+from classes.abstract_item_exporter import AbstractItemExporter
 
 
-class CompositeItemExporter:
+class CompositeItemExporter(AbstractItemExporter):
     def __init__(self, filename_mapping, field_mapping=None, converters=()):
         self.filename_mapping = filename_mapping
         self.field_mapping = field_mapping or {}
