@@ -5,15 +5,19 @@ class StackTransaction(object):
         self.fee_rate = None
         self.sender_address = None
         self.sponsored = None
+
         self.post_condition_mode = None
         self.post_conditions = None
+
         self.anchor_mode = None
         self.is_unanchored = None
+
         self.block_number = None
         self.block_hash = None
         self.block_timestamp = None
         self.parent_block_hash = None
         self.parent_burn_block_time = None
+
         self.canonical = None
         self.tx_index = None
         self.tx_status = None
