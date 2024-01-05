@@ -353,6 +353,58 @@
           ]
         }
       ]
+    },
+    {
+      "name": "contract_call",
+      "type": [
+        "null",
+        {
+          "type": "record",
+          "name": "ContractCallRecord",
+          "fields": [
+            {
+              "name": "contract_id",
+              "type": "string"
+            },
+            {
+              "name": "function_name",
+              "type": "string"
+            },
+            {
+              "name": "function_signature",
+              "type": "string"
+            },
+            {
+              "name": "function_args",
+              "type": {
+                "type": "array",
+                "items": {
+                  "type": "record",
+                  "name": "FunctionArgsRecord",
+                  "fields": [
+                    {
+                      "name": "hex",
+                      "type": "string"
+                    },
+                    {
+                      "name": "repr",
+                      "type": "string"
+                    },
+                    {
+                      "name": "name",
+                      "type": "string"
+                    },
+                    {
+                      "name": "type",
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
