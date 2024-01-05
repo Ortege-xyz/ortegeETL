@@ -1,0 +1,36 @@
+{
+  "type": "record",
+  "name": "Block",
+  "fields": [
+    {
+      "name": "block_height",
+      "type": "string",
+      "doc": "A string containing a 64-bit unsigned integer.",
+      "required": true
+    },
+    {
+      "name": "block_hash",
+      "type": "string",
+      "doc": "Required field representing the block hash.",
+      "required": true
+    },
+    {
+      "name": "block_timestamp",
+      "type": "string",
+      "doc": "A string containing a 64-bit unsigned integer.",
+      "required": true
+    },
+    {
+      "name": "first_version",
+      "type": "string",
+      "doc": "A string containing a 64-bit unsigned integer.",
+      "required": true
+    },
+    {
+      "name": "last_version",
+      "type": "string",
+      "doc": "A string containing a 64-bit unsigned integer.",
+      "required": true
+    }
+  ]
+}

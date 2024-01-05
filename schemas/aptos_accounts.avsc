@@ -1,0 +1,18 @@
+{
+  "type": "record",
+  "name": "AccountData",
+  "fields": [
+    {
+      "name": "sequence_number",
+      "type": "string",
+      "doc": "A string containing a 64-bit unsigned integer.",
+      "required": true
+    },
+    {
+      "name": "authentication_key",
+      "type": "string",
+      "doc": "All bytes (Vec) data is represented as a hex-encoded string prefixed with 0x and fulfilled with two hex digits per byte.",
+      "required": true
+    }
+  ]
+}
