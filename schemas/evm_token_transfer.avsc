@@ -1,0 +1,35 @@
+{
+    "type": "record",
+    "name": "TokenTransferRecord",
+    "fields": [
+        {
+            "name": "token_address",
+            "type": "string"
+        },
+        {
+            "name": "from_address",
+            "type": "string"
+        },
+        {
+            "name": "to_address",
+            "type": "string"
+        },
+        {
+            "name": "value",
+            "type": "double"
+        },
+        {
+            "name": "transaction_hash",
+            "type": "string"
+        },
+        {
+            "name": "log_index",
+            "type": "long"
+        },
+        {
+            "name": "block_number",
+            "type": ["null", "long"],
+            "default": null
+        }
+    ]
+}
