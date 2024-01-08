@@ -1,0 +1,33 @@
+{
+    "type": "record",
+    "name": "TokenRecord",
+    "fields": [
+        {
+            "name": "address",
+            "type": "string"
+        },
+        {
+            "name": "symbol",
+            "type": "string"
+        },
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "decimals",
+            "type": ["null", "long"],
+            "default": null
+        },
+        {
+            "name": "total_supply",
+            "type": ["null", "double"],
+            "default": null
+        },
+        {
+            "name": "block_number",
+            "type": ["null", "long"],
+            "default": null
+        }
+    ]
+}

@@ -1,0 +1,49 @@
+{
+    "type": "record",
+    "name": "ReceiptRecord",
+    "fields": [
+        {
+            "name": "transaction_hash",
+            "type": "string"
+        },
+        {
+            "name": "transaction_index",
+            "type": "long"
+        },
+        {
+            "name": "block_hash",
+            "type": "string"
+        },
+        {
+            "name": "block_number",
+            "type": "long"
+        },
+        {
+            "name": "cumulative_gas_used",
+            "type": "long"
+        },
+        {
+            "name": "gas_used",
+            "type": "long"
+        },
+        {
+            "name": "contract_address",
+            "type": ["null", "string"],
+            "default": null
+        },
+        {
+            "name": "root",
+            "type": ["null", "string"],
+            "default": null
+        },
+        {
+            "name": "status",
+            "type": ["null", "long"],
+            "default": null
+        },
+        {
+            "name": "effective_gas_price",
+            "type": "long"
+        }
+    ]
+}

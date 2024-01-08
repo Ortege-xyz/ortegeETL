@@ -1,0 +1,32 @@
+{
+    "type": "record",
+    "name": "ContractRecord",
+    "fields": [
+        {
+            "name": "address",
+            "type": "string"
+        },
+        {
+            "name": "bytecode",
+            "type": "string"
+        },
+        {
+            "name": "function_sighashes",
+            "type": ["null", {"type": "array", "items": "string"}],
+            "default": null
+        },
+        {
+            "name": "is_erc20",
+            "type": "boolean"
+        },
+        {
+            "name": "is_erc721",
+            "type": "boolean"
+        },
+        {
+            "name": "block_number",
+            "type": ["null", "long"],
+            "default": null
+        }
+    ]
+}

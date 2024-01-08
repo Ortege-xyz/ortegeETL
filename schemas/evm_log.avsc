@@ -1,0 +1,39 @@
+{
+    "type": "record",
+    "name": "LogRecord",
+    "fields": [
+        {
+            "name": "log_index",
+            "type": "long"
+        },
+        {
+            "name": "transaction_hash",
+            "type": "string"
+        },
+        {
+            "name": "transaction_index",
+            "type": "long"
+        },
+        {
+            "name": "block_hash",
+            "type": "string"
+        },
+        {
+            "name": "block_number",
+            "type": "long"
+        },
+        {
+            "name": "address",
+            "type": "string"
+        },
+        {
+            "name": "data",
+            "type": "string"
+        },
+        {
+            "name": "topics",
+            "type": ["null", {"type": "array", "items": "string"}],
+            "default": null
+        }
+    ]
+}

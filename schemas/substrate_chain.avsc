@@ -1,0 +1,30 @@
+{
+    "type": "record",
+    "name": "ChainRecord",
+    "fields": [
+        {
+            "name": "para_id",
+            "type": "long"
+        },
+        {
+            "name": "chain_name",
+            "type": "string"
+        },
+        {
+            "name": "id",
+            "type": "string"
+        },
+        {
+            "name": "ss58_prefix",
+            "type": "long"
+        },
+        {
+            "name": "symbol",
+            "type": "string"
+        },
+        {
+            "name": "decimals",
+            "type": "string"
+        }
+    ]
+}

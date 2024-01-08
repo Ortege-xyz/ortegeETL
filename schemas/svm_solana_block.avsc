@@ -1,0 +1,42 @@
+{
+    "type": "record",
+    "name": "BlockRecord",
+    "fields": [
+        {
+            "name": "number",
+            "type": "long"
+        },
+        {
+            "name": "height",
+            "type": "long"
+        },
+        {
+            "name": "hash",
+            "type": "string"
+        },
+        {
+            "name": "previous_block_hash",
+            "type": "string"
+        },
+        {
+            "name": "timestamp",
+            "type": "long"
+        },
+        {
+            "name": "transaction_count",
+            "type": "long"
+        },
+        {
+            "name": "rewards",
+            "type": "string"
+        },
+        {
+            "name": "leader_reward",
+            "type": "string"
+        },
+        {
+            "name": "leader",
+            "type": "string"
+        }
+    ]
+}

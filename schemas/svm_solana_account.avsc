@@ -1,0 +1,106 @@
+{
+    "type": "record",
+    "name": "AccountRecord",
+    "fields": [
+        {
+            "name": "pubkey",
+            "type": "string"
+        },
+        {
+            "name": "tx_signature",
+            "type": "string"
+        },
+        {
+            "name": "executable",
+            "type": "boolean"
+        },
+        {
+            "name": "lamports",
+            "type": "long"
+        },
+        {
+            "name": "owner",
+            "type": "string"
+        },
+        {
+            "name": "rent_epoch",
+            "type": "long"
+        },
+        {
+            "name": "program",
+            "type": "string"
+        },
+        {
+            "name": "space",
+            "type": "long"
+        },
+        {
+            "name": "account_type",
+            "type": "string"
+        },
+        {
+            "name": "is_native",
+            "type": "boolean"
+        },
+        {
+            "name": "mint",
+            "type": "string"
+        },
+        {
+            "name": "state",
+            "type": "string"
+        },
+        {
+            "name": "token_amount",
+            "type": "double"
+        },
+        {
+            "name": "token_amount_decimals",
+            "type": "long"
+        },
+        {
+            "name": "program_data",
+            "type": "string"
+        },
+        {
+            "name": "authorized_voters",
+            "type": "string"
+        },
+        {
+            "name": "authorized_withdrawer",
+            "type": "string"
+        },
+        {
+            "name": "prior_voters",
+            "type": "string"
+        },
+        {
+            "name": "node_pubkey",
+            "type": "string"
+        },
+        {
+            "name": "commission",
+            "type": "double"
+        },
+        {
+            "name": "epoch_credits",
+            "type": "long"
+        },
+        {
+            "name": "votes",
+            "type": "long"
+        },
+        {
+            "name": "root_slot",
+            "type": "long"
+        },
+        {
+            "name": "last_timestamp",
+            "type": "long"
+        },
+        {
+            "name": "data",
+            "type": "string"
+        }
+    ]
+}

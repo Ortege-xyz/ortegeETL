@@ -1,0 +1,78 @@
+{
+    "type": "record",
+    "name": "TraceRecord",
+    "fields": [
+        {
+            "name": "block_number",
+            "type": "long"
+        },
+        {
+            "name": "transaction_hash",
+            "type": "string"
+        },
+        {
+            "name": "transaction_index",
+            "type": "long"
+        },
+        {
+            "name": "from_address",
+            "type": "string"
+        },
+        {
+            "name": "to_address",
+            "type": "string"
+        },
+        {
+            "name": "value",
+            "type": "double"
+        },
+        {
+            "name": "input",
+            "type": "string"
+        },
+        {
+            "name": "output",
+            "type": "string"
+        },
+        {
+            "name": "trace_type",
+            "type": "string"
+        },
+        {
+            "name": "call_type",
+            "type": "string"
+        },
+        {
+            "name": "reward_type",
+            "type": "string"
+        },
+        {
+            "name": "gas",
+            "type": "long"
+        },
+        {
+            "name": "gas_used",
+            "type": "long"
+        },
+        {
+            "name": "subtraces",
+            "type": "long"
+        },
+        {
+            "name": "trace_address",
+            "type": "string"
+        },
+        {
+            "name": "error",
+            "type": "string"
+        },
+        {
+            "name": "status",
+            "type": "long"
+        },
+        {
+            "name": "trace_id",
+            "type": "string"
+        }
+    ]
+}
