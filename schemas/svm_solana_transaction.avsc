@@ -1,0 +1,58 @@
+{
+    "type": "record",
+    "name": "TransactionRecord",
+    "fields": [
+        {
+            "name": "signature",
+            "type": "string"
+        },
+        {
+            "name": "block_hash",
+            "type": "string"
+        },
+        {
+            "name": "previous_block_hash",
+            "type": "string"
+        },
+        {
+            "name": "block_number",
+            "type": "long"
+        },
+        {
+            "name": "block_timestamp",
+            "type": "long"
+        },
+        {
+            "name": "fee",
+            "type": "string"
+        },
+        {
+            "name": "status",
+            "type": "string"
+        },
+        {
+            "name": "err",
+            "type": "string"
+        },
+        {
+            "name": "accounts",
+            "type": "string"
+        },
+        {
+            "name": "log_messages",
+            "type": "string"
+        },
+        {
+            "name": "balance_changes",
+            "type": "string"
+        },
+        {
+            "name": "pre_token_balances",
+            "type": "string"
+        },
+        {
+            "name": "post_token_balances",
+            "type": "string"
+        }
+    ]
+}

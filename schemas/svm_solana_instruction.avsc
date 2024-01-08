@@ -1,0 +1,42 @@
+{
+    "type": "record",
+    "name": "InstructionRecord",
+    "fields": [
+        {
+            "name": "tx_signature",
+            "type": "string"
+        },
+        {
+            "name": "index",
+            "type": "long"
+        },
+        {
+            "name": "parent_index",
+            "type": "long"
+        },
+        {
+            "name": "accounts",
+            "type": "string"
+        },
+        {
+            "name": "data",
+            "type": "string"
+        },
+        {
+            "name": "program",
+            "type": "string"
+        },
+        {
+            "name": "program_id",
+            "type": "string"
+        },
+        {
+            "name": "instruction_type",
+            "type": "string"
+        },
+        {
+            "name": "params",
+            "type": "string"
+        }
+    ]
+}
