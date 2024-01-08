@@ -25,7 +25,7 @@ class StackTransaction(object):
 
         self.microblock_hash = None
         self.microblock_sequence = None
-        self.microblock_canonical
+        self.microblock_canonical = None
 
         self.event_count = None
         self.events = []

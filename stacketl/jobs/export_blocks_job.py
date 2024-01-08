@@ -48,8 +48,18 @@ class ExportBlocksJob(BaseJob):
     def _export_batch(self, block_number_batch: list[int]):
         blocks = self.stack_api.get_blocks(block_number_batch)
 
+        if self.export_transactions:
+            transactions = self.stack_api.get_blocks_transactions(block_number_batch)
+            
+            for block, transaction in zip(blocks, transactions):
+                if block and transaction:
+                    block.transactions = transactions
+                    self._export_block(block)
+            return
+
         for block in blocks:
-            self._export_block(block)
+            if block:
+                self._export_block(block)
 
     def _export_block(self, block):
         if self.export_blocks:

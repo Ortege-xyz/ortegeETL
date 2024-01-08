@@ -31,15 +31,7 @@ class StackBlockMapper(object):
         block.execution_cost_write_length = json_dict.get('execution_cost_write_length')
         block.microblock_tx_count = json_dict.get('microblock_tx_count')
 
-        detailed_transactions = json_dict.get('detailed_txs')
-        if detailed_transactions is not None and len(detailed_transactions) > 0:
-            block.transactions = [
-                    self.transaction_mapper.json_dict_to_transaction(tx) for tx in detailed_transactions
-                ]
-        else:
-            # Transaction hashes
-            block.transactions = json_dict.get('txs')
-
+        block.transactions = json_dict.get('txs')
         block.transaction_count = len(block.transactions)
 
         return block

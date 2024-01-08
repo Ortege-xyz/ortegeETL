@@ -3,7 +3,7 @@ from stacketl.cli.export_blocks_and_transactions import export_blocks_and_transa
 
 @click.group()
 def stack():
-    """All commands related with evm chains."""
+    """All commands related with stack-like chains."""
     pass
 
 stack.add_command(export_blocks_and_transactions)

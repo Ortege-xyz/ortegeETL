@@ -86,7 +86,7 @@ class StackTransactionMapper(object):
             'is_unanchored': transaction.is_unanchored,
             'block_number': transaction.block_number,
             'block_hash': transaction.block_hash,
-            'block_timestamp': transaction.timestamp,
+            'block_timestamp': transaction.block_timestamp,
             'parent_block_hash': transaction.parent_block_hash,
             'parent_burn_block_time': transaction.parent_burn_block_time,
             'canonical': transaction.canonical,

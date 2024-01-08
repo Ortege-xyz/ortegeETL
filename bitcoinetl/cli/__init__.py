@@ -32,7 +32,7 @@ from bitcoinetl.cli.stream import stream
 @click.group()
 @click.pass_context
 def btc(ctx):
-    """All commands related with btc chains."""
+    """All commands related with bitcoin-like chains."""
     pass
 
 

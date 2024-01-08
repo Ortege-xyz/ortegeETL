@@ -4,7 +4,23 @@ BLOCK_FIELDS_TO_EXPORT = [
     'hash',
     'number',
     'timestamp',
-    'nonce',
+    'canonical'    
+    'index_block_hash',
+    'parent_block_hash',
+    'burn_block_hash',
+    'burn_block_height'
+    'miner_txid',
+    'parent_microblock_hash',
+    'parent_microblock_sequence',
+    'microblocks_accepted',
+    'microblocks_streamed',
+    'execution_cost_read_count',
+    'execution_cost_read_length',
+    'execution_cost_runtime',
+    'execution_cost_write_count',
+    'execution_cost_write_length',
+    'microblock_tx_count',
+
 ]
 
 TRANSACTION_FIELDS_TO_EXPORT = [
@@ -12,9 +28,14 @@ TRANSACTION_FIELDS_TO_EXPORT = [
     'nonce',
     'sender_address',
     'tx_index',
+    'tx_result',
+    'fee_rate',
     'block_number',
     'block_hash',
     'block_timestamp',
+    'event_count',
+    'events',
+    'tx_type',
 ]
 
 
