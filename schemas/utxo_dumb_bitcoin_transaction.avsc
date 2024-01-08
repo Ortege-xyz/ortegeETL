@@ -1,0 +1,164 @@
+{
+    "type": "record",
+    "name": "TransactionRecord",
+    "fields": [
+        {
+            "name": "hash",
+            "type": "string"
+        },
+        {
+            "name": "size",
+            "type": "long"
+        },
+        {
+            "name": "virtual_size",
+            "type": "long"
+        },
+        {
+            "name": "version",
+            "type": "long"
+        },
+        {
+            "name": "lock_time",
+            "type": "long"
+        },
+        {
+            "name": "block_number",
+            "type": "long"
+        },
+        {
+            "name": "block_hash",
+            "type": "string"
+        },
+        {
+            "name": "block_timestamp",
+            "type": "long"
+        },
+        {
+            "name": "is_coinbase",
+            "type": "boolean"
+        },
+        {
+            "name": "index",
+            "type": "long"
+        },
+        {
+            "name": "inputs",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "record",
+                    "name": "TransactionInputRecord",
+                    "fields": [
+                        {
+                            "name": "index",
+                            "type": "long"
+                        },
+                        {
+                            "name": "spent_transaction_hash",
+                            "type": "string"
+                        },
+                        {
+                            "name": "spent_output_index",
+                            "type": "long"
+                        },
+                        {
+                            "name": "script_asm",
+                            "type": "string"
+                        },
+                        {
+                            "name": "script_hex",
+                            "type": "string"
+                        },
+                        {
+                            "name": "sequence",
+                            "type": "long"
+                        },
+                        {
+                            "name": "required_signatures",
+                            "type": ["long", "null"]
+                        },
+                        {
+                            "name": "type",
+                            "type": "string"
+                        },
+                        {
+                            "name": "addresses",
+                            "type": {
+                                "type": "array",
+                                "items": "string"
+                            }
+                        },
+                        {
+                            "name": "value",
+                            "type": "long"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "outputs",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "record",
+                    "name": "TransactionOutputRecord",
+                    "fields": [
+                        {
+                            "name": "index",
+                            "type": "long"
+                        },
+                        {
+                            "name": "script_asm",
+                            "type": "string"
+                        },
+                        {
+                            "name": "script_hex",
+                            "type": "string"
+                        },
+                        {
+                            "name": "required_signatures",
+                            "type": ["long", "null"]
+                        },
+                        {
+                            "name": "type",
+                            "type": "string"
+                        },
+                        {
+                            "name": "addresses",
+                            "type": {
+                                "type": "array",
+                                "items": "string"
+                            }
+                        },
+                        {
+                            "name": "value",
+                            "type": "long"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "input_count",
+            "type": "long"
+        },
+        {
+            "name": "output_count",
+            "type": "long"
+        },
+        {
+            "name": "input_value",
+            "type": "long"
+        },
+        {
+            "name": "output_value",
+            "type": "long"
+        },
+        {
+            "name": "fee",
+            "type": "long"
+        }
+    ]
+}
