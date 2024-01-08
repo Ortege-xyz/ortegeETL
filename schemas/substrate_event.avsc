@@ -1,0 +1,43 @@
+{
+    "type": "record",
+    "name": "EventDataRecord",
+    "fields": [
+        {
+            "name": "event_id",
+            "type": "string"
+        },
+        {
+            "name": "section",
+            "type": "string"
+        },
+        {
+            "name": "method",
+            "type": "string"
+        },
+        {
+            "name": "data",
+            "type": "record",
+            "fields": []
+        },
+        {
+            "name": "extrinsic_id",
+            "type": "string"
+        },
+        {
+            "name": "extrinsic_hash",
+            "type": "string"
+        },
+        {
+            "name": "block_time",
+            "type": "long"
+        },
+        {
+            "name": "block_number",
+            "type": "long"
+        },
+        {
+            "name": "block_hash",
+            "type": "string"
+        }
+    ]
+}

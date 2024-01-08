@@ -1,0 +1,64 @@
+{
+    "type": "record",
+    "name": "ExtrinsicRecord",
+    "fields": [
+        {
+            "name": "hash",
+            "type": "string"
+        },
+        {
+            "name": "extrinsic_id",
+            "type": "string"
+        },
+        {
+            "name": "block_time",
+            "type": "long"
+        },
+        {
+            "name": "block_number",
+            "type": "long"
+        },
+        {
+            "name": "block_hash",
+            "type": "string"
+        },
+        {
+            "name": "lifetime",
+            "type": "record",
+            "fields": []
+        },
+        {
+            "name": "section",
+            "type": "string"
+        },
+        {
+            "name": "method",
+            "type": "string"
+        },
+        {
+            "name": "params",
+            "type": "record",
+            "fields": []
+        },
+        {
+            "name": "fee",
+            "type": "long"
+        },
+        {
+            "name": "weight",
+            "type": "long"
+        },
+        {
+            "name": "signed",
+            "type": "boolean"
+        },
+        {
+            "name": "signer_ss58",
+            "type": "string"
+        },
+        {
+            "name": "signer_pub_key",
+            "type": "string"
+        }
+    ]
+}

@@ -1,0 +1,66 @@
+{
+    "type": "record",
+    "name": "BalancesRecord",
+    "fields": [
+        {
+            "name": "symbol",
+            "type": "string"
+        },
+        {
+            "name": "address_ss58",
+            "type": "string"
+        },
+        {
+            "name": "address_pubkey",
+            "type": "string"
+        },
+        {
+            "name": "ts",
+            "type": "long"
+        },
+        {
+            "name": "id",
+            "type": "string"
+        },
+        {
+            "name": "chain_name",
+            "type": "string"
+        },
+        {
+            "name": "para_id",
+            "type": "int"
+        },
+        {
+            "name": "free",
+            "type": "double"
+        },
+        {
+            "name": "free_usd",
+            "type": "double"
+        },
+        {
+            "name": "reserved",
+            "type": "double"
+        },
+        {
+            "name": "reserved_usd",
+            "type": "double"
+        },
+        {
+            "name": "misc_frozen",
+            "type": "double"
+        },
+        {
+            "name": "misc_frozen_usd",
+            "type": "double"
+        },
+        {
+            "name": "frozen",
+            "type": "double"
+        },
+        {
+            "name": "frozen_usd",
+            "type": "double"
+        }
+    ]
+}

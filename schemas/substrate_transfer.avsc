@@ -1,0 +1,87 @@
+{
+    "type": "record",
+    "name": "TransfersDataRecord",
+    "fields": [
+        {
+            "name": "event_id",
+            "type": "string"
+        },
+        {
+            "name": "section",
+            "type": "string"
+        },
+        {
+            "name": "method",
+            "type": "string"
+        },
+        {
+            "name": "data",
+            "type": "record",
+            "fields": []
+        },
+        {
+            "name": "extrinsic_id",
+            "type": "string"
+        },
+        {
+            "name": "extrinsic_hash",
+            "type": "string"
+        },
+        {
+            "name": "block_time",
+            "type": "long"
+        },
+        {
+            "name": "block_number",
+            "type": "long"
+        },
+        {
+            "name": "block_hash",
+            "type": "string"
+        },
+        {
+            "name": "from_ss58",
+            "type": "string"
+        },
+        {
+            "name": "to_ss58",
+            "type": "string"
+        },
+        {
+            "name": "from_pub_key",
+            "type": "string"
+        },
+        {
+            "name": "to_pub_key",
+            "type": "string"
+        },
+        {
+            "name": "asset",
+            "type": "string"
+        },
+        {
+            "name": "price_usd",
+            "type": "double"
+        },
+        {
+            "name": "amount_usd",
+            "type": "double"
+        },
+        {
+            "name": "symbol",
+            "type": "string"
+        },
+        {
+            "name": "decimals",
+            "type": "int"
+        },
+        {
+            "name": "amount",
+            "type": "double"
+        },
+        {
+            "name": "raw_amount",
+            "type": "long"
+        }
+    ]
+}
