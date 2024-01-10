@@ -33,6 +33,7 @@ class StackApi():
         
         return response.json()
     
+    # TODO: update to new endpoint https://docs.hiro.so/api/get-transactions-by-block
     def get_block_transactions(self, block_number: int) -> list[dict[str, Any]]:
         """Get all block transactions by the number"""
         url = self.api_url + GET_BLOCK_TRANSACTIONS_PATH.format(number=block_number)
