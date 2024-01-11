@@ -13,6 +13,7 @@ TRANSACTION_LIMIT = 50
 GET_BLOCK_PATH = 'extended/v1/block/by_height/{number}'
 GET_BLOCK_TRANSACTIONS_PATH = 'extended/v1/tx/block_height/{number}'
 GET_CONTRACT_INFO_PATH = 'extended/v1/contract/{contract_id}'
+GET_LAST_BLOCK_PATH = 'extended/v1/block?limit=1'
 GET_TRANSACTION_PATH = 'extended/v1/tx/{hash}'
 
 class StackApi():
@@ -21,6 +22,15 @@ class StackApi():
         self.block_mapper = StackBlockMapper()
         self.contract_mapper = StackContractMapper()
         self.transaction_mapper = StackTransactionMapper()
+
+    def get_latest_block(self) -> StackBlock:
+        """Get the last block"""
+        url = self.api_url + GET_LAST_BLOCK_PATH
+        response = requests.get(url, timeout=1)
+
+        data = response.json()
+
+        return self.block_mapper.json_dict_to_block(data["results"][0])
 
     def get_block(self, block_number: int) -> Optional[dict[str, Any]]:
         """Get the block by the number"""
