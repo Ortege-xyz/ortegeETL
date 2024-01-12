@@ -6,6 +6,7 @@ from stacketl.jobs.export_contracts_job import ExportContractsJob
 from stacketl.streaming.stacks_item_id_calculator import StackItemIdCalculator
 from blockchainetl.jobs.exporters.console_item_exporter import ConsoleItemExporter
 from blockchainetl.jobs.exporters.in_memory_item_exporter import InMemoryItemExporter
+from blockchainetl.thread_local_proxy import ThreadLocalProxy
 
 
 class StacksStreamerAdapter:
@@ -19,7 +20,7 @@ class StacksStreamerAdapter:
             enable_contracts=True,
             max_workers=5):
         self.api_url = api_url
-        self.stack_api = StackApi(api_url)
+        self.stack_api = ThreadLocalProxy(StackApi(api_url))
         self.item_exporter = item_exporter
         self.batch_size = batch_size
         self.enable_blocks = enable_blocks
