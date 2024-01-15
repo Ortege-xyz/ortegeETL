@@ -39,33 +39,8 @@
             "type": "string"
         },
         {
-            "name": "parent_microblock_hash",
-            "type": "string"
-        },
-        {
-            "name": "parent_microblock_sequence",
+            "name": "transaction_count",
             "type": "long"
-        },
-        {
-            "name": "transactions",
-            "type": {
-                "type": "array",
-                "items": "string"
-            }
-        },
-        {
-            "name": "microblocks_accepted",
-            "type": {
-                "type": "array",
-                "items": "string"
-            }
-        },
-        {
-            "name": "microblocks_streamed",
-            "type": {
-                "type": "array",
-                "items": "string"
-            }
         },
         {
             "name": "execution_cost_read_count",
@@ -86,13 +61,6 @@
         {
             "name": "execution_cost_write_length",
             "type": "long"
-        },
-        {
-            "name": "microblock_tx_count",
-            "type": {
-                "type": "map",
-                "values": "long"
-            }
         }
     ]
 }

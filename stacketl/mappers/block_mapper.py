@@ -22,8 +22,6 @@ class StackBlockMapper(object):
         block.burn_block_hash = json_dict.get('burn_block_hash')
         block.burn_block_height = json_dict.get('burn_block_height')
         block.miner_txid = json_dict.get('miner_txid')
-        block.parent_microblock_hash = json_dict.get('parent_microblock_hash')
-        block.parent_microblock_sequence = json_dict.get('parent_microblock_sequence')
         block.execution_cost_read_count = json_dict.get('execution_cost_read_count')
         block.execution_cost_read_length = json_dict.get('execution_cost_read_length')
         block.execution_cost_runtime = json_dict.get('execution_cost_runtime')
@@ -47,13 +45,11 @@ class StackBlockMapper(object):
             'burn_block_hash': block.burn_block_hash,
             'burn_block_height': block.burn_block_height,
             'miner_txid': block.miner_txid,
-            'parent_microblock_hash': block.parent_microblock_hash,
-            'parent_microblock_sequence': block.parent_microblock_sequence,
             'execution_cost_read_count': block.execution_cost_read_count,
             'execution_cost_read_length': block.execution_cost_read_length, 
             'execution_cost_runtime': block.execution_cost_runtime,
             'execution_cost_write_count': block.execution_cost_write_count,
             'execution_cost_write_length': block.execution_cost_write_length, 
-            'microblock_tx_count': block.microblock_tx_count,
+            'transaction_count': block.transaction_count,
         }
 
