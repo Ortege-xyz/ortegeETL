@@ -397,6 +397,16 @@
           ]
         }
       ]
+    },
+    {
+      "name": "poison_microblock",
+      "type": [
+        "null", 
+        {
+          "type": "map",
+          "values": "string"
+        }
+      ]
     }
   ]
 }
