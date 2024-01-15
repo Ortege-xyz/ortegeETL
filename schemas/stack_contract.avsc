@@ -32,6 +32,14 @@
         {
             "name": "abi",
             "type": "string"
-        }
+        },
+        {
+            "name": "is_stx20",
+            "type": "boolean"
+        },
+        {
+            "name": "is_nft",
+            "type": "boolean"
+        },
     ]
 }
