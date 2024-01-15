@@ -31,8 +31,7 @@ class StackBlockMapper(object):
         block.execution_cost_write_length = json_dict.get('execution_cost_write_length')
         block.microblock_tx_count = json_dict.get('microblock_tx_count')
 
-        block.transactions = json_dict.get('txs')
-        block.transaction_count = len(block.transactions)
+        block.transaction_count = json_dict.get('tx_count')
 
         return block
 
