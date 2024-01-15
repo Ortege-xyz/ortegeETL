@@ -10,10 +10,10 @@ from stacketl.domain.transaction import StackTransaction
 
 TRANSACTION_LIMIT = 50
 
-GET_BLOCK_PATH = 'extended/v1/block/by_height/{number}'
-GET_BLOCK_TRANSACTIONS_PATH = 'extended/v1/tx/block_height/{number}'
+GET_BLOCK_PATH = 'extended/v2/blocks/{number}'
+GET_BLOCK_TRANSACTIONS_PATH = 'extended/v2/blocks/{number}/transactions'
 GET_CONTRACT_INFO_PATH = 'extended/v1/contract/{contract_id}'
-GET_LAST_BLOCK_PATH = 'extended/v1/block?limit=1'
+GET_LAST_BLOCK_PATH = 'extended/v2/blocks?limit=1'
 GET_TRANSACTION_PATH = 'extended/v1/tx/{hash}'
 
 class StackApi():
