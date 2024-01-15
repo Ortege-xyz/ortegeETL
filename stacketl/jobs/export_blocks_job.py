@@ -4,7 +4,7 @@ from stacketl.api.stack_api import StackApi
 from blockchainetl.executors.batch_work_executor import BatchWorkExecutor
 from blockchainetl.jobs.base_job import BaseJob
 from blockchainetl.utils import validate_range
-from classes.abstract_item_exporter import AbstractItemExporter
+from blockchainetl.classes.base_item_exporter import BaseItemExporter
 
 
 # Exports blocks and transactions
@@ -16,7 +16,7 @@ class ExportBlocksJob(BaseJob):
             batch_size: int,
             stack_api: StackApi,
             max_workers: str,
-            item_exporter: AbstractItemExporter,
+            item_exporter: BaseItemExporter,
             export_blocks=True,
             export_transactions=True):
         validate_range(start_block, end_block)
