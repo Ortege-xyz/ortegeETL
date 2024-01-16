@@ -4,7 +4,7 @@
   "namespace": "com.example",
   "fields": [
     {
-      "name": "tx_id",
+      "name": "hash",
       "type": "string"
     },
     {
@@ -134,32 +134,24 @@
       "type": "boolean"
     },
     {
-      "name": "block_hash",
-      "type": "string"
-    },
-    {
       "name": "parent_block_hash",
       "type": "string"
     },
     {
-      "name": "block_height",
-      "type": "long"
-    },
-    {
-      "name": "burn_block_time",
-      "type": "long"
-    },
-    {
-      "name": "burn_block_time_iso",
+      "name": "block_hash",
       "type": "string"
+    },
+    {
+      "name": "block_number",
+      "type": "long"
+    },
+    {
+      "name": "block_timestamp",
+      "type": "long"
     },
     {
       "name": "parent_burn_block_time",
       "type": "long"
-    },
-    {
-      "name": "parent_burn_block_time_iso",
-      "type": "string"
     },
     {
       "name": "canonical",
@@ -351,6 +343,68 @@
               "type": "string"
             }
           ]
+        }
+      ]
+    },
+    {
+      "name": "contract_call",
+      "type": [
+        "null",
+        {
+          "type": "record",
+          "name": "ContractCallRecord",
+          "fields": [
+            {
+              "name": "contract_id",
+              "type": "string"
+            },
+            {
+              "name": "function_name",
+              "type": "string"
+            },
+            {
+              "name": "function_signature",
+              "type": "string"
+            },
+            {
+              "name": "function_args",
+              "type": {
+                "type": "array",
+                "items": {
+                  "type": "record",
+                  "name": "FunctionArgsRecord",
+                  "fields": [
+                    {
+                      "name": "hex",
+                      "type": "string"
+                    },
+                    {
+                      "name": "repr",
+                      "type": "string"
+                    },
+                    {
+                      "name": "name",
+                      "type": "string"
+                    },
+                    {
+                      "name": "type",
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "poison_microblock",
+      "type": [
+        "null", 
+        {
+          "type": "map",
+          "values": "string"
         }
       ]
     }
