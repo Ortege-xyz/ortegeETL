@@ -20,7 +20,7 @@ class StacksStreamerAdapter:
             enable_contracts=True,
             max_workers=5):
         self.api_url = api_url
-        self.stack_api = ThreadLocalProxy(StackApi(api_url))
+        self.stack_api = ThreadLocalProxy(lambda: StackApi(api_url))
         self.item_exporter = item_exporter
         self.batch_size = batch_size
         self.enable_blocks = enable_blocks
@@ -54,7 +54,7 @@ class StacksStreamerAdapter:
         blocks = blocks_and_transactions_item_exporter.get_items('block')
         transactions = blocks_and_transactions_item_exporter.get_items('transaction')
 
-        if self.enable_enrich:
+        if self.enable_contracts:
             # Enrich transactions
             contracts_item_exporter = InMemoryItemExporter(item_types=['contract'])
 

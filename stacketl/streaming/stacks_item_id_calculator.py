@@ -14,7 +14,7 @@ class StackItemIdCalculator:
             return concat(item_type, item.get('hash'))
         
         if item_type == 'contract':
-            return concat(item_type, item.address)
+            return concat(item_type, item.get('address'))
 
         logging.warning('item_id for item {} is None'.format(json.dumps(item)))
 
