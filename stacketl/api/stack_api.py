@@ -7,6 +7,7 @@ from stacketl.mappers.transaction_mapper import StackTransactionMapper
 from stacketl.domain.block import StackBlock
 from stacketl.domain.contract import StackContract
 from stacketl.domain.transaction import StackTransaction
+from blockchainetl.api_requester import ApiRequester
 
 TRANSACTION_LIMIT = 50
 
@@ -16,17 +17,29 @@ GET_CONTRACT_INFO_PATH = 'extended/v1/contract/{contract_id}'
 GET_LAST_BLOCK_PATH = 'extended/v2/blocks?limit=1'
 GET_TRANSACTION_PATH = 'extended/v1/tx/{hash}'
 
-class StackApi():
-    def __init__(self, api_url: str):
-        self.api_url = api_url
+class StackApi(ApiRequester):
+    def __init__(self, api_url: str, api_key: Optional[str]):
+        if api_key:
+            rate_limit = 500/60 # 500 request per minutes, the value should be requests per seconds
+        else:
+            rate_limit = 50/60 # 50 request per minutes
+
+        super().__init__(api_url, api_key, rate_limit)
+
         self.block_mapper = StackBlockMapper()
         self.contract_mapper = StackContractMapper()
         self.transaction_mapper = StackTransactionMapper()
 
+        if self.api_key:
+            self.headers = {
+                'x-hiro-api-key': self.api_key
+            }
+        else:
+            self.headers = None
+
     def get_latest_block(self) -> StackBlock:
         """Get the last block"""
-        url = self.api_url + GET_LAST_BLOCK_PATH
-        response = requests.get(url, timeout=1)
+        response = self._make_get_request(GET_LAST_BLOCK_PATH, headers=self.headers, timeout=2)
 
         data = response.json()
 
@@ -34,9 +47,11 @@ class StackApi():
 
     def get_block(self, block_number: int) -> Optional[dict[str, Any]]:
         """Get the block by the number"""
-        url = self.api_url + GET_BLOCK_PATH.format(number=block_number)
-
-        response = requests.get(url, timeout=1)
+        response = self._make_get_request(
+            endpoint=GET_BLOCK_PATH.format(number=block_number),
+            headers=self.headers,
+            timeout=2
+        )
 
         if str(response.status_code).startswith(('4', '5')):
             return None
@@ -46,8 +61,6 @@ class StackApi():
     # TODO: update to new endpoint https://docs.hiro.so/api/get-transactions-by-block
     def get_block_transactions(self, block_number: int) -> list[dict[str, Any]]:
         """Get all block transactions by the number"""
-        url = self.api_url + GET_BLOCK_TRANSACTIONS_PATH.format(number=block_number)
-
         params = {
             'limit': TRANSACTION_LIMIT,
             'offset': 0,
@@ -55,7 +68,12 @@ class StackApi():
 
         transactions = []
         while True:
-            response = requests.get(url, params=params, timeout=1)
+            response = self._make_get_request(
+                endpoint=GET_BLOCK_TRANSACTIONS_PATH.format(number=block_number),
+                params=params,
+                headers=self.headers,
+                timeout=2,
+            )
             data = response.json()
             
             transactions.extend(data['results'])
@@ -68,6 +86,18 @@ class StackApi():
                 break
 
         return transactions
+
+    def get_contract_info(self, contract_id: str) -> Optional[dict[str, Any]]:
+        response = self._make_get_request(
+            endpoint=GET_CONTRACT_INFO_PATH.format(contract_id=contract_id),
+            headers=self.api_key,
+            timeout=2
+        )
+
+        if str(response.status_code).startswith(('4', '5')):
+            return None
+
+        return response.json()
 
     def get_blocks(self, blocks_numbers: list[int]):
         """Get all blocks by the numbers"""
@@ -87,15 +117,6 @@ class StackApi():
                     transactions.append(self.transaction_mapper.json_dict_to_transaction(transaction) if transaction is not None else transaction)
 
         return transactions
-
-    def get_contract_info(self, contract_id: str) -> Optional[dict[str, Any]]:
-        url = self.api_url + GET_CONTRACT_INFO_PATH.format(contract_id=contract_id)
-        response = requests.get(url, timeout=1)
-
-        if str(response.status_code).startswith(('4', '5')):
-            return None
-
-        return response.json()
 
     def get_contracts_infos(self, contracts_ids: list[str]):
         contracts: list[StackContract] = []
