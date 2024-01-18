@@ -15,6 +15,7 @@ logging_basic_config()
 @click.option('-b', '--batch-size', default=1, type=int, help='The number of blocks to export at a time.')
 @click.option('-a', '--api-uri', default='https://api.testnet.hiro.so/', type=str,
               help='The URI of the remote Stack api')
+@click.option('--api-key', default=None, type=str, help='The api key')
 @click.option('-w', '--max-workers', default=5, type=int, help='The maximum number of workers.')
 @click.option('--blocks-output', default=None, type=str,
               help='The output file for blocks. '
@@ -22,7 +23,7 @@ logging_basic_config()
 @click.option('--transactions-output', default=None, type=str,
               help='The output file for transactions. '
                    'If not provided transactions will not be exported. Use "-" for stdout')
-def export_blocks_and_transactions(start_block, end_block, batch_size, api_uri,
+def export_blocks_and_transactions(start_block, end_block, batch_size, api_uri, api_key,
                                    max_workers, blocks_output, transactions_output):
     """Export blocks and transactions."""
     if blocks_output is None and transactions_output is None:
@@ -32,7 +33,7 @@ def export_blocks_and_transactions(start_block, end_block, batch_size, api_uri,
         start_block=start_block,
         end_block=end_block,
         batch_size=batch_size,
-        stack_api=ThreadLocalProxy(lambda: StackApi(api_uri)),
+        stack_api=StackApi(api_uri, api_key),
         max_workers=max_workers,
         item_exporter=blocks_and_transactions_item_exporter(blocks_output, transactions_output),
         export_blocks=blocks_output is not None,

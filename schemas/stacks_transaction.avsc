@@ -313,7 +313,7 @@
             },
             {
               "name": "alt_recipient",
-              "type": "string"
+              "type": ["null", "string"]
             }
           ]
         }

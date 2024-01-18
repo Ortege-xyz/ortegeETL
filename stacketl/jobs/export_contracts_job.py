@@ -45,7 +45,7 @@ class ExportContractsJob(BaseJob):
         transactions = self.stack_api.get_blocks_transactions(block_number_batch)
 
         def filter_contracts(transaction: StackTransaction) -> bool:
-            return transaction.tx_type == "smart_contract"
+            return transaction.tx_type == "smart_contract" and transaction.tx_status == "success"
 
         txs_contract: list[StackTransaction] = list(filter(filter_contracts, transactions))
 
@@ -60,6 +60,8 @@ class ExportContractsJob(BaseJob):
             self.item_exporter.export_item(self.contract_mapper.contract_to_dict(contract))
 
     def _get_contract(self, contract: StackContract):
+        if contract is None or contract.abi is None:
+            print(f"{contract.contract_id}")
         abi = json.loads(contract.abi)
 
         def extract_function_name(item) -> str:
