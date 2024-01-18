@@ -3,7 +3,7 @@
     "name": "Contract",
     "fields": [
         {
-            "name": "tx_id",
+            "name": "tx_hash",
             "type": "string"
         },
         {
@@ -11,11 +11,11 @@
             "type": "boolean"
         },
         {
-            "name": "contract_id",
+            "name": "address",
             "type": "string"
         },
         {
-            "name": "block_height",
+            "name": "block_number",
             "type": "long"
         },
         {
