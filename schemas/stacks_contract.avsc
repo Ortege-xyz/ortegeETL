@@ -40,6 +40,6 @@
         {
             "name": "is_nft",
             "type": "boolean"
-        },
+        }
     ]
 }
