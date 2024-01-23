@@ -56,12 +56,11 @@ class ExportContractsJob(BaseJob):
         contracts_results = self.stack_api.get_contracts_infos(contracts_ids)
 
         for contract_result in contracts_results:
-            contract = self._get_contract(contract_result)
-            self.item_exporter.export_item(self.contract_mapper.contract_to_dict(contract))
+            if contract_result is not None: # TODO: it's a failsafe because the contract for somer reason is NOne, need to check
+                contract = self._get_contract(contract_result)
+                self.item_exporter.export_item(self.contract_mapper.contract_to_dict(contract))
 
     def _get_contract(self, contract: StackContract):
-        if contract is None or contract.abi is None:
-            print(f"{contract.contract_id}")
         abi = json.loads(contract.abi)
 
         def extract_function_name(item) -> str:
