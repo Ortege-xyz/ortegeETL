@@ -1,4 +1,4 @@
-import requests
+import logging
 from typing import Any, Optional
 
 from stacketl.mappers.block_mapper import StackBlockMapper
@@ -20,9 +20,9 @@ GET_TRANSACTION_PATH = 'extended/v1/tx/{hash}'
 class StackApi(ApiRequester):
     def __init__(self, api_url: str, api_key: Optional[str]):
         if api_key:
-            rate_limit = 500/60 # 500 request per minutes, the value should be requests per seconds
+            rate_limit = 490/60 # 500 request per minutes, the value should be requests per seconds
         else:
-            rate_limit = 50/60 # 50 request per minutes
+            rate_limit = 45/60 # 50 request per minutes
 
         super().__init__(api_url, api_key, rate_limit)
 
@@ -41,9 +41,13 @@ class StackApi(ApiRequester):
         """Get the last block"""
         response = self._make_get_request(GET_LAST_BLOCK_PATH, headers=self.headers, timeout=2)
 
-        data = response.json()
-
-        return self.block_mapper.json_dict_to_block(data["results"][0])
+        try:
+            data = response.json()
+            block = self.block_mapper.json_dict_to_block(data["results"][0])
+        except Exception as e:
+            logging.warn(f"Error in get last block, status {response.status_code} \n {response.text}")
+            raise e
+        return block
 
     def get_block(self, block_number: int) -> Optional[dict[str, Any]]:
         """Get the block by the number"""
@@ -90,7 +94,7 @@ class StackApi(ApiRequester):
     def get_contract_info(self, contract_id: str) -> Optional[dict[str, Any]]:
         response = self._make_get_request(
             endpoint=GET_CONTRACT_INFO_PATH.format(contract_id=contract_id),
-            headers=self.api_key,
+            headers=self.headers,
             timeout=2
         )
 
