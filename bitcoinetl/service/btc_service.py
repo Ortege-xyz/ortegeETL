@@ -24,13 +24,13 @@ from bitcoinetl.domain.transaction_input import BtcTransactionInput
 from bitcoinetl.domain.transaction_output import BtcTransactionOutput
 from bitcoinetl.enumeration.chain import Chain
 from bitcoinetl.json_rpc_requests import generate_get_block_hash_by_number_json_rpc, \
-    generate_get_block_by_hash_json_rpc, generate_get_transaction_by_id_json_rpc
+    generate_get_block_by_hash_json_rpc, generate_get_transaction_by_id_json_rpc, \
+    generate_get_block_state_by_hash_json_rpc
 from bitcoinetl.mappers.block_mapper import BtcBlockMapper
 from bitcoinetl.mappers.transaction_mapper import BtcTransactionMapper
 from bitcoinetl.service.btc_script_service import script_hex_to_non_standard_address
 from bitcoinetl.service.genesis_transactions import GENESIS_TRANSACTIONS
 from blockchainetl.utils import rpc_response_batch_to_results, dynamic_batch_iterator
-
 
 class BtcService(object):
     def __init__(self, bitcoin_rpc, chain=Chain.BITCOIN):
@@ -68,7 +68,8 @@ class BtcService(object):
         block_detail_results = list(rpc_response_batch_to_results(block_detail_response))
 
         blocks = [self.block_mapper.json_dict_to_block(block_detail_result)
-                  for block_detail_result in block_detail_results]
+                  for block_detail_result in block_detail_results]  
+        self.get_block_states(block_hash_batch, blocks)
 
         if self.chain in Chain.HAVE_OLD_API and with_transactions:
             self._fetch_transactions(blocks)
@@ -82,6 +83,49 @@ class BtcService(object):
                         self._add_shielded_inputs_and_outputs(transaction)
 
         return blocks
+    
+    def get_block_states(self, block_hash_batch, blocks):
+        
+        print(blocks)
+        
+        if not block_hash_batch:
+            return []
+        # TODO
+        # block_detail_rpc = list(generate_get_block_state_by_hash_json_rpc(block_hash_batch))
+        # block_detail_response = self.bitcoin_rpc.batch(block_detail_rpc)
+        # block_detail_results = list(rpc_response_batch_to_results(block_detail_response))
+        
+        # print("==============")
+        # print(block_detail_results)
+        
+        
+        # Assuming you have a list of blocks
+        # blocks = [
+        #     {'hash': '0000000000000c3ca4f00264b3a2633acab6be2a1274a6e3852c1f2a83021511', 'other_field': 'value1'},
+        #     {'hash': '00000000000003533b2bf4f040bbc5e84a518e0bb54e57aa468b213d2d9069ab', 'other_field': 'value2'},
+        #     # Add more blocks as needed
+        # ]
+
+        # Assuming you have a list of BtcBlock objects for states
+        states = [
+            {'blockhash': '0000000000000c3ca4f00264b3a2633acab6be2a1274a6e3852c1f2a83021511', 'totalfee': 650000},
+            {'blockhash': '00000000000003533b2bf4f040bbc5e84a518e0bb54e57aa468b213d2d9069ab', 'totalfee': 3256691},
+            # Add more states as needed
+        ]
+
+        # Create a dictionary for faster lookup based on block hash
+        states_dict = {state['blockhash']: state for state in states}
+
+        # Iterate through BtcBlock objects and update the 'total_fees' attribute
+        for block in blocks:
+            block_hash = block.hash
+            state = states_dict.get(block_hash, {})  # Get the corresponding state or an empty dictionary if not found
+            total_fees = state.get('totalfee', 0)  # Get the 'totalfee' field or default to 0 if not found
+            setattr(block, 'total_fees', total_fees)
+
+        # Print the modified BtcBlock objects
+        for block in blocks:
+            print(vars(block))
 
     def get_block_hashes(self, block_number_batch):
         block_hash_rpc = list(generate_get_block_hash_by_number_json_rpc(block_number_batch))

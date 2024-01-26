@@ -34,6 +34,10 @@ BLOCK_FIELDS_TO_EXPORT = [
     'timestamp',
     'nonce',
     'bits',
+    'chainwork',
+    'difficulty',
+    'total_fees',
+    'previous_block_hash',
     'coinbase_param',
     'transaction_count'
 ]
