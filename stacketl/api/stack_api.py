@@ -20,9 +20,9 @@ GET_TRANSACTION_PATH = 'extended/v1/tx/{hash}'
 class StackApi(ApiRequester):
     def __init__(self, api_url: str, api_key: Optional[str]):
         if api_key:
-            rate_limit = 490/60 # 500 request per minutes, the value should be requests per seconds
+            rate_limit = 490/60 # 490 request per minutes, the value should be requests per seconds
         else:
-            rate_limit = 45/60 # 50 request per minutes
+            rate_limit = 45/60 # 45 request per minutes
 
         super().__init__(api_url, api_key, rate_limit)
 
