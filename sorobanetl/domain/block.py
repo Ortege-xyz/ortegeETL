@@ -1,4 +1,5 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
+from datetime import datetime
 from typing import Any, List
 
 @dataclass
@@ -21,3 +22,12 @@ class SorobanBlock:
     failed_transaction_count: int
     operation_count: int
     tx_set_operation_count: int
+
+    @staticmethod
+    def json_dict_to_block(json_dict: dict):
+        timestamp_obj = datetime.fromisoformat(json_dict["closed_at"].rstrip("Z"))
+        json_dict["timestamp"] = int(timestamp_obj.timestamp())
+        return SorobanBlock(**json_dict)
+    
+    def block_to_dict(self):
+        return asdict(self)
