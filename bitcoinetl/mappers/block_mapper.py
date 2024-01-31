@@ -49,6 +49,8 @@ class BtcBlockMapper(object):
         block.difficulty = json_dict.get('difficulty')
         block.previous_block_hash=json_dict.get('previousblockhash')
         block.total_fees= json_dict.get('total_fees')
+        block.mint_reward= json_dict.get('mint_reward')
+        block.total_reward= json_dict.get('total_reward')
 
         raw_transactions = json_dict.get('tx')
         if raw_transactions is not None and len(raw_transactions) > 0:
@@ -79,6 +81,8 @@ class BtcBlockMapper(object):
             'bits': block.bits,
             'coinbase_param': block.coinbase_param,
             'total_fees': block.total_fees,
+            'mint_reward': block.mint_reward,
+            'total_reward': block.total_reward,
             'chainwork': block.chainwork,
             'difficulty': block.difficulty,
             'previous_block_hash': block.previous_block_hash,
