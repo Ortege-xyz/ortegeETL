@@ -4,7 +4,6 @@ from stacketl.jobs.export_contracts_job import ExportContractsJob
 from stacketl.jobs.exporters.contracts_item_exporter import contracts_item_exporter
 from stacketl.api.stack_api import StackApi
 from blockchainetl.logging_utils import logging_basic_config
-from blockchainetl.thread_local_proxy import ThreadLocalProxy
 
 logging_basic_config()
 

@@ -331,7 +331,7 @@
               "name": "clarity_version",
               "type": [
                 "null",
-                "string"
+                "long"
               ]
             },
             {

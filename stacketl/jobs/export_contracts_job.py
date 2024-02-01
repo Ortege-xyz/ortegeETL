@@ -1,4 +1,5 @@
 import json
+import logging
 
 from blockchainetl.executors.batch_work_executor import BatchWorkExecutor
 from blockchainetl.jobs.base_job import BaseJob
@@ -6,6 +7,7 @@ from blockchainetl.utils import validate_range
 from stacketl.domain.contract import StackContract
 from stacketl.domain.transaction import StackTransaction
 from stacketl.mappers.contract_mapper import StackContractMapper
+from stacketl.mappers.transaction_mapper import StackTransactionMapper
 from stacketl.api.stack_api import StackApi
 from stacketl.service.stack_contract_service import StackContractService
 
@@ -56,12 +58,13 @@ class ExportContractsJob(BaseJob):
         contracts_results = self.stack_api.get_contracts_infos(contracts_ids)
 
         for contract_result in contracts_results:
+            if contract_result is None or contract_result.abi is None: # https://github.com/hirosystems/stacks-blockchain-api/issues/1848
+                logging.warning(f"Error: The abi of the contract {contract_result.address} is null, skipping this contract.")
+                continue
             contract = self._get_contract(contract_result)
             self.item_exporter.export_item(self.contract_mapper.contract_to_dict(contract))
 
     def _get_contract(self, contract: StackContract):
-        if contract is None or contract.abi is None:
-            print(f"{contract.contract_id}")
         abi = json.loads(contract.abi)
 
         def extract_function_name(item) -> str:

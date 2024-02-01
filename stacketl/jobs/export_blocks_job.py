@@ -15,7 +15,7 @@ class ExportBlocksJob(BaseJob):
             end_block: int,
             batch_size: int,
             stack_api: StackApi,
-            max_workers: str,
+            max_workers: int,
             item_exporter: BaseItemExporter,
             export_blocks=True,
             export_transactions=True):
