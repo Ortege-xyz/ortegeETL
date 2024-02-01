@@ -41,7 +41,7 @@ class BtcService(object):
 
     def get_block(self, block_number, with_transactions=False):
         block_hashes = self.get_block_hashes([block_number])
-        blocks = self.get_blocks_by_hashes(block_hashes, block_number,  with_transactions)
+        blocks = self.get_blocks_by_hashes(block_hashes, [block_number],  with_transactions)
         return blocks[0] if len(blocks) > 0 else None
 
     def get_genesis_block(self, with_transactions=False):
