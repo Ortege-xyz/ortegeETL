@@ -1,0 +1,69 @@
+{
+    "type": "record",
+    "name": "TransactionRecords",
+    "fields": [
+        {
+            "name": "hash",
+            "type": "string"
+        },
+        {
+            "name": "nonce",
+            "type": "long"
+        },
+        {
+            "name": "block_hash",
+            "type": "string"
+        },
+        {
+            "name": "block_number",
+            "type": "long"
+        },
+        {
+            "name": "transaction_index",
+            "type": "long"
+        },
+        {
+            "name": "from_address",
+            "type": "string"
+        },
+        {
+            "name": "to_address",
+            "type": ["null", "string"],
+            "default": null
+        },
+        {
+            "name": "value",
+            "type": "double"
+        },
+        {
+            "name": "gas",
+            "type": "long"
+        },
+        {
+            "name": "gas_price",
+            "type": "long"
+        },
+        {
+            "name": "input",
+            "type": "string"
+        },
+        {
+            "name": "block_timestamp",
+            "type": "long"
+        },
+        {
+            "name": "max_fee_per_gas",
+            "type": ["null", "long"],
+            "default": null
+        },
+        {
+            "name": "max_priority_fee_per_gas",
+            "type": ["null", "long"],
+            "default": null
+        },
+        {
+            "name": "transaction_type",
+            "type": "long"
+        }
+    ]
+}

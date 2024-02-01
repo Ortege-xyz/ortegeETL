@@ -23,6 +23,7 @@ from bitcoinetl.enumeration.chain import Chain
 
 
 def generate_get_block_by_hash_json_rpc(block_hashes, include_transactions, chain=Chain.BITCOIN):
+
     for _, block_hash in enumerate(block_hashes):
         if not include_transactions:
             yield ["getblock", block_hash]
@@ -42,3 +43,8 @@ def generate_get_block_hash_by_number_json_rpc(block_numbers):
 def generate_get_transaction_by_id_json_rpc(hashes):
     for hash in hashes:
         yield ["getrawtransaction", hash, 1]
+        
+def generate_get_block_stat_by_hash_json_rpc(block_hashes):
+   
+    for _, block_hash2 in enumerate(block_hashes):
+        yield ["getblockstats", block_hash2] 

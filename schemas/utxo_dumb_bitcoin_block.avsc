@@ -1,0 +1,54 @@
+{
+    "type": "record",
+    "name": "BlockRecord",
+    "fields": [
+        {
+            "name": "hash",
+            "type": "string"
+        },
+        {
+            "name": "size",
+            "type": "long"
+        },
+        {
+            "name": "stripped_size",
+            "type": "long"
+        },
+        {
+            "name": "weight",
+            "type": "long"
+        },
+        {
+            "name": "number",
+            "type": "long"
+        },
+        {
+            "name": "version",
+            "type": "long"
+        },
+        {
+            "name": "merkle_root",
+            "type": "string"
+        },
+        {
+            "name": "timestamp",
+            "type": "long"
+        },
+        {
+            "name": "nonce",
+            "type": "string"
+        },
+        {
+            "name": "bits",
+            "type": "string"
+        },
+        {
+            "name": "coinbase_param",
+            "type": "string"
+        },
+        {
+            "name": "transaction_count",
+            "type": "long"
+        }
+    ]
+}

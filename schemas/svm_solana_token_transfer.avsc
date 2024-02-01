@@ -1,0 +1,42 @@
+{
+    "type": "record",
+    "name": "TokenTransferRecord",
+    "fields": [
+        {
+            "name": "source",
+            "type": "string"
+        },
+        {
+            "name": "destination",
+            "type": "string"
+        },
+        {
+            "name": "authority",
+            "type": "string"
+        },
+        {
+            "name": "value",
+            "type": "long"
+        },
+        {
+            "name": "decimals",
+            "type": "long"
+        },
+        {
+            "name": "mint",
+            "type": "string"
+        },
+        {
+            "name": "mint_authority",
+            "type": "string"
+        },
+        {
+            "name": "transfer_type",
+            "type": "string"
+        },
+        {
+            "name": "tx_signature",
+            "type": "string"
+        }
+    ]
+}

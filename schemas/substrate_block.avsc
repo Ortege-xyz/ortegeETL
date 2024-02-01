@@ -1,0 +1,62 @@
+{
+    "type": "record",
+    "name": "BlockInfoRecord",
+    "fields": [
+        {
+            "name": "hash",
+            "type": "string"
+        },
+        {
+            "name": "parent_hash",
+            "type": "string"
+        },
+        {
+            "name": "number",
+            "type": "long"
+        },
+        {
+            "name": "state_root",
+            "type": "string"
+        },
+        {
+            "name": "extrinsics_root",
+            "type": "string"
+        },
+        {
+            "name": "block_time",
+            "type": "long"
+        },
+        {
+            "name": "author_ss58",
+            "type": "string"
+        },
+        {
+            "name": "author_pub_key",
+            "type": "string"
+        },
+        {
+            "name": "spec_version",
+            "type": "long"
+        },
+        {
+            "name": "relay_block_number",
+            "type": "long"
+        },
+        {
+            "name": "relay_state_root",
+            "type": "string"
+        },
+        {
+            "name": "extrinsic_count",
+            "type": "long"
+        },
+        {
+            "name": "event_count",
+            "type": "long"
+        },
+        {
+            "name": "transfer_count",
+            "type": "long"
+        }
+    ]
+}

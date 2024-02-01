@@ -1,0 +1,26 @@
+{
+  "type": "record",
+  "name": "getLatestLedgerResult",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "doc": "Hash identifier of the latest ledger (as a hex-encoded string).",
+      "constraints": {
+        "minLength": 64,
+        "maxLength": 64,
+        "pattern": "^[a-f\\d]{64}$"
+      }
+    },
+    {
+      "name": "protocolVersion",
+      "type": "int",
+      "doc": "Stellar Core protocol version associated with the latest ledger."
+    },
+    {
+      "name": "sequence",
+      "type": "int",
+      "doc": "The sequence number of the latest ledger known to Soroban RPC at the time it handled the request."
+    }
+  ]
+}

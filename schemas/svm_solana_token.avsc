@@ -1,0 +1,50 @@
+{
+    "type": "record",
+    "name": "TokenRecord",
+    "fields": [
+        {
+            "name": "tx_signature",
+            "type": "string"
+        },
+        {
+            "name": "token_type",
+            "type": "string"
+        },
+        {
+            "name": "mint",
+            "type": "string"
+        },
+        {
+            "name": "update_authority",
+            "type": "string"
+        },
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "symbol",
+            "type": "string"
+        },
+        {
+            "name": "uri",
+            "type": "string"
+        },
+        {
+            "name": "seller_fee_basis_points",
+            "type": "long"
+        },
+        {
+            "name": "creators",
+            "type": "string"
+        },
+        {
+            "name": "primary_sale_happened",
+            "type": "boolean"
+        },
+        {
+            "name": "is_mutable",
+            "type": "boolean"
+        }
+    ]
+}

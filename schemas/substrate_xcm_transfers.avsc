@@ -1,0 +1,175 @@
+{
+    "type": "record",
+    "name": "xcmTransfersRecord",
+    "fields": [
+        {
+            "name": "symbol",
+            "type": "string"
+        },
+        {
+            "name": "price_usd",
+            "type": "double"
+        },
+        {
+            "name": "origination_ts",
+            "type": "long"
+        },
+        {
+            "name": "origination_chain_name",
+            "type": "string"
+        },
+        {
+            "name": "origination_id",
+            "type": "string"
+        },
+        {
+            "name": "origination_extrinsic_hash",
+            "type": "string"
+        },
+        {
+            "name": "origination_extrinsic_id",
+            "type": "string"
+        },
+        {
+            "name": "origination_transfer_index",
+            "type": "long"
+        },
+        {
+            "name": "origination_xcm_index",
+            "type": "long"
+        },
+        {
+            "name": "origination_transaction_hash",
+            "type": "string"
+        },
+        {
+            "name": "origination_msg_hash",
+            "type": "string"
+        },
+        {
+            "name": "origination_is_msg_sent",
+            "type": "boolean"
+        },
+        {
+            "name": "origination_block_number",
+            "type": "long"
+        },
+        {
+            "name": "origination_section",
+            "type": "string"
+        },
+        {
+            "name": "origination_method",
+            "type": "string"
+        },
+        {
+            "name": "origination_para_id",
+            "type": "long"
+        },
+        {
+            "name": "origination_sender_ss58",
+            "type": "string"
+        },
+        {
+            "name": "origination_sender_pub_key",
+            "type": "string"
+        },
+        {
+            "name": "destination_para_id",
+            "type": "long"
+        },
+        {
+            "name": "origination_amount_sent",
+            "type": "double"
+        },
+        {
+            "name": "origination_amount_sent_usd",
+            "type": "double"
+        },
+        {
+            "name": "origination_tx_fee",
+            "type": "double"
+        },
+        {
+            "name": "origination_tx_fee_usd",
+            "type": "double"
+        },
+        {
+            "name": "origination_tx_fee_symbol",
+            "type": "string"
+        },
+        {
+            "name": "origination_is_fee_item",
+            "type": "boolean"
+        },
+        {
+            "name": "origination_sent_at",
+            "type": "long"
+        },
+        {
+            "name": "destination_execution_status",
+            "type": "string"
+        },
+        {
+            "name": "destination_chain_name",
+            "type": "string"
+        },
+        {
+            "name": "destination_para_id",
+            "type": "long"
+        },
+        {
+            "name": "destination_beneficiary_ss58",
+            "type": "string"
+        },
+        {
+            "name": "destination_beneficiary_pub_key",
+            "type": "string"
+        },
+        {
+            "name": "destination_extrinsic_id",
+            "type": "string"
+        },
+        {
+            "name": "destination_event_id",
+            "type": "string"
+        },
+        {
+            "name": "destination_block_number",
+            "type": "long"
+        },
+        {
+            "name": "destination_ts",
+            "type": "long"
+        },
+        {
+            "name": "destination_amount_received",
+            "type": "double"
+        },
+        {
+            "name": "destination_amount_received_usd",
+            "type": "double"
+        },
+        {
+            "name": "destination_teleport_fee",
+            "type": "double"
+        },
+        {
+            "name": "destination_teleport_fee_usd",
+            "type": "double"
+        },
+        {
+            "name": "destination_teleport_fee_symbol",
+            "type": "string"
+        },
+        {
+            "name": "xcm_info",
+            "type": "record",
+            "fields": []
+        },
+        {
+            "name": "xcm_info_last_update_time",
+            "type": "long"
+        }
+    ]
+}

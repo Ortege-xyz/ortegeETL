@@ -1,0 +1,437 @@
+{
+    "name": "Transaction",
+    "type": [
+        {
+            "type": "record",
+            "name": "Transaction_PendingTransaction",
+            "fields": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "doc": "Type of the pending transaction.",
+                    "required": true
+                },
+                {
+                    "name": "hash",
+                    "type": "string",
+                    "doc": "Hash of the pending transaction.",
+                    "required": true
+                },
+                {
+                    "name": "sender",
+                    "type": "string",
+                    "doc": "A hex encoded 32 byte Aptos account address.",
+                    "required": true
+                },
+                {
+                    "name": "sequence_number",
+                    "type": "string",
+                    "doc": "A string containing a 64-bit unsigned integer.",
+                    "required": true
+                },
+                {
+                    "name": "max_gas_amount",
+                    "type": "string",
+                    "doc": "A string containing a 64-bit unsigned integer.",
+                    "required": true
+                },
+                {
+                    "name": "gas_unit_price",
+                    "type": "string",
+                    "doc": "A string containing a 64-bit unsigned integer.",
+                    "required": true
+                },
+                {
+                    "name": "expiration_timestamp_secs",
+                    "type": "string",
+                    "doc": "A string containing a 64-bit unsigned integer.",
+                    "required": true
+                },
+                {
+                    "name": "payload",
+                    "type": "string",
+                    "doc": "JSON string representing the payload",
+                    "required": true
+                },
+                {
+                    "name": "signature",
+                    "type": "string",
+                    "doc": "JSON string representing the signature",
+                    "required": true
+                }
+            ]
+        },
+        {
+            "type": "record",
+            "name": "Transaction_UserTransaction",
+            "fields": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "doc": "Type of the user transaction.",
+                    "required": true
+                },
+                {
+                    "name": "version",
+                    "type": "string",
+                    "doc": "A string containing a 64-bit unsigned integer.",
+                    "required": true
+                },
+                {
+                    "name": "hash",
+                    "type": "string",
+                    "doc": "State change hash",
+                    "required": true
+                },
+                {
+                    "name": "state_change_hash",
+                    "type": "string",
+                    "doc": "State change hash",
+                    "required": true
+                },
+                {
+                    "name": "event_root_hash",
+                    "type": "string",
+                    "doc": "Event root hash",
+                    "required": true
+                },
+                {
+                    "name": "state_checkpoint_hash",
+                    "type": "string",
+                    "doc": "State checkpoint hash",
+                    "required": true
+                },
+                {
+                    "name": "gas_used",
+                    "type": "string",
+                    "doc": "A string containing a 64-bit unsigned integer.",
+                    "required": true
+                },
+                {
+                    "name": "success",
+                    "type": "boolean",
+                    "doc": "Whether the transaction was successful",
+                    "required": true
+                },
+                {
+                    "name": "vm_status",
+                    "type": "string",
+                    "doc": "The VM status of the transaction, can tell useful information in a failure",
+                    "required": true
+                },
+                {
+                    "name": "accumulator_root_hash",
+                    "type": "string",
+                    "doc": "Accumulator root hash",
+                    "required": true
+                },
+                {
+                    "name": "changes",
+                    "type": "string",
+                    "doc": "JSON string representing the signature",
+                    "required": true
+                },
+                {
+                    "name": "payload",
+                    "type": "string",
+                    "doc": "JSON string representing the signature",
+                    "required": true
+                },
+                {
+                    "name": "signature",
+                    "type": "string",
+                    "doc": "JSON string representing the signature",
+                    "required": true
+                },
+                {
+                    "name": "events",
+                    "type": "string",
+                    "doc": "JSON string representing the signature",
+                    "required": true
+                },
+                {
+                    "name": "timestamp",
+                    "type": "string",
+                    "doc": "A string containing a 64-bit unsigned integer.",
+                    "required": true
+                }
+            ]
+        },
+        {
+            "type": "record",
+            "name": "Transaction_GenesisTransaction",
+            "fields": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "doc": "Type of the genesis transaction.",
+                    "required": true
+                },
+                {
+                    "name": "version",
+                    "type": "string",
+                    "doc": "A string containing a 64-bit unsigned integer.",
+                    "required": true
+                },
+                {
+                    "name": "hash",
+                    "type": "string",
+                    "doc": "State change hash",
+                    "required": true
+                },
+                {
+                    "name": "state_change_hash",
+                    "type": "string",
+                    "doc": "State change hash",
+                    "required": true
+                },
+                {
+                    "name": "event_root_hash",
+                    "type": "string",
+                    "doc": "Event root hash",
+                    "required": true
+                },
+                {
+                    "name": "state_checkpoint_hash",
+                    "type": "string",
+                    "doc": "State checkpoint hash",
+                    "required": true
+                },
+                {
+                    "name": "gas_used",
+                    "type": "string",
+                    "doc": "A string containing a 64-bit unsigned integer.",
+                    "required": true
+                },
+                {
+                    "name": "success",
+                    "type": "boolean",
+                    "doc": "Whether the transaction was successful",
+                    "required": true
+                },
+                {
+                    "name": "vm_status",
+                    "type": "string",
+                    "doc": "The VM status of the transaction, can tell useful information in a failure",
+                    "required": true
+                },
+                {
+                    "name": "accumulator_root_hash",
+                    "type": "string",
+                    "doc": "Accumulator root hash",
+                    "required": true
+                },
+                {
+                    "name": "changes",
+                    "type": "string",
+                    "doc": "JSON string representing the signature",
+                    "required": true
+                },
+                {
+                    "name": "payload",
+                    "type": "string",
+                    "doc": "JSON string representing the signature",
+                    "required": true
+                },
+                {
+                    "name": "events",
+                    "type": "string",
+                    "doc": "JSON string representing the signature",
+                    "required": true
+                }
+            ]
+        },
+        {
+            "type": "record",
+            "name": "Transaction_BlockMetadataTransaction",
+            "fields": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "doc": "Type of the block metadata transaction.",
+                    "required": true
+                },
+                {
+                    "name": "version",
+                    "type": "string",
+                    "doc": "A string containing a 64-bit unsigned integer.",
+                    "required": true
+                },
+                {
+                    "name": "hash",
+                    "type": "string",
+                    "doc": "State change hash",
+                    "required": true
+                },
+                {
+                    "name": "state_change_hash",
+                    "type": "string",
+                    "doc": "State change hash",
+                    "required": true
+                },
+                {
+                    "name": "event_root_hash",
+                    "type": "string",
+                    "doc": "Event root hash",
+                    "required": true
+                },
+                {
+                    "name": "state_checkpoint_hash",
+                    "type": "string",
+                    "doc": "State checkpoint hash",
+                    "required": true
+                },
+                {
+                    "name": "gas_used",
+                    "type": "string",
+                    "doc": "A string containing a 64-bit unsigned integer.",
+                    "required": true
+                },
+                {
+                    "name": "success",
+                    "type": "boolean",
+                    "doc": "Whether the transaction was successful",
+                    "required": true
+                },
+                {
+                    "name": "vm_status",
+                    "type": "string",
+                    "doc": "The VM status of the transaction, can tell useful information in a failure",
+                    "required": true
+                },
+                {
+                    "name": "accumulator_root_hash",
+                    "type": "string",
+                    "doc": "Accumulator root hash",
+                    "required": true
+                },
+                {
+                    "name": "changes",
+                    "type": "string",
+                    "doc": "JSON string representing the signature",
+                    "required": true
+                },
+                {
+                    "name": "payload",
+                    "type": "string",
+                    "doc": "JSON string representing the signature",
+                    "required": true
+                },
+                {
+                    "name": "events",
+                    "type": "string",
+                    "doc": "JSON string representing the signature",
+                    "required": true
+                },
+                {
+                    "name": "previous_block_votes_bitvec",
+                    "type": {
+                        "type": "array",
+                        "items": "int"
+                    },
+                    "doc": "Previous block votes",
+                    "required": true
+                },
+                {
+                    "name": "proposer",
+                    "type": "string",
+                    "doc": "A hex encoded 32 byte Aptos account address.",
+                    "required": true
+                },
+                {
+                    "name": "failed_proposer_indices",
+                    "type": {
+                        "type": "array",
+                        "items": "int"
+                    },
+                    "doc": "The indices of the proposers who failed to propose",
+                    "required": true
+                },
+                {
+                    "name": "timestamp",
+                    "type": "string",
+                    "doc": "A string containing a 64-bit unsigned integer.",
+                    "required": true
+                }
+            ]
+        },
+        {
+            "type": "record",
+            "name": "Transaction_StateCheckpointTransaction",
+            "fields": [
+                {
+                    "name": "type",
+                    "type": "string",
+                    "doc": "Type of the state checkpoint transaction.",
+                    "required": true
+                },
+                {
+                    "name": "version",
+                    "type": "string",
+                    "doc": "A string containing a 64-bit unsigned integer.",
+                    "required": true
+                },
+                {
+                    "name": "hash",
+                    "type": "string",
+                    "doc": "State change hash",
+                    "required": true
+                },
+                {
+                    "name": "state_change_hash",
+                    "type": "string",
+                    "doc": "State change hash",
+                    "required": true
+                },
+                {
+                    "name": "event_root_hash",
+                    "type": "string",
+                    "doc": "Event root hash",
+                    "required": true
+                },
+                {
+                    "name": "state_checkpoint_hash",
+                    "type": "string",
+                    "doc": "State checkpoint hash",
+                    "required": true
+                },
+                {
+                    "name": "gas_used",
+                    "type": "string",
+                    "doc": "A string containing a 64-bit unsigned integer.",
+                    "required": true
+                },
+                {
+                    "name": "success",
+                    "type": "boolean",
+                    "doc": "Whether the transaction was successful",
+                    "required": true
+                },
+                {
+                    "name": "vm_status",
+                    "type": "string",
+                    "doc": "The VM status of the transaction, can tell useful information in a failure",
+                    "required": true
+                },
+                {
+                    "name": "accumulator_root_hash",
+                    "type": "string",
+                    "doc": "Accumulator root hash",
+                    "required": true
+                },
+                {
+                    "name": "changes",
+                    "type": "string",
+                    "doc": "JSON string representing the signature",
+                    "required": true
+                },
+                {
+                    "name": "payload",
+                    "type": "string",
+                    "doc": "JSON string representing the signature",
+                    "required": true
+                }
+            ]
+        }
+    ]
+}
