@@ -34,7 +34,9 @@ class BtcTransaction(object):
         self.block_hash = None
         self.block_timestamp = None
         self.is_coinbase = False
+        self.coinbase = None
         self.index = None
+        self.hex = None
 
         self.inputs = []
         self.outputs = []

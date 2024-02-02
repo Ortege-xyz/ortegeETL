@@ -41,6 +41,7 @@ class BtcBlock(object):
         self.previous_block_hash = None
         self.total_fees = None
         self.total_reward = None
+        self.coinbase_param = None
 
         self.transactions = []
 
