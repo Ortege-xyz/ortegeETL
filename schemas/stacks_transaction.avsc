@@ -220,32 +220,72 @@
             },
             {
               "name": "asset",
-              "type": {
-                "type": "record",
-                "name": "Asset",
-                "fields": [
-                  {
-                    "name": "asset_event_type",
-                    "type": "string"
-                  },
-                  {
-                    "name": "sender",
-                    "type": "string"
-                  },
-                  {
-                    "name": "recipient",
-                    "type": "string"
-                  },
-                  {
-                    "name": "amount",
-                    "type": "string"
-                  },
-                  {
-                    "name": "memo",
-                    "type": "string"
-                  }
-                ]
-              }
+              "type": [
+                "null",
+                {
+                  "type": "record",
+                  "name": "Asset",
+                  "fields": [
+                    {
+                      "name": "asset_event_type",
+                      "type": "string"
+                    },
+                    {
+                      "name": "sender",
+                      "type": "string"
+                    },
+                    {
+                      "name": "recipient",
+                      "type": "string"
+                    },
+                    {
+                      "name": "amount",
+                      "type": "string"
+                    },
+                    {
+                      "name": "memo",
+                      "type": ["null", "string"]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "contract_log",
+              "type": [
+                "null",
+                {
+                  "type": "record",
+                  "name": "ContractLog",
+                  "fields": [
+                    {
+                      "name": "contract_id",
+                      "type": "string"
+                    },
+                    {
+                      "name": "topic",
+                      "type": "string"
+                    },
+                    {
+                      "name": "value",
+                      "type": {
+                        "type": "record",
+                        "name": "Value",
+                        "fields": [
+                          {
+                            "name": "hex",
+                            "type": "string"
+                          },
+                          {
+                            "name": "repr",
+                            "type": "string"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
