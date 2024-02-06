@@ -119,10 +119,10 @@ def delete_file(file):
         pass
 
 
-def write_last_synced_block(file, should_write_last_synced):
+def write_last_synced_block(file, last_synced_block, should_write_last_synced):
     if should_write_last_synced:
-        write_to_file(file, str(should_write_last_synced) + '\n')
-
+        write_to_file(file, str(last_synced_block) + '\n')
+        
 
 def init_last_synced_block_file(start_block, last_synced_block_file, should_write_last_synced):
     if os.path.isfile(last_synced_block_file):
