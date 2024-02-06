@@ -16,6 +16,7 @@ GET_BLOCK_TRANSACTIONS_PATH = 'extended/v2/blocks/{number}/transactions'
 GET_CONTRACT_INFO_PATH = 'extended/v1/contract/{contract_id}'
 GET_LAST_BLOCK_PATH = 'extended/v2/blocks?limit=1'
 GET_TRANSACTION_PATH = 'extended/v1/tx/{hash}'
+GET_LIST_OF_TRANSACTIONS_PATH = 'extended/v1/tx/multiple?{transactions}'
 
 class StackApi(ApiRequester):
     def __init__(self, api_url: str, api_key: Optional[str]):
@@ -62,7 +63,6 @@ class StackApi(ApiRequester):
         
         return response.json()
     
-    # TODO: update to new endpoint https://docs.hiro.so/api/get-transactions-by-block
     def get_block_transactions(self, block_number: int) -> list[dict[str, Any]]:
         """Get all block transactions by the number"""
         params = {
@@ -91,6 +91,27 @@ class StackApi(ApiRequester):
 
         return transactions
 
+    def get_details_transactions(self, transactions: list[str]) -> dict[str, dict[str, Any]]:
+        """Get the details of a list of transactions"""
+        transactions = list(map(lambda tx: "tx_id="+tx, transactions))
+
+        transaction_mapping = {}
+
+        # split the list in 40 elements to make the requets
+        for i in range(0, len(transactions), 40):
+
+            url = GET_LIST_OF_TRANSACTIONS_PATH.format(transactions="&".join(transactions[i:i + 40]))
+            reponse = self._make_get_request(
+                endpoint=url,
+                headers=self.headers,
+                timeout=2,
+            )
+
+            data = reponse.json()
+            transaction_mapping.update(data)
+
+        return transaction_mapping
+
     def get_contract_info(self, contract_id: str) -> Optional[dict[str, Any]]:
         response = self._make_get_request(
             endpoint=GET_CONTRACT_INFO_PATH.format(contract_id=contract_id),
@@ -114,12 +135,17 @@ class StackApi(ApiRequester):
 
     def get_blocks_transactions(self, blocks_numbers: list[int]):
         """Get all block transactions by numbers"""
-        transactions: list[Optional[StackTransaction]] = []
+        _transactions: list[dict[str, Any]] = []
         for block_transactions_result in self._generate_blocks_transactions(blocks_numbers):
-            for transaction in block_transactions_result:
-                if block_transactions_result:
-                    transactions.append(self.transaction_mapper.json_dict_to_transaction(transaction) if transaction is not None else transaction)
+                _transactions.extend(block_transactions_result)
 
+        txs_hash = list(map(lambda tx: tx["tx_id"], _transactions))
+
+        transactions_mapping = self.get_details_transactions(txs_hash)
+
+        transactions: list[StackTransaction] = []
+        for transaction in list(transactions_mapping.values()):
+            transactions.append(self.transaction_mapper.json_dict_to_transaction(transaction["result"]))
         return transactions
 
     def get_contracts_infos(self, contracts_ids: list[str]):
