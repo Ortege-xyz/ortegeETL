@@ -228,19 +228,19 @@
                   "fields": [
                     {
                       "name": "asset_event_type",
-                      "type": "string"
+                      "type": ["null", "string"]
                     },
                     {
                       "name": "sender",
-                      "type": "string"
+                      "type": ["null", "string"]
                     },
                     {
                       "name": "recipient",
-                      "type": "string"
+                      "type": ["null", "string"]
                     },
                     {
                       "name": "amount",
-                      "type": "string"
+                      "type": ["null", "string"]
                     },
                     {
                       "name": "memo",
@@ -260,28 +260,31 @@
                   "fields": [
                     {
                       "name": "contract_id",
-                      "type": "string"
+                      "type": ["null", "string"]
                     },
                     {
                       "name": "topic",
-                      "type": "string"
+                      "type": ["null", "string"]
                     },
                     {
                       "name": "value",
-                      "type": {
-                        "type": "record",
-                        "name": "Value",
-                        "fields": [
-                          {
-                            "name": "hex",
-                            "type": "string"
-                          },
-                          {
-                            "name": "repr",
-                            "type": "string"
-                          }
-                        ]
-                      }
+                      "type": [
+                        "null",
+                        {
+                          "type": "record",
+                          "name": "Value",
+                          "fields": [
+                            {
+                              "name": "hex",
+                              "type": ["null", "string"]
+                            },
+                            {
+                              "name": "repr",
+                              "type": ["null", "string"]
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
                 }
