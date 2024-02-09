@@ -9,6 +9,6 @@ class Chain:
     ZCASH = 'zcash'
     MONACOIN = 'monacoin'
 
-    ALL = [BITCOIN, BITCOIN_CASH, BITCOIN_GOLD, DOGECOIN, LITECOIN, DASH, ZCASH, MONACOIN]
+    ALL = [BITCOIN, BITCOIN_TESTNET, BITCOIN_CASH, BITCOIN_GOLD, DOGECOIN, LITECOIN, DASH, ZCASH, MONACOIN]
     # Old API doesn't support verbosity for getblock which doesn't allow querying all transactions in a block in 1 go.
     HAVE_OLD_API = [BITCOIN_CASH, DOGECOIN, DASH, MONACOIN]
