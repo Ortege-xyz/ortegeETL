@@ -1,5 +1,6 @@
 class Chain:
     BITCOIN = 'bitcoin'
+    BITCOIN_TESTNET = 'bitcoin_testnet'
     BITCOIN_CASH = 'bitcoin_cash'
     BITCOIN_GOLD = 'bitcoin_gold'
     DOGECOIN = 'dogecoin'
