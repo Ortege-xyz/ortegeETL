@@ -181,6 +181,7 @@ class BtcService(object):
                     block.coinbase_param = coinbase_input.coinbase_param
                     transaction.inputs = [input for input in transaction.inputs if not input.is_coinbase()]
                     transaction.is_coinbase = True
+                    transaction.coinbase=coinbase_input.coinbase_param
 
     def _add_non_standard_addresses(self, transaction):
         for output in transaction.outputs:
