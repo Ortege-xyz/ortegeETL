@@ -29,10 +29,13 @@ class SorobanTransaction:
     preconditions: Preconditions
 
     @staticmethod
-    def json_dict_to_block(json_dict: dict):
+    def json_dict_to_transaction(json_dict: dict):
         timestamp_obj = datetime.fromisoformat(json_dict["closed_at"].rstrip("Z"))
         json_dict["timestamp"] = int(timestamp_obj.timestamp())
         return SorobanTransaction(**json_dict)
     
-    def block_to_dict(self):
-        return asdict(self)
+    def transaction_to_dict(self):
+        transaction_dict = asdict(self)
+        transaction_dict['type'] = "transaction"
+
+        return transaction_dict

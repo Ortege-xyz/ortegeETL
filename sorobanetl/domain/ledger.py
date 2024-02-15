@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Any, List
 
 @dataclass
-class SorobanBlock:
+class SorobanLedger:
     sequence: int
     hash: str
     prev_hash: str
@@ -24,10 +24,16 @@ class SorobanBlock:
     tx_set_operation_count: int
 
     @staticmethod
-    def json_dict_to_block(json_dict: dict):
+    def json_dict_to_ledger(json_dict: dict):
         timestamp_obj = datetime.fromisoformat(json_dict["closed_at"].rstrip("Z"))
         json_dict["timestamp"] = int(timestamp_obj.timestamp())
-        return SorobanBlock(**json_dict)
+        
+        return SorobanLedger(**json_dict)
     
-    def block_to_dict(self):
-        return asdict(self)
+    def ledger_to_dict(self):
+        ledger_dict = asdict(self)
+        ledger_dict['type'] = "ledger"
+        
+        del ledger_dict['transactions']
+
+        return ledger_dict

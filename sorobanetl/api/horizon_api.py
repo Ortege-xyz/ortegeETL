@@ -1,6 +1,6 @@
 from typing import Any, Optional
 
-from sorobanetl.domain.block import SorobanBlock
+from sorobanetl.domain.ledger import SorobanLedger
 from sorobanetl.domain.transaction import SorobanTransaction
 from blockchainetl.api_requester import ApiRequester
 
@@ -8,7 +8,7 @@ TRANSACTION_LIMIT = 200
 
 GET_LAST_LEDGER= 'ledger?order=desc&limit=1'
 GET_LEDGER = 'ledgers/{number}'
-GET_LEDGER_TRANSACTIONS_PATH = '/ledgers/{number}/transactions'
+GET_LEDGER_TRANSACTIONS_PATH = 'ledgers/{number}/transactions'
 GET_TRANSACTION_PATH = 'transactions/{tx_id}'
 
 
@@ -20,19 +20,19 @@ class HorizonApi(ApiRequester):
     def __init__(self, api_url: str):
         rate_limit = 1 # 1 request per second
 
-        super().__init__(api_url, rate_limit=rate_limit)
+        super().__init__(api_url, api_key=None, rate_limit=rate_limit)
 
         self.headers = {
             'Accept': 'application/json'
         }
 
-    def get_latest_ledger(self) -> SorobanBlock:
+    def get_latest_ledger(self) -> SorobanLedger:
         """Get the last ledger"""
         response = self._make_get_request(GET_LAST_LEDGER, headers=self.headers, timeout=2)
 
         data = response.json()
 
-        return self.block_mapper.json_dict_to_block(data["results"][0])
+        return SorobanLedger.json_dict_to_ledger(data["results"][0])
 
     def get_ledger(self, ledger_number: int) -> Optional[dict[str, Any]]:
         """Get the ledger by the number"""
@@ -68,22 +68,21 @@ class HorizonApi(ApiRequester):
 
         return transactions
 
-    def get_blocks(self, ledgers_numbers: list[int]):
-        """Get all blocks by the numbers"""
-        blocks: list[Optional[SorobanBlock]] = []
+    def get_ledgers(self, ledgers_numbers: list[int]):
+        """Get all ledgers by the numbers"""
+        ledgers: list[Optional[SorobanLedger]] = []
         for ledger_detail_result in self._generate_ledgers(ledgers_numbers):
             if ledger_detail_result:
-                blocks.append(SorobanBlock.json_dict_to_block(ledger_detail_result))
+                ledgers.append(SorobanLedger.json_dict_to_ledger(ledger_detail_result))
             
-        return blocks
+        return ledgers
 
     def get_ledgers_transactions(self, ledgers_numbers: list[int]):
         """Get all ledger transactions by numbers"""
         transactions: list[Optional[SorobanTransaction]] = []
         for ledger_transactions_result in self._generate_ledgers_transactions(ledgers_numbers):
             for transaction in ledger_transactions_result:
-                if transaction:
-                    transactions.append(SorobanTransaction.json_dict_to_block(transaction))
+                transactions.append(SorobanTransaction.json_dict_to_transaction(transaction))
 
         return transactions
 
