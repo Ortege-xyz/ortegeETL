@@ -28,7 +28,7 @@ class HorizonApi(ApiRequester):
 
     def get_latest_ledger(self) -> SorobanLedger:
         """Get the last ledger"""
-        response = self._make_get_request(GET_LAST_LEDGER, headers=self.headers, timeout=2)
+        response = self._make_get_request(GET_LAST_LEDGER, headers=self.headers)
 
         data = response.json()
 
@@ -39,7 +39,6 @@ class HorizonApi(ApiRequester):
         response = self._make_get_request(
             endpoint=GET_LEDGER.format(number=ledger_number),
             headers=self.headers,
-            timeout=2
         )
 
         return response.json()
@@ -53,11 +52,11 @@ class HorizonApi(ApiRequester):
             response = self._make_get_request(
                 endpoint=url,
                 headers=self.headers,
-                timeout=2,
             )
             data = response.json()
 
-            url = data['_links']['next']['href']
+            url: str = data['_links']['next']['href']
+            url = url.replace(self.api_url, '')[1:] # remove the api url from the link and the / (eg /ledgers/50385331/transactions?cursor=216403348843184128&limit=10&order=asc > ledgers/50385331/transactions?cursor=216403348843184128&limit=10&order=asc)
 
             txs = data['_embedded']['records']
 
@@ -78,10 +77,12 @@ class HorizonApi(ApiRequester):
 
     def get_ledgers_transactions(self, ledgers_numbers: list[int]):
         """Get all ledger transactions by numbers"""
-        transactions: list[SorobanTransaction] = []
-        for ledger_transactions_result in self._generate_ledgers_transactions(ledgers_numbers):
-            for transaction in ledger_transactions_result:
-                transactions.append(SorobanTransaction.json_dict_to_transaction(transaction))
+        transactions: list[list[SorobanTransaction]] = []
+        for transactions_result in self._generate_ledgers_transactions(ledgers_numbers):
+            txs = []
+            for transaction in transactions_result:
+                txs.append(SorobanTransaction.json_dict_to_transaction(transaction))
+            transactions.append(txs)
 
         return transactions
 

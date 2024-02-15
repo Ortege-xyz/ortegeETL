@@ -1,4 +1,4 @@
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, fields
 from datetime import datetime
 from typing import Dict, List, TypedDict
 
@@ -7,11 +7,12 @@ class Preconditions(TypedDict):
 
 @dataclass
 class SorobanTransaction:
+    id: str
     paging_token: str
     successful: bool
     hash: str
     ledger: int
-    datetime: int
+    timestamp: int
     created_at: str
     source_account: str
     source_account_sequence: str
@@ -24,15 +25,37 @@ class SorobanTransaction:
     result_meta_xdr: str
     fee_meta_xdr: str
     memo_type: str
+    memo: str
+    memo_bytes: str
     signatures: List[str]
     valid_after: str
+    valid_before: str
     preconditions: Preconditions
 
     @staticmethod
     def json_dict_to_transaction(json_dict: dict):
-        timestamp_obj = datetime.fromisoformat(json_dict["closed_at"].rstrip("Z"))
+        timestamp_obj = datetime.fromisoformat(json_dict["created_at"].rstrip("Z"))
         json_dict["timestamp"] = int(timestamp_obj.timestamp())
-        return SorobanTransaction(**json_dict)
+
+        valid_fields = {field.name for field in fields(SorobanTransaction)}
+        filtered_data = {key: value for key, value in json_dict.items() if key in valid_fields} # Remove the extra keys in the dict
+
+        valid_after = filtered_data.get("valid_after", "")
+        filtered_data["valid_after"] = valid_after
+
+        valid_before = filtered_data.get("valid_before", "")
+        filtered_data["valid_before"] = valid_before
+
+        memo = filtered_data.get("memo", "")
+        filtered_data["memo"] = memo
+
+        memo_bytes = filtered_data.get("memo_bytes", "")
+        filtered_data["memo_bytes"] = memo_bytes
+
+        preconditions = filtered_data.get("preconditions", {})
+        filtered_data["preconditions"] = preconditions
+
+        return SorobanTransaction(**filtered_data)
     
     def transaction_to_dict(self):
         transaction_dict = asdict(self)
