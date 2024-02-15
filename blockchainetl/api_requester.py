@@ -14,7 +14,7 @@ class ApiRequester:
     This class is designed to be thread-safe, allowing it to be used in multi-threaded applications.
     """
 
-    def __init__(self, api_url: str, api_key: str, rate_limit: float):
+    def __init__(self, api_url: str, api_key: Optional[str], rate_limit: float):
         """
         keyword arguments
         api_url (str): The base URL of the API.
@@ -41,5 +41,7 @@ class ApiRequester:
 
             # Update the last request time
             self.last_request_time = time.time()
+
+        response.raise_for_status()
 
         return response
