@@ -2,35 +2,37 @@ from blockchainetl.jobs.exporters.composite_item_exporter import CompositeItemEx
 
 LEDGER_FIELDS_TO_EXPORT = [
     'hash',
-    'number',
+    'sequence',
     'timestamp',
-    'canonical'    
-    'index_block_hash',
-    'parent_block_hash',
-    'burn_block_hash',
-    'burn_block_height',
-    'miner_txid',
-    'execution_cost_read_count',
-    'execution_cost_read_length',
-    'execution_cost_runtime',
-    'execution_cost_write_count',
-    'execution_cost_write_length',
-    'transaction_count',
+    'prev_hash'    
+    'closed_at',
+    'total_coins',
+    'fee_pool',
+    'base_fee_in_stroops',
+    'base_reserve_in_stroops',
+    'max_tx_set_size',
+    'protocol_version',
+    'header_xdr',
+    'successful_transaction_count',
+    'failed_transaction_count',
+    'operation_count',
 ]
 
 TRANSACTION_FIELDS_TO_EXPORT = [
     'hash',
-    'nonce',
-    'sender_address',
-    'tx_index',
-    'tx_result',
-    'fee_rate',
-    'block_number',
-    'block_hash',
-    'block_timestamp',
-    'event_count',
-    'events',
-    'tx_type',
+    'ledger',
+    'datetime',
+    'created_at',
+    'source_account',
+    'source_account_sequence',
+    'fee_account',
+    'fee_charged',
+    'max_fee',
+    'operation_count',
+    'envelope_xdr',
+    'result_xdr',
+    'signatures',
+    'preconditions'
 ]
 
 

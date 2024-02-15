@@ -1,5 +1,5 @@
 import click
-from sorobanetl.cli.export_blocks_and_transactions import export_ledgers_and_transactions
+from sorobanetl.cli.export_ledgers_and_transactions import export_ledgers_and_transactions
 
 
 @click.group()

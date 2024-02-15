@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 
 from sorobanetl.domain.ledger import SorobanLedger
 from sorobanetl.domain.transaction import SorobanTransaction
@@ -34,7 +34,7 @@ class HorizonApi(ApiRequester):
 
         return SorobanLedger.json_dict_to_ledger(data["results"][0])
 
-    def get_ledger(self, ledger_number: int) -> Optional[dict[str, Any]]:
+    def get_ledger(self, ledger_number: int) -> dict[str, Any]:
         """Get the ledger by the number"""
         response = self._make_get_request(
             endpoint=GET_LEDGER.format(number=ledger_number),
@@ -70,16 +70,15 @@ class HorizonApi(ApiRequester):
 
     def get_ledgers(self, ledgers_numbers: list[int]):
         """Get all ledgers by the numbers"""
-        ledgers: list[Optional[SorobanLedger]] = []
+        ledgers: list[SorobanLedger] = []
         for ledger_detail_result in self._generate_ledgers(ledgers_numbers):
-            if ledger_detail_result:
-                ledgers.append(SorobanLedger.json_dict_to_ledger(ledger_detail_result))
+            ledgers.append(SorobanLedger.json_dict_to_ledger(ledger_detail_result))
             
         return ledgers
 
     def get_ledgers_transactions(self, ledgers_numbers: list[int]):
         """Get all ledger transactions by numbers"""
-        transactions: list[Optional[SorobanTransaction]] = []
+        transactions: list[SorobanTransaction] = []
         for ledger_transactions_result in self._generate_ledgers_transactions(ledgers_numbers):
             for transaction in ledger_transactions_result:
                 transactions.append(SorobanTransaction.json_dict_to_transaction(transaction))

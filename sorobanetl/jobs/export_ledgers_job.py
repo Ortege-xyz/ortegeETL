@@ -47,16 +47,14 @@ class ExportLedgersJob(BaseJob):
 
         if self.export_transactions:
             transactions = self.horizon_api.get_ledgers_transactions(ledger_number_batch)
-            
             for ledger, transaction in zip(ledgers, transactions):
                 if ledger and transaction:
                     ledger.transactions = transactions
-                    self._export_ledger(ledgers)
+                    self._export_ledger(ledger)
             return
 
         for ledger in ledgers:
-            if ledger:
-                self._export_ledger(ledgers)
+            self._export_ledger(ledger)
 
     def _export_ledger(self, ledger: SorobanLedger):
         if self.export_ledgers:
