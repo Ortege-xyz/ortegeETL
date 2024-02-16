@@ -49,11 +49,11 @@ class HorizonApi(ApiRequester):
         params = {
             "limit": limit,
             "order": "asc",
-            "cursor": start_ledger
+            "cursor": (start_ledger-1) * 4294967296 # Need to ask to developer team of horizon api why the cursor is ledger sequence * 2^32
         }
 
         while True:
-            response = self._make_get_request(GET_LEDGERS, params=params)
+            response = self._make_get_request(GET_LEDGERS, params=params, timeout=2)
 
             data = response.json()
 
