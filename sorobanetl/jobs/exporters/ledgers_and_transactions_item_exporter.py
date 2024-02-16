@@ -21,7 +21,7 @@ LEDGER_FIELDS_TO_EXPORT = [
 TRANSACTION_FIELDS_TO_EXPORT = [
     'hash',
     'ledger',
-    'datetime',
+    'timestamp',
     'created_at',
     'source_account',
     'source_account_sequence',
