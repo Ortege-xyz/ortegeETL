@@ -21,6 +21,7 @@ class ExportLedgersJob(BaseJob):
         validate_range(start_ledger, end_ledger)
         self.start_ledger = start_ledger
         self.end_ledger = end_ledger
+        self.batch_size = batch_size
 
         self.batch_work_executor = BatchWorkExecutor(batch_size, max_workers)
         self.item_exporter = item_exporter
@@ -43,7 +44,7 @@ class ExportLedgersJob(BaseJob):
         )
 
     def _export_batch(self, ledger_number_batch: list[int]):
-        ledgers = self.horizon_api.get_ledgers(ledger_number_batch)
+        ledgers = self.horizon_api.get_ledger_in_sequence(ledger_number_batch[0], ledger_number_batch[-1], min(200, self.batch_size)) # Let's assume the ledger number is in sequence, bacause of line 40, if no need to change the method
 
         if self.export_transactions:
             transactions = self.horizon_api.get_ledgers_transactions(ledger_number_batch)

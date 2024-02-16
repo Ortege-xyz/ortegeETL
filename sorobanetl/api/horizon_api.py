@@ -6,6 +6,7 @@ from blockchainetl.api_requester import ApiRequester
 
 TRANSACTION_LIMIT = 200
 
+GET_LEDGERS = 'ledgers'
 GET_LAST_LEDGER= 'ledger?order=desc&limit=1'
 GET_LEDGER = 'ledgers/{number}'
 GET_LEDGER_TRANSACTIONS_PATH = 'ledgers/{number}/transactions'
@@ -43,20 +44,50 @@ class HorizonApi(ApiRequester):
 
         return response.json()
 
+    def get_ledger_in_sequence(self, start_ledger, end_ledger, limit=200):
+        ledgers: list[SorobanLedger] = []
+        params = {
+            "limit": limit,
+            "order": "asc",
+            "cursor": start_ledger
+        }
+
+        while True:
+            response = self._make_get_request(GET_LEDGERS, params=params)
+
+            data = response.json()
+
+            for record in data['_embedded']['records']:
+                ledger_sequence = int(record['sequence'])
+                if ledger_sequence > end_ledger:
+                    return ledgers
+                ledgers.append(SorobanLedger.json_dict_to_ledger(record))
+
+            next_link = data['_links']['next']['href']
+            cursor = next_link.split("cursor=")[1].split("&")[0]
+            params["cursor"] = cursor
+
+            # If there are no more ledgers to search or we have reached the end_ledger
+            if not data['_embedded']['records'] or ledger_sequence >= end_ledger:
+                break
+
+        return ledgers
+
+
     def get_ledger_transactions(self, ledger_number: int) -> list[dict[str, Any]]:
         """Get all ledger transactions by the number"""
         transactions = []
-        url = GET_LEDGER_TRANSACTIONS_PATH.format(number=ledger_number) + f'?limit={TRANSACTION_LIMIT}&order=asc'
+        endpoint = GET_LEDGER_TRANSACTIONS_PATH.format(number=ledger_number) + f'?limit={TRANSACTION_LIMIT}&order=asc'
 
         while True:
             response = self._make_get_request(
-                endpoint=url,
+                endpoint=endpoint,
                 headers=self.headers,
             )
             data = response.json()
 
-            url: str = data['_links']['next']['href']
-            url = url.replace(self.api_url, '')[1:] # remove the api url from the link and the / (eg /ledgers/50385331/transactions?cursor=216403348843184128&limit=10&order=asc > ledgers/50385331/transactions?cursor=216403348843184128&limit=10&order=asc)
+            endpoint: str = data['_links']['next']['href']
+            endpoint = endpoint.replace(self.api_url, '')[1:] # remove the api url from the link and the / (eg /ledgers/50385331/transactions?cursor=216403348843184128&limit=10&order=asc > ledgers/50385331/transactions?cursor=216403348843184128&limit=10&order=asc)
 
             txs = data['_embedded']['records']
 
