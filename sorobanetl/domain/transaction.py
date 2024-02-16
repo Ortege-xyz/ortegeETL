@@ -1,9 +1,23 @@
 from dataclasses import dataclass, asdict, fields
 from datetime import datetime
-from typing import Dict, List, TypedDict
+from typing import Dict, List, TypedDict, Optional
+
+class Timebounds(TypedDict):
+    min_time: Optional[str]
+    max_time: Optional[str]
+
+class Ledgerbounds(TypedDict):
+    min_ledger: Optional[int]
+    max_ledger: Optional[int]
 
 class Preconditions(TypedDict):
-    timebounds: Dict[str, str]
+    timebounds: Optional[Timebounds]
+    ledgerbounds: Optional[Ledgerbounds]
+    min_account_sequence: Optional[str]
+    min_account_sequence_age: Optional[int]
+    min_account_sequence_ledger_gap: Optional[int]
+    extra_signers: Optional[List[str]]
+
 
 @dataclass
 class SorobanTransaction:
@@ -30,7 +44,7 @@ class SorobanTransaction:
     signatures: List[str]
     valid_after: str
     valid_before: str
-    preconditions: Preconditions
+    preconditions: Optional[Preconditions]
 
     @staticmethod
     def json_dict_to_transaction(json_dict: dict):
@@ -52,7 +66,7 @@ class SorobanTransaction:
         memo_bytes = filtered_data.get("memo_bytes", "")
         filtered_data["memo_bytes"] = memo_bytes
 
-        preconditions = filtered_data.get("preconditions", {})
+        preconditions = filtered_data.get("preconditions")
         filtered_data["preconditions"] = preconditions
 
         return SorobanTransaction(**filtered_data)
