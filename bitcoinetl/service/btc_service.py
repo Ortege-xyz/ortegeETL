@@ -24,13 +24,13 @@ from bitcoinetl.domain.transaction_input import BtcTransactionInput
 from bitcoinetl.domain.transaction_output import BtcTransactionOutput
 from bitcoinetl.enumeration.chain import Chain
 from bitcoinetl.json_rpc_requests import generate_get_block_hash_by_number_json_rpc, \
-    generate_get_block_by_hash_json_rpc, generate_get_transaction_by_id_json_rpc
+    generate_get_block_by_hash_json_rpc, generate_get_transaction_by_id_json_rpc, \
+    generate_get_block_stat_by_hash_json_rpc
 from bitcoinetl.mappers.block_mapper import BtcBlockMapper
 from bitcoinetl.mappers.transaction_mapper import BtcTransactionMapper
 from bitcoinetl.service.btc_script_service import script_hex_to_non_standard_address
 from bitcoinetl.service.genesis_transactions import GENESIS_TRANSACTIONS
 from blockchainetl.utils import rpc_response_batch_to_results, dynamic_batch_iterator
-
 
 class BtcService(object):
     def __init__(self, bitcoin_rpc, chain=Chain.BITCOIN):
@@ -41,7 +41,7 @@ class BtcService(object):
 
     def get_block(self, block_number, with_transactions=False):
         block_hashes = self.get_block_hashes([block_number])
-        blocks = self.get_blocks_by_hashes(block_hashes, with_transactions)
+        blocks = self.get_blocks_by_hashes(block_hashes, [block_number],  with_transactions)
         return blocks[0] if len(blocks) > 0 else None
 
     def get_genesis_block(self, with_transactions=False):
@@ -56,19 +56,22 @@ class BtcService(object):
             return []
 
         block_hashes = self.get_block_hashes(block_number_batch)
-        return self.get_blocks_by_hashes(block_hashes, with_transactions)
+        return self.get_blocks_by_hashes(block_hashes, block_number_batch, with_transactions)
 
-    def get_blocks_by_hashes(self, block_hash_batch, with_transactions=True):
+    def get_blocks_by_hashes(self, block_hash_batch, block_number_batch, with_transactions=True):
         if not block_hash_batch:
             return []
-
+    
         # get block details by hash
         block_detail_rpc = list(generate_get_block_by_hash_json_rpc(block_hash_batch, with_transactions, self.chain))
         block_detail_response = self.bitcoin_rpc.batch(block_detail_rpc)
         block_detail_results = list(rpc_response_batch_to_results(block_detail_response))
 
         blocks = [self.block_mapper.json_dict_to_block(block_detail_result)
-                  for block_detail_result in block_detail_results]
+                  for block_detail_result in block_detail_results] 
+        
+        
+        self.get_block_stats(block_number_batch, blocks)
 
         if self.chain in Chain.HAVE_OLD_API and with_transactions:
             self._fetch_transactions(blocks)
@@ -82,6 +85,32 @@ class BtcService(object):
                         self._add_shielded_inputs_and_outputs(transaction)
 
         return blocks
+    
+    def get_block_stats(self, block_number_batch, blocks):
+      
+        block_hashes = self.get_block_hashes(block_number_batch)
+      
+        block_stat_detail_rpc = list(generate_get_block_stat_by_hash_json_rpc(block_hashes))
+        block_stat_detail_response = self.bitcoin_rpc.batch(block_stat_detail_rpc)
+        block_stat_detail_results = list(rpc_response_batch_to_results(block_stat_detail_response))
+        
+        # Create a dictionary for faster lookup based on block hash
+        stats_dict = {state['blockhash']: state for state in block_stat_detail_results}
+
+        # Iterate through BtcBlock objects and update the 'total_fees' attribute
+        for block in blocks:
+            block_hash = block.hash
+            state = stats_dict.get(block_hash, {})  # Get the corresponding state or an empty dictionary if not found
+            total_fees = state.get('totalfee', 0)  # Get the 'totalfee' field or default to 0 if not found
+            subsidy = state.get('subsidy', 0)  # Get the 'totalfee' field or default to 0 if not found
+            
+            satoshi_to_bitcoin = 10**8
+            new_total_fees_btc = total_fees / satoshi_to_bitcoin
+            new_mint_reward_btc = subsidy / satoshi_to_bitcoin
+            new_total_reward_btc = new_total_fees_btc + new_mint_reward_btc
+            setattr(block, 'total_fees', new_total_fees_btc)
+            setattr(block, 'mint_reward', new_mint_reward_btc)
+            setattr(block, 'total_reward', new_total_reward_btc)
 
     def get_block_hashes(self, block_number_batch):
         block_hash_rpc = list(generate_get_block_hash_by_number_json_rpc(block_number_batch))
@@ -152,6 +181,7 @@ class BtcService(object):
                     block.coinbase_param = coinbase_input.coinbase_param
                     transaction.inputs = [input for input in transaction.inputs if not input.is_coinbase()]
                     transaction.is_coinbase = True
+                    transaction.coinbase=coinbase_input.coinbase_param
 
     def _add_non_standard_addresses(self, transaction):
         for output in transaction.outputs:

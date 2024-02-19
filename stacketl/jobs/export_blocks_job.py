@@ -1,3 +1,4 @@
+from stacketl.domain.block import StackBlock
 from stacketl.mappers.block_mapper import StackBlockMapper
 from stacketl.mappers.transaction_mapper import StackTransactionMapper
 from stacketl.api.stack_api import StackApi
@@ -15,7 +16,7 @@ class ExportBlocksJob(BaseJob):
             end_block: int,
             batch_size: int,
             stack_api: StackApi,
-            max_workers: str,
+            max_workers: int,
             item_exporter: BaseItemExporter,
             export_blocks=True,
             export_transactions=True):
@@ -61,9 +62,10 @@ class ExportBlocksJob(BaseJob):
             if block:
                 self._export_block(block)
 
-    def _export_block(self, block):
+    def _export_block(self, block: StackBlock):
         if self.export_blocks:
             self.item_exporter.export_item(self.block_mapper.block_to_dict(block))
+
         if self.export_transactions:
             for tx in block.transactions:
                 self.item_exporter.export_item(self.transaction_mapper.transaction_to_dict(tx))

@@ -220,32 +220,75 @@
             },
             {
               "name": "asset",
-              "type": {
-                "type": "record",
-                "name": "Asset",
-                "fields": [
-                  {
-                    "name": "asset_event_type",
-                    "type": "string"
-                  },
-                  {
-                    "name": "sender",
-                    "type": "string"
-                  },
-                  {
-                    "name": "recipient",
-                    "type": "string"
-                  },
-                  {
-                    "name": "amount",
-                    "type": "string"
-                  },
-                  {
-                    "name": "memo",
-                    "type": "string"
-                  }
-                ]
-              }
+              "type": [
+                "null",
+                {
+                  "type": "record",
+                  "name": "Asset",
+                  "fields": [
+                    {
+                      "name": "asset_event_type",
+                      "type": ["null", "string"]
+                    },
+                    {
+                      "name": "sender",
+                      "type": ["null", "string"]
+                    },
+                    {
+                      "name": "recipient",
+                      "type": ["null", "string"]
+                    },
+                    {
+                      "name": "amount",
+                      "type": ["null", "string"]
+                    },
+                    {
+                      "name": "memo",
+                      "type": ["null", "string"]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "contract_log",
+              "type": [
+                "null",
+                {
+                  "type": "record",
+                  "name": "ContractLog",
+                  "fields": [
+                    {
+                      "name": "contract_id",
+                      "type": ["null", "string"]
+                    },
+                    {
+                      "name": "topic",
+                      "type": ["null", "string"]
+                    },
+                    {
+                      "name": "value",
+                      "type": [
+                        "null",
+                        {
+                          "type": "record",
+                          "name": "Value",
+                          "fields": [
+                            {
+                              "name": "hex",
+                              "type": ["null", "string"]
+                            },
+                            {
+                              "name": "repr",
+                              "type": ["null", "string"]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
@@ -331,7 +374,7 @@
               "name": "clarity_version",
               "type": [
                 "null",
-                "string"
+                "long"
               ]
             },
             {

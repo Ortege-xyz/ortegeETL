@@ -55,15 +55,15 @@ For the latest version, check out the repo and call
   - [Schema](#schema)
     - [blocks.json](#blocksjson)
     - [transactions.json](#transactionsjson)
-    - [transaction_input](#transactioninput)
-    - [transaction_output](#transactionoutput)
+    - [transaction\_input](#transaction_input)
+    - [transaction\_output](#transaction_output)
   - [Exporting the Blockchain](#exporting-the-blockchain)
     - [Running in Docker](#running-in-docker)
     - [Command Reference](#command-reference)
-      - [export_blocks_and_transactions](#exportblocksandtransactions)
-      - [enrich_transactions](#enrichtransactions)
-      - [get_block_range_for_date](#getblockrangefordate)
-      - [export_all](#exportall)
+      - [export\_blocks\_and\_transactions](#export_blocks_and_transactions)
+      - [enrich\_transactions](#enrich_transactions)
+      - [get\_block\_range\_for\_date](#get_block_range_for_date)
+      - [export\_all](#export_all)
       - [stream](#stream)
     - [Running Tests](#running-tests)
     - [Running Tox Tests](#running-tox-tests)
@@ -86,8 +86,14 @@ merkle_root         | hex_string      |
 timestamp           | bigint          |
 nonce               | hex_string      |
 bits                | hex_string      |
+chainwork           | hex_string      |
+difficulty          | string          |
+total_fees          | double          |
+mint_reward         | double          |
+total_reward        | double          |
 coinbase_param      | hex_string      |
 transaction_count   | bigint          |
+previous_block_hash | hex_string      |
 
 ### transactions.json
 
@@ -110,6 +116,8 @@ output_count            | bigint                |
 input_value             | bigint                |
 output_value            | bigint                |
 fee                     | bigint                |
+hex                     | hex_string            |
+coinbase                | hex_string            |
 
 ### transaction_input
 

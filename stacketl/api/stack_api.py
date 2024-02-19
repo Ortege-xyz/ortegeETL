@@ -1,4 +1,4 @@
-import requests
+import logging
 from typing import Any, Optional
 
 from stacketl.mappers.block_mapper import StackBlockMapper
@@ -16,13 +16,14 @@ GET_BLOCK_TRANSACTIONS_PATH = 'extended/v2/blocks/{number}/transactions'
 GET_CONTRACT_INFO_PATH = 'extended/v1/contract/{contract_id}'
 GET_LAST_BLOCK_PATH = 'extended/v2/blocks?limit=1'
 GET_TRANSACTION_PATH = 'extended/v1/tx/{hash}'
+GET_LIST_OF_TRANSACTIONS_PATH = 'extended/v1/tx/multiple?{transactions}'
 
 class StackApi(ApiRequester):
     def __init__(self, api_url: str, api_key: Optional[str]):
         if api_key:
-            rate_limit = 500/60 # 500 request per minutes, the value should be requests per seconds
+            rate_limit = 490/60 # 490 request per minutes, the value should be requests per seconds
         else:
-            rate_limit = 50/60 # 50 request per minutes
+            rate_limit = 45/60 # 45 request per minutes
 
         super().__init__(api_url, api_key, rate_limit)
 
@@ -41,9 +42,13 @@ class StackApi(ApiRequester):
         """Get the last block"""
         response = self._make_get_request(GET_LAST_BLOCK_PATH, headers=self.headers, timeout=2)
 
-        data = response.json()
-
-        return self.block_mapper.json_dict_to_block(data["results"][0])
+        try:
+            data = response.json()
+            block = self.block_mapper.json_dict_to_block(data["results"][0])
+        except Exception as e:
+            logging.warn(f"Error in get last block, status {response.status_code} \n {response.text}")
+            raise e
+        return block
 
     def get_block(self, block_number: int) -> Optional[dict[str, Any]]:
         """Get the block by the number"""
@@ -58,7 +63,6 @@ class StackApi(ApiRequester):
         
         return response.json()
     
-    # TODO: update to new endpoint https://docs.hiro.so/api/get-transactions-by-block
     def get_block_transactions(self, block_number: int) -> list[dict[str, Any]]:
         """Get all block transactions by the number"""
         params = {
@@ -87,10 +91,31 @@ class StackApi(ApiRequester):
 
         return transactions
 
+    def get_details_transactions(self, transactions: list[str]) -> dict[str, dict[str, Any]]:
+        """Get the details of a list of transactions"""
+        transactions = list(map(lambda tx: "tx_id="+tx, transactions))
+
+        transaction_mapping = {}
+
+        # split the list in 40 elements to make the requets
+        for i in range(0, len(transactions), 40):
+
+            url = GET_LIST_OF_TRANSACTIONS_PATH.format(transactions="&".join(transactions[i:i + 40]))
+            reponse = self._make_get_request(
+                endpoint=url,
+                headers=self.headers,
+                timeout=2,
+            )
+
+            data = reponse.json()
+            transaction_mapping.update(data)
+
+        return transaction_mapping
+
     def get_contract_info(self, contract_id: str) -> Optional[dict[str, Any]]:
         response = self._make_get_request(
             endpoint=GET_CONTRACT_INFO_PATH.format(contract_id=contract_id),
-            headers=self.api_key,
+            headers=self.headers,
             timeout=2
         )
 
@@ -110,12 +135,29 @@ class StackApi(ApiRequester):
 
     def get_blocks_transactions(self, blocks_numbers: list[int]):
         """Get all block transactions by numbers"""
-        transactions: list[Optional[StackTransaction]] = []
+        _transactions: list[dict[str, Any]] = []
         for block_transactions_result in self._generate_blocks_transactions(blocks_numbers):
-            for transaction in block_transactions_result:
-                if block_transactions_result:
-                    transactions.append(self.transaction_mapper.json_dict_to_transaction(transaction) if transaction is not None else transaction)
+                _transactions.extend(block_transactions_result)
 
+        def get_invalid_transactions(transaction: dict[str, Any]):
+            events: Optional[list] = transaction.get('events')
+            event_count: Optional[int] = transaction.get('event_count')
+            return events is not None and event_count is not None and len(events) != event_count
+
+        txs_hash = list(map(lambda tx: tx["tx_id"], filter(get_invalid_transactions, _transactions)))
+
+        transactions_mapping = self.get_details_transactions(txs_hash)
+
+        transactions: list[StackTransaction] = list(
+            map(lambda tx: self.transaction_mapper.json_dict_to_transaction(tx),
+                filter(
+                    lambda tx: not get_invalid_transactions(tx),
+                    _transactions
+                )
+            )
+        )
+        for transaction in list(transactions_mapping.values()):
+            transactions.append(self.transaction_mapper.json_dict_to_transaction(transaction["result"]))
         return transactions
 
     def get_contracts_infos(self, contracts_ids: list[str]):

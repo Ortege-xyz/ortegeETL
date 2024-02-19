@@ -37,23 +37,27 @@ class StacksStreamerAdapter:
         return int(self.stack_api.get_latest_block().number)
 
     def export_all(self, start_block, end_block):
-        # Export blocks and transactions
-        blocks_and_transactions_item_exporter = InMemoryItemExporter(item_types=['block', 'transaction'])
+        all_items = []
+        if self.enable_blocks or self.enable_transactions:
+            # Export blocks and transactions
+            blocks_and_transactions_item_exporter = InMemoryItemExporter(item_types=['block', 'transaction'])
 
-        blocks_and_transactions_job = ExportBlocksJob(
-            start_block=start_block,
-            end_block=end_block,
-            batch_size=self.batch_size,
-            stack_api=self.stack_api,
-            max_workers=self.max_workers,
-            item_exporter=blocks_and_transactions_item_exporter,
-            export_blocks=self.enable_blocks,
-            export_transactions=self.enable_transactions,
-        )
-        blocks_and_transactions_job.run()
+            blocks_and_transactions_job = ExportBlocksJob(
+                start_block=start_block,
+                end_block=end_block,
+                batch_size=self.batch_size,
+                stack_api=self.stack_api,
+                max_workers=self.max_workers,
+                item_exporter=blocks_and_transactions_item_exporter,
+                export_blocks=self.enable_blocks,
+                export_transactions=self.enable_transactions,
+            )
+            blocks_and_transactions_job.run()
 
-        blocks = blocks_and_transactions_item_exporter.get_items('block')
-        transactions = blocks_and_transactions_item_exporter.get_items('transaction')
+            blocks = blocks_and_transactions_item_exporter.get_items('block')
+            transactions = blocks_and_transactions_item_exporter.get_items('transaction')
+            all_items.extend(blocks)
+            all_items.extend(transactions)
 
         if self.enable_contracts:
             # Enrich transactions
@@ -70,10 +74,9 @@ class StacksStreamerAdapter:
             contracts_job.run()
 
             contracts = contracts_item_exporter.get_items('contract')
+            all_items.extend(contracts)
 
         logging.info('Exporting with ' + type(self.item_exporter).__name__)
-
-        all_items = blocks + transactions + contracts
 
         self.calculate_item_ids(all_items)
 
