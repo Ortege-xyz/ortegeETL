@@ -7,7 +7,7 @@ from blockchainetl.api_requester import ApiRequester
 TRANSACTION_LIMIT = 200
 
 GET_LEDGERS = 'ledgers'
-GET_LAST_LEDGER= 'ledger?order=desc&limit=1'
+GET_LAST_LEDGER= 'ledgers?order=desc&limit=1'
 GET_LEDGER = 'ledgers/{number}'
 GET_LEDGER_TRANSACTIONS_PATH = 'ledgers/{number}/transactions'
 GET_TRANSACTION_PATH = 'transactions/{tx_id}'
@@ -33,7 +33,7 @@ class HorizonApi(ApiRequester):
 
         data = response.json()
 
-        return SorobanLedger.json_dict_to_ledger(data["results"][0])
+        return SorobanLedger.json_dict_to_ledger(data["_embedded"]["records"][0])
 
     def get_ledger(self, ledger_number: int) -> dict[str, Any]:
         """Get the ledger by the number"""
