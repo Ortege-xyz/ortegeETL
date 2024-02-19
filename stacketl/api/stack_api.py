@@ -139,11 +139,23 @@ class StackApi(ApiRequester):
         for block_transactions_result in self._generate_blocks_transactions(blocks_numbers):
                 _transactions.extend(block_transactions_result)
 
-        txs_hash = list(map(lambda tx: tx["tx_id"], _transactions))
+        def get_invalid_transactions(transaction: dict[str, Any]):
+            events: Optional[list] = transaction.get('events')
+            event_count: Optional[int] = transaction.get('event_count')
+            return events is not None and event_count is not None and len(events) != event_count
+
+        txs_hash = list(map(lambda tx: tx["tx_id"], filter(get_invalid_transactions, _transactions)))
 
         transactions_mapping = self.get_details_transactions(txs_hash)
 
-        transactions: list[StackTransaction] = []
+        transactions: list[StackTransaction] = list(
+            map(lambda tx: self.transaction_mapper.json_dict_to_transaction(tx),
+                filter(
+                    lambda tx: not get_invalid_transactions(tx),
+                    _transactions
+                )
+            )
+        )
         for transaction in list(transactions_mapping.values()):
             transactions.append(self.transaction_mapper.json_dict_to_transaction(transaction["result"]))
         return transactions
