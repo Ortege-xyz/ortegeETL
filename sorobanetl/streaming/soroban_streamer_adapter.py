@@ -39,16 +39,16 @@ class SorobanStreamerAdapter:
             start_ledger=start_ledger,
             end_ledger=end_ledger,
             batch_size=self.batch_size,
-            stack_api=self.stack_api,
+            horizon_api=self.horizon_api,
             max_workers=self.max_workers,
             item_exporter=ledgers_and_transactions_item_exporter,
-            export_blocks=self.enable_blocks,
+            export_ledgers=self.enable_ledgers,
             export_transactions=self.enable_transactions,
         )
         ledgers_and_transactions_job.run()
 
-        ledgers = ledgers_and_transactions_job.get_items('block')
-        transactions = ledgers_and_transactions_job.get_items('transaction')
+        ledgers = ledgers_and_transactions_item_exporter.get_items('ledger')
+        transactions = ledgers_and_transactions_item_exporter.get_items('transaction')
 
         logging.info('Exporting with ' + type(self.item_exporter).__name__)
 
