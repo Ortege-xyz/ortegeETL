@@ -37,6 +37,7 @@ class BtcTransaction(object):
         self.coinbase = None
         self.index = None
         self.hex = None
+        self.fee = 0
 
         self.inputs = []
         self.outputs = []
@@ -62,7 +63,12 @@ class BtcTransaction(object):
             self.outputs.append(output)
 
     def calculate_input_value(self):
-        return sum([input.value for input in self.inputs if input.value is not None])
+        all_inputs_have_values = all(input.value is not None for input in self.inputs)
+
+        if all_inputs_have_values:
+            return sum([input.value for input in self.inputs if input.value is not None])
+        else:
+            return self.fee + self.calculate_output_value()
 
     def calculate_output_value(self):
         return sum([output.value for output in self.outputs if output.value is not None])
@@ -70,5 +76,7 @@ class BtcTransaction(object):
     def calculate_fee(self):
         if self.is_coinbase:
             return 0
+        elif self.fee:
+            return self.fee
         else:
             return self.calculate_input_value() - self.calculate_output_value()
