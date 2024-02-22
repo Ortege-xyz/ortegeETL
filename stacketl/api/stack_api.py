@@ -95,20 +95,63 @@ class StackApi(ApiRequester):
         """Get the details of a list of transactions"""
         transactions = list(map(lambda tx: "tx_id="+tx, transactions))
 
-        transaction_mapping = {}
+        transaction_mapping: dict[str, dict[str, Any]] = {}
 
-        # split the list in 40 elements to make the requets
-        for i in range(0, len(transactions), 40):
+        params = {
+            'event_limit': 50,
+            'event_offset': 0,
+        }
 
-            url = GET_LIST_OF_TRANSACTIONS_PATH.format(transactions="&".join(transactions[i:i + 40]))
-            reponse = self._make_get_request(
-                endpoint=url,
-                headers=self.headers,
-                timeout=2,
+        def get_transactions(_transactions: list[str]):
+            _transactions_mapping = {}
+            # split the list in 40 elements to make the requets
+            for i in range(0, len(_transactions), 40):
+
+                url = GET_LIST_OF_TRANSACTIONS_PATH.format(transactions="&".join(_transactions[i:i + 40]))
+                reponse = self._make_get_request(
+                    endpoint=url,
+                    headers=self.headers,
+                    timeout=2,
+                    params=params
+                )
+
+                data = reponse.json()
+                _transactions_mapping.update(data)
+            return _transactions_mapping
+
+        transaction_mapping.update(get_transactions(transactions))
+
+        def filter_txs(tx: dict[str, Any]):
+            event_count = tx["result"].get('event_count', 0)
+            events = tx["result"].get('events', [])
+            return event_count > 50 and event_count != len(events)
+
+        event_offset_index = 1
+        while True:
+            # get the events of transactions with more than 50 events
+            transactions_missing_events = list(
+                map(
+                    lambda tx: "tx_id="+tx["result"]["tx_id"],
+                    filter(
+                        filter_txs,
+                        transaction_mapping.values()
+                    )
+                )
             )
 
-            data = reponse.json()
-            transaction_mapping.update(data)
+            if(len(transactions_missing_events) == 0):
+                break
+
+            params["event_offset"] = event_offset_index * 50
+            event_offset_index += 1
+
+            transactions_missing_events_mapping = get_transactions(transactions_missing_events)
+
+            # Update the transactions with the events
+            for transaction in transactions_missing_events_mapping.values():
+                transaction_hash: str = transaction["result"]["tx_id"]
+                transaction_events = transaction["result"]["events"]
+                transaction_mapping[transaction_hash]["result"]["events"].extend(transaction_events)
 
         return transaction_mapping
 
