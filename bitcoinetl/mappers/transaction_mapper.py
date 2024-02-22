@@ -44,6 +44,7 @@ class BtcTransactionMapper(object):
         transaction.version = json_dict.get('version')
         transaction.lock_time = json_dict.get('locktime')
         transaction.hex = json_dict.get('hex')
+        transaction.fee = bitcoin_to_satoshi(json_dict.get('fee'))
 
         if block is not None:
             transaction.block_number = block.number
