@@ -151,7 +151,6 @@ class StackApi(ApiRequester):
             for transaction in transactions_missing_events_mapping.values():
                 transaction_hash: str = transaction["result"]["tx_id"]
                 transaction_events = transaction["result"]["events"]
-                print(f"transaction_hash {transaction_hash}")
                 transaction_mapping[transaction_hash]["result"]["events"].extend(transaction_events)
 
         return transaction_mapping
