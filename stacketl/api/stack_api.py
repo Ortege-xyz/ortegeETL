@@ -121,10 +121,14 @@ class StackApi(ApiRequester):
 
         transaction_mapping.update(get_transactions(transactions))
 
+        # some transactions have a mismatch of the event_count with the lenght of events array
+        # for example tx 0x45d7d56659be739cb2fae927dc119f3c4267011210736ce29a162a956be8f586 only return 33 events and have the event_count 85
+        finished_transactions = {}
         def filter_txs(tx: dict[str, Any]):
+            tx_hash = tx["result"].get('tx_id', '')
             event_count = tx["result"].get('event_count', 0)
             events = tx["result"].get('events', [])
-            return event_count > 50 and event_count != len(events)
+            return event_count > 50 and event_count != len(events) and finished_transactions.get(tx_hash, False) is False
 
         event_offset_index = 1
         while True:
@@ -151,6 +155,10 @@ class StackApi(ApiRequester):
             for transaction in transactions_missing_events_mapping.values():
                 transaction_hash: str = transaction["result"]["tx_id"]
                 transaction_events = transaction["result"]["events"]
+
+                if len(transaction_events) == 0:
+                    finished_transactions[transaction_hash] = True
+
                 transaction_mapping[transaction_hash]["result"]["events"].extend(transaction_events)
 
         return transaction_mapping
