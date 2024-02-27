@@ -2,7 +2,6 @@ import logging
 
 from stacketl.api.stack_api import StackApi
 from stacketl.jobs.export_blocks_job import ExportBlocksJob
-from stacketl.jobs.export_contracts_job import ExportContractsJob
 from stacketl.streaming.stacks_item_id_calculator import StackItemIdCalculator
 from blockchainetl.jobs.exporters.console_item_exporter import ConsoleItemExporter
 from blockchainetl.jobs.exporters.in_memory_item_exporter import InMemoryItemExporter
