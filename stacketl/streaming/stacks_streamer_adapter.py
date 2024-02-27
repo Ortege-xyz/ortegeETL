@@ -40,7 +40,7 @@ class StacksStreamerAdapter:
         all_items = []
         if self.enable_blocks or self.enable_transactions:
             # Export blocks and transactions
-            blocks_and_transactions_item_exporter = InMemoryItemExporter(item_types=['block', 'transaction'])
+            blocks_transactions_contracts_item_exporter = InMemoryItemExporter(item_types=['block', 'transaction', 'contract'])
 
             blocks_and_transactions_job = ExportBlocksJob(
                 start_block=start_block,
@@ -48,32 +48,18 @@ class StacksStreamerAdapter:
                 batch_size=self.batch_size,
                 stack_api=self.stack_api,
                 max_workers=self.max_workers,
-                item_exporter=blocks_and_transactions_item_exporter,
+                item_exporter=blocks_transactions_contracts_item_exporter,
                 export_blocks=self.enable_blocks,
                 export_transactions=self.enable_transactions,
+                export_contracts=self.enable_contracts
             )
             blocks_and_transactions_job.run()
 
-            blocks = blocks_and_transactions_item_exporter.get_items('block')
-            transactions = blocks_and_transactions_item_exporter.get_items('transaction')
+            blocks = blocks_transactions_contracts_item_exporter.get_items('block')
+            transactions = blocks_transactions_contracts_item_exporter.get_items('transaction')
+            contracts = blocks_transactions_contracts_item_exporter.get_items('contract')
             all_items.extend(blocks)
             all_items.extend(transactions)
-
-        if self.enable_contracts:
-            # Enrich transactions
-            contracts_item_exporter = InMemoryItemExporter(item_types=['contract'])
-
-            contracts_job = ExportContractsJob(
-                start_block=start_block,
-                end_block=end_block,
-                batch_size=self.batch_size,
-                stack_api=self.stack_api,
-                item_exporter=contracts_item_exporter,
-                max_workers=self.max_workers
-            )
-            contracts_job.run()
-
-            contracts = contracts_item_exporter.get_items('contract')
             all_items.extend(contracts)
 
         logging.info('Exporting with ' + type(self.item_exporter).__name__)
