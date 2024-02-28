@@ -40,7 +40,7 @@ class StackApi(ApiRequester):
 
     def get_latest_block(self) -> StackBlock:
         """Get the last block"""
-        response = self._make_get_request(GET_LAST_BLOCK_PATH, headers=self.headers, timeout=2)
+        response = self._make_get_request(GET_LAST_BLOCK_PATH, headers=self.headers, timeout=4)
 
         try:
             data = response.json()
@@ -55,7 +55,7 @@ class StackApi(ApiRequester):
         response = self._make_get_request(
             endpoint=GET_BLOCK_PATH.format(number=block_number),
             headers=self.headers,
-            timeout=2
+            timeout=4
         )
 
         if str(response.status_code).startswith(('4', '5')):
@@ -76,7 +76,7 @@ class StackApi(ApiRequester):
                 endpoint=GET_BLOCK_TRANSACTIONS_PATH.format(number=block_number),
                 params=params,
                 headers=self.headers,
-                timeout=2,
+                timeout=4,
             )
             data = response.json()
             
@@ -111,7 +111,7 @@ class StackApi(ApiRequester):
                 reponse = self._make_get_request(
                     endpoint=url,
                     headers=self.headers,
-                    timeout=2,
+                    timeout=4,
                     params=params
                 )
 
@@ -167,7 +167,7 @@ class StackApi(ApiRequester):
         response = self._make_get_request(
             endpoint=GET_CONTRACT_INFO_PATH.format(contract_id=contract_id),
             headers=self.headers,
-            timeout=2
+            timeout=4
         )
 
         if str(response.status_code).startswith(('4', '5')):
@@ -184,7 +184,7 @@ class StackApi(ApiRequester):
             
         return blocks
 
-    def get_blocks_transactions(self, blocks_numbers: list[int]):
+    def get_blocks_transactions(self, blocks_numbers: list[int], get_details: bool = True):
         """Get all block transactions by numbers"""
         _transactions: list[dict[str, Any]] = []
         for block_transactions_result in self._generate_blocks_transactions(blocks_numbers):
@@ -197,18 +197,23 @@ class StackApi(ApiRequester):
 
         txs_hash = list(map(lambda tx: tx["tx_id"], filter(get_invalid_transactions, _transactions)))
 
-        transactions_mapping = self.get_details_transactions(txs_hash)
+        if get_details:
+            transactions_mapping = self.get_details_transactions(txs_hash)
 
-        transactions: list[StackTransaction] = list(
-            map(lambda tx: self.transaction_mapper.json_dict_to_transaction(tx),
-                filter(
-                    lambda tx: not get_invalid_transactions(tx),
-                    _transactions
+            transactions: list[StackTransaction] = list(
+                map(lambda tx: self.transaction_mapper.json_dict_to_transaction(tx),
+                    filter(
+                        lambda tx: not get_invalid_transactions(tx), # get the valid transactions
+                        _transactions
+                    )
                 )
             )
-        )
-        for transaction in list(transactions_mapping.values()):
-            transactions.append(self.transaction_mapper.json_dict_to_transaction(transaction["result"]))
+
+            for transaction in list(transactions_mapping.values()):
+                transactions.append(self.transaction_mapper.json_dict_to_transaction(transaction["result"]))
+        else:
+            transactions = list(map(lambda tx: self.transaction_mapper.json_dict_to_transaction(tx), _transactions))
+
         return transactions
 
     def get_contracts_infos(self, contracts_ids: list[str]):
