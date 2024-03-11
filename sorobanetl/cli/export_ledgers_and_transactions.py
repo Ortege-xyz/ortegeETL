@@ -22,9 +22,9 @@ logging_basic_config()
               help='The output file for transactions. '
                    'If not provided transactions will not be exported. Use "-" for stdout')
 def export_ledgers_and_transactions(start_ledger, end_ledger, batch_size, api_uri,
-                                   max_workers, ledger_output, transactions_output):
+                                   max_workers, ledgers_output, transactions_output):
     """Export blocks and transactions."""
-    if ledger_output is None and transactions_output is None:
+    if ledgers_output is None and transactions_output is None:
         raise ValueError('Either --ledgers-output or --transactions-output options must be provided')
 
     job = ExportLedgersJob(
@@ -33,7 +33,7 @@ def export_ledgers_and_transactions(start_ledger, end_ledger, batch_size, api_ur
         batch_size=batch_size,
         horizon_api=HorizonApi(api_uri),
         max_workers=max_workers,
-        item_exporter=ledgers_and_transactions_item_exporter(ledger_output, transactions_output),
-        export_ledgers=ledger_output is not None,
+        item_exporter=ledgers_and_transactions_item_exporter(ledgers_output, transactions_output),
+        export_ledgers=ledgers_output is not None,
         export_transactions=transactions_output is not None)
     job.run()
