@@ -9,15 +9,15 @@ logging_basic_config()
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
-@click.option('-s', '--start-ledger', default=0, type=int, help='Start block')
-@click.option('-e', '--end-ledger', required=True, type=int, help='End block')
-@click.option('-b', '--batch-size', default=1, type=int, help='The number of blocks to export at a time.')
+@click.option('-s', '--start-ledger', default=0, type=int, help='Start ledger sequence')
+@click.option('-e', '--end-ledger', required=True, type=int, help='End ledger sequence')
+@click.option('-b', '--batch-size', default=1, type=int, help='The number of ledgers to export at a time.')
 @click.option('-a', '--api-uri', default='https://horizon-testnet.stellar.org', type=str,
-              help='The URI of the remote Horizon api')
+              help='The URI of the Horizon api')
 @click.option('-w', '--max-workers', default=5, type=int, help='The maximum number of workers.')
-@click.option('--ledger-output', default=None, type=str,
-              help='The output file for blocks. '
-                   'If not provided blocks will not be exported. Use "-" for stdout')
+@click.option('--ledgers-output', default=None, type=str,
+              help='The output file for ledgers. '
+                   'If not provided ledgers will not be exported. Use "-" for stdout')
 @click.option('--transactions-output', default=None, type=str,
               help='The output file for transactions. '
                    'If not provided transactions will not be exported. Use "-" for stdout')
