@@ -98,7 +98,7 @@ class SorobanTransaction:
         envelope = TransactionEnvelope.from_xdr(filtered_data.get('envelope_xdr'))
         filtered_data["envelope"] = SorobanTransaction.convert_xdr(envelope)
 
-        fee_meta = FeeBumpTransaction(filtered_data.get('fee_meta_xdr'))
+        fee_meta = FeeBumpTransaction.from_xdr(filtered_data.get('fee_meta_xdr'))
         filtered_data["fee_meta"] = SorobanTransaction.convert_xdr(fee_meta)
 
         return SorobanTransaction(**filtered_data)
