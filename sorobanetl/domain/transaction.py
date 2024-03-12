@@ -55,12 +55,12 @@ class SorobanTransaction:
     max_fee: str
     operation_count: int
     envelope_xdr: str
-    envelope: Dict[str, Any]
+    envelope: Optional[Dict[str, Any]]
     result_xdr: str
-    result: Dict[str, Any]
+    result: Optional[Dict[str, Any]]
     result_meta_xdr: str
     fee_meta_xdr: str
-    fee_meta: str
+    fee_meta: Optional[Dict[str, Any]]
     memo_type: str
     memo: Optional[str]
     memo_bytes: Optional[str]
@@ -92,14 +92,23 @@ class SorobanTransaction:
         preconditions = filtered_data.get("preconditions")
         filtered_data["preconditions"] = preconditions
 
-        result = TransactionResult.from_xdr(filtered_data.get("result_xdr"))
-        filtered_data["result"] = SorobanTransaction.convert_xdr(result)
+        try:
+            result = TransactionResult.from_xdr(filtered_data.get("result_xdr"))
+            filtered_data["result"] = SorobanTransaction.convert_xdr(result)
+        except:
+            filtered_data["result"] = None
 
-        envelope = TransactionEnvelope.from_xdr(filtered_data.get('envelope_xdr'))
-        filtered_data["envelope"] = SorobanTransaction.convert_xdr(envelope)
+        try:
+            envelope = TransactionEnvelope.from_xdr(filtered_data.get('envelope_xdr'))
+            filtered_data["envelope"] = SorobanTransaction.convert_xdr(envelope)
+        except:
+            filtered_data["envelope"] = None
 
-        fee_meta = FeeBumpTransaction.from_xdr(filtered_data.get('fee_meta_xdr'))
-        filtered_data["fee_meta"] = SorobanTransaction.convert_xdr(fee_meta)
+        try:
+            fee_meta = FeeBumpTransaction.from_xdr(filtered_data.get('fee_meta_xdr'))
+            filtered_data["fee_meta"] = SorobanTransaction.convert_xdr(fee_meta)
+        except:
+            filtered_data["fee_meta"] = None
 
         return SorobanTransaction(**filtered_data)
     
