@@ -1,7 +1,7 @@
 from dataclasses import dataclass, asdict
 from datetime import datetime
 from stellar_sdk.xdr import LedgerHeader
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from sorobanetl.domain.transaction import SorobanTransaction
 
@@ -22,7 +22,7 @@ class SorobanLedger:
     paging_token: str
 
     header_xdr: str
-    header: Dict[str, Any]
+    header: Optional[Dict[str, Any]]
 
     transactions: List[SorobanTransaction]
     successful_transaction_count: int
@@ -38,8 +38,11 @@ class SorobanLedger:
 
         del json_dict["_links"]
 
-        header = LedgerHeader.from_xdr(json_dict["header_xdr"])
-        decoded_header = SorobanTransaction.convert_xdr(header)
+        try:
+            header = LedgerHeader.from_xdr(json_dict["header_xdr"])
+            decoded_header: Dict[str, Any] = SorobanTransaction.convert_xdr(header)
+        except:
+            decoded_header = None
 
         json_dict["header"] = decoded_header
 
