@@ -39,7 +39,8 @@ setup(
         'ethereum-dasm==0.1.4',
         'urllib3<2',
         'base58',
-        'requests'
+        'requests',
+        'stellar-sdk==9.2.0'
     ],
     extras_require={
         'streaming': [
