@@ -5,7 +5,6 @@ from blockchainetl.jobs.base_job import BaseJob
 from blockchainetl.utils import validate_range
 from blockchainetl.classes.base_item_exporter import BaseItemExporter
 
-
 # Exports ledgers and transactions
 class ExportLedgersJob(BaseJob):
     def __init__(
@@ -14,7 +13,7 @@ class ExportLedgersJob(BaseJob):
             end_ledger: int,
             batch_size: int,
             horizon_api: HorizonApi,
-            max_workers: str,
+            max_workers: int,
             item_exporter: BaseItemExporter,
             export_ledgers=True,
             export_transactions=True):
@@ -47,7 +46,10 @@ class ExportLedgersJob(BaseJob):
         ledgers = self.horizon_api.get_ledger_in_sequence(ledger_number_batch[0], ledger_number_batch[-1], min(200, self.batch_size)) # Let's assume the ledger number is in sequence, bacause of line 40, if no need to change the method
 
         if self.export_transactions:
-            transactions = self.horizon_api.get_ledgers_transactions(ledger_number_batch)
+            #filter ledgers with success transactions > 0
+            ledgers_sequences = list(map(lambda ledger: ledger.sequence, filter(lambda ledger: ledger.successful_transaction_count > 0, ledgers)))
+            transactions = self.horizon_api.get_ledgers_transactions(ledgers_sequences)
+
             for ledger, ledger_transactions in zip(ledgers, transactions):
                 if ledger and not ledger_transactions:
                     self._export_ledger(ledger)
