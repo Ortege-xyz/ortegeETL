@@ -89,7 +89,7 @@ def convert_xdr(value: object, value_name: Optional[str] = None):
     if isinstance(value, TimePoint):
         return value.time_point.uint64
     if isinstance(value, SequenceNumber):
-        return value.sequence_number
+        return value.sequence_number.int64
     if isinstance(value, Thresholds):
         return value.thresholds.hex()
     if isinstance(value, SCAddress):
