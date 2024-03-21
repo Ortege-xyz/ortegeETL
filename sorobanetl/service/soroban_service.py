@@ -15,12 +15,16 @@ class SorobanService():
 
         return ledger_result
 
-    def get_events(self, start_ledger: int, filters: list[dict[str, Any]], pagination: Optional[dict[str, Union[str, int, None]]] = None) -> list[SorobanEvent]:
-        param = {
+    def get_events(self, start_ledger: int, filters: Optional[list[dict[str, Any]]] = None, pagination: Optional[dict[str, Union[str, int, None]]] = None) -> list[SorobanEvent]:
+        param: dict[str, Any] = {
             'startLedger': start_ledger,
-            'filters': filters,
-            'pagination': pagination,
         }
+        
+        if filters:
+            param['filters'] = filters
+        if pagination:
+            param['pagination'] = pagination
+
         result = self.soroban_rpc.getEvents(param)
 
         if result is None:
