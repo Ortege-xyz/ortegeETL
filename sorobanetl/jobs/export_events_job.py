@@ -27,6 +27,7 @@ class ExportEventsJob(BaseJob):
 
         self.service = SorobanService(soroban_rpc)
         self.ledger_events_cache: dict[int, dict[str, SorobanEvent]] = {}
+        self.ledgers_with_all_events: dict[int, bool] = {}
 
     def _start(self):
         self.item_exporter.open()
@@ -39,6 +40,7 @@ class ExportEventsJob(BaseJob):
         )
 
     def _export_batch(self, ledger_sequence_batch: list[int]):
+        last_event_ledger = 0
         for ledger_sequence in ledger_sequence_batch:
             # As we cannot get the events for a specific ledger
             # in the soroban rpc as it is returning several ledgers
@@ -46,14 +48,27 @@ class ExportEventsJob(BaseJob):
             # we need to save the events we receive in a cache so
             # if we already have this event in the cache we will not lose it,
             # and thus we optimize event requests
+            if self.ledgers_with_all_events.get(ledger_sequence, False): # if we have all the events in the cache skip to next ledger
+                continue
+
             events = self.service.get_events(ledger_sequence, pagination={'limit': 10000})
             for event in events:
-                ledger_sequence_dict = self.ledger_events_cache.setdefault(ledger_sequence, {})
+                # we know that we have all the events for a specific ledger
+                # when the event.ledger is greather than last_event_ledger
+                if event.ledger > last_event_ledger:  
+                    if last_event_ledger != 0: # this logic is to skip the firts ledger
+                        self.ledgers_with_all_events[last_event_ledger] = True
+                    last_event_ledger = event.ledger
+
+                ledger_sequence_dict = self.ledger_events_cache.setdefault(event.ledger, {})
                 ledger_sequence_dict[event.id] = event
                 
         for ledger_sequence in ledger_sequence_batch:
-            self._export_events(list(self.ledger_events_cache[ledger_sequence].values()))
-            del self.ledger_events_cache[ledger_sequence] # clear the memory
+            if ledger_sequence in self.ledger_events_cache:
+                self._export_events(list(self.ledger_events_cache[ledger_sequence].values()))
+                del self.ledger_events_cache[ledger_sequence] # clear the memory
+            if ledger_sequence in self.ledger_events_cache:
+                del self.ledgers_with_all_events[ledger_sequence]
 
     def _export_events(self, events: list[SorobanEvent]):
         for event in events:
