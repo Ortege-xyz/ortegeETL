@@ -60,6 +60,5 @@ class ExportEventsJob(BaseJob):
             self.item_exporter.export_item(event.to_dict())
 
     def _end(self):
-        del self.ledger_events_cache
         self.batch_work_executor.shutdown()
         self.item_exporter.close()

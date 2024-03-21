@@ -15,6 +15,9 @@ class SorobanItemIdCalculator:
         
         if item_type == 'transaction':
             return concat(item_type, item.get('hash'))
+        
+        if item_type == 'event':
+            return concat(item_type, item.get('id'))
 
         logging.warning('item_id for item {} is None'.format(json.dumps(item)))
 
