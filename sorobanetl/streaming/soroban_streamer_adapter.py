@@ -18,6 +18,7 @@ class SorobanStreamerAdapter:
             batch_size=1,
             enable_ledgers=True,
             enable_transactions=True,
+            enable_events=True,
             max_workers=5,
         ):
         self.api_url = api_url
@@ -27,6 +28,7 @@ class SorobanStreamerAdapter:
         self.batch_size = batch_size
         self.enable_ledgers = enable_ledgers
         self.enable_transactions = enable_transactions
+        self.enable_events = enable_events
         self.max_workers = max_workers
         self.item_id_calculator = SorobanItemIdCalculator()
 
@@ -52,16 +54,17 @@ class SorobanStreamerAdapter:
         )
         ledgers_and_transactions_job.run()
 
-        events_job = ExportEventsJob(
-            start_ledger=start_ledger,
-            end_ledger=end_ledger,
-            batch_size=self.batch_size,
-            soroban_rpc=ThreadLocalProxy(lambda: SorobanRpc(self.rpc_url)), # type: ignore
-            max_workers=self.max_workers,
-            item_exporter=ledgers_and_transactions_item_exporter
-        )
-        
-        events_job.run()
+        if self.enable_events:
+            events_job = ExportEventsJob(
+                start_ledger=start_ledger,
+                end_ledger=end_ledger,
+                batch_size=self.batch_size,
+                soroban_rpc=ThreadLocalProxy(lambda: SorobanRpc(self.rpc_url)), # type: ignore
+                max_workers=self.max_workers,
+                item_exporter=ledgers_and_transactions_item_exporter
+            )
+            
+            events_job.run()
 
         ledgers = ledgers_and_transactions_item_exporter.get_items('ledger')
         transactions = ledgers_and_transactions_item_exporter.get_items('transaction')
