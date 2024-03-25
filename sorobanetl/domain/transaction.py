@@ -1,26 +1,9 @@
 from dataclasses import dataclass, asdict, fields
 from datetime import datetime
-from stellar_sdk import StrKey
-from stellar_sdk.xdr import (
-    FeeBumpTransaction,
-    TransactionResult,
-    TransactionEnvelope,
-    Int32,
-    Int64,
-    Uint32,
-    Uint64,
-    Uint256,
-    Hash,
-    String32,
-    String64,
-    String,
-    Boolean,
-    AccountID,
-    PublicKey,
-    MuxedAccount,
-)
-from enum import Enum
+from stellar_sdk.xdr import FeeBumpTransaction, TransactionResult, TransactionEnvelope
 from typing import Any, List, Dict, TypedDict, Optional
+
+from sorobanetl.convert_xdr import convert_xdr
 
 class Timebounds(TypedDict):
     min_time: Optional[str]
@@ -94,19 +77,19 @@ class SorobanTransaction:
 
         try:
             result = TransactionResult.from_xdr(filtered_data.get("result_xdr"))
-            filtered_data["result"] = SorobanTransaction.convert_xdr(result)
+            filtered_data["result"] = convert_xdr(result)
         except:
             filtered_data["result"] = None
 
         try:
             envelope = TransactionEnvelope.from_xdr(filtered_data.get('envelope_xdr'))
-            filtered_data["envelope"] = SorobanTransaction.convert_xdr(envelope)
+            filtered_data["envelope"] = convert_xdr(envelope)
         except:
             filtered_data["envelope"] = None
 
         try:
             fee_meta = FeeBumpTransaction.from_xdr(filtered_data.get('fee_meta_xdr'))
-            filtered_data["fee_meta"] = SorobanTransaction.convert_xdr(fee_meta)
+            filtered_data["fee_meta"] = convert_xdr(fee_meta)
         except:
             filtered_data["fee_meta"] = None
 
@@ -117,42 +100,4 @@ class SorobanTransaction:
         transaction_dict['type'] = "transaction"
 
         return transaction_dict
-    
-    def convert_xdr(value: object, value_name: str = None):
-        if value is None:
-            return None
-        if isinstance(value, Enum):
-            return value.name
-        if isinstance(value, (Int32, Int64, Uint32, Uint64)):
-            attribute: int = getattr(value, type(value).__name__.lower()) # the attribute to int in these classes is the name of class lower, eg Int32.int32
-            return attribute
-        if isinstance(value, Uint256):
-            if(value_name == "ed25519"):
-                return StrKey.encode_ed25519_public_key(value.uint256)
-            return int.from_bytes(value.uint256, byteorder="big")
-        if isinstance(value, Hash):
-            return value.hash.hex()
-        if isinstance(value, String):
-            return value.value.decode("utf-8")
-        if isinstance(value, (String32, String64)):
-            text: str = getattr(value, type(value).__name__.lower()).decode("utf-8") # the attribute to bytes in these classes is the name of class lower, eg String32.string32
-            return text
-        if isinstance(value, AccountID):
-            return StrKey.encode_ed25519_public_key(value.account_id.ed25519.to_xdr_bytes())
-        if isinstance(value, (PublicKey, MuxedAccount)):
-            if value.ed25519 is not None:
-                return StrKey.encode_ed25519_public_key(value.ed25519.to_xdr_bytes())
-        if isinstance(value, Boolean):
-            return value.value
-        if isinstance(value, (list, tuple, set)):
-            return [SorobanTransaction.convert_xdr(item) for item in value]
-        if isinstance(value, (bytes, bytearray)):
-            return value.hex()
-        if isinstance(value, (int, float, str, bool)):
-            return value
-        
-        value_dict = value.__dict__
 
-        for key, value in value_dict.items():
-            value_dict[key] = SorobanTransaction.convert_xdr(value, key)
-        return value_dict

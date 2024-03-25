@@ -1,4 +1,5 @@
 import click
+from sorobanetl.cli.export_events import export_events
 from sorobanetl.cli.export_ledgers_and_transactions import export_ledgers_and_transactions
 
 
@@ -8,3 +9,4 @@ def soroban():
     pass
 
 soroban.add_command(export_ledgers_and_transactions, "export_ledgers_and_transactions")
+soroban.add_command(export_events, "export_events")

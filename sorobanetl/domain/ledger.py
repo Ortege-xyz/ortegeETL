@@ -3,6 +3,7 @@ from datetime import datetime
 from stellar_sdk.xdr import LedgerHeader
 from typing import Any, Dict, List, Optional
 
+from sorobanetl.convert_xdr import convert_xdr
 from sorobanetl.domain.transaction import SorobanTransaction
 
 @dataclass
@@ -40,9 +41,9 @@ class SorobanLedger:
 
         try:
             header = LedgerHeader.from_xdr(json_dict["header_xdr"])
-            decoded_header: Dict[str, Any] = SorobanTransaction.convert_xdr(header)
+            decoded_header: dict[str, Any] = convert_xdr(header) # type: ignore
         except:
-            decoded_header = None
+            decoded_header = None # type: ignore
 
         json_dict["header"] = decoded_header
 

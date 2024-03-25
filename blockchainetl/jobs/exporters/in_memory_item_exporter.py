@@ -21,7 +21,10 @@
 # SOFTWARE.
 
 
-class InMemoryItemExporter:
+from blockchainetl.classes.base_item_exporter import BaseItemExporter
+
+
+class InMemoryItemExporter(BaseItemExporter):
     def __init__(self, item_types):
         self.item_types = item_types
         self.items = {}
