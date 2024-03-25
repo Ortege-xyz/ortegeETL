@@ -68,7 +68,7 @@ class SorobanStreamerAdapter:
 
         ledgers = ledgers_and_transactions_item_exporter.get_items('ledger')
         transactions = ledgers_and_transactions_item_exporter.get_items('transaction')
-        events = ledgers_and_transactions_item_exporter.get_items('events')
+        events = ledgers_and_transactions_item_exporter.get_items('event')
 
         logging.info('Exporting with ' + type(self.item_exporter).__name__)
 
