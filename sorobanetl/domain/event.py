@@ -39,9 +39,9 @@ class SorobanEvent:
 
         try:
             if(isinstance(json_dict["value"], str)):
-                value = convert_xdr(SCVal.from_xdr(json_dict["value"]))
+                value = str(convert_xdr(SCVal.from_xdr(json_dict["value"])))
             elif(isinstance(json_dict["value"], dict)):
-                value = convert_xdr(SCVal.from_xdr(json_dict["value"]["xdr"]))
+                value = str(convert_xdr(SCVal.from_xdr(json_dict["value"]["xdr"])))
             else:
                 value = None
             json_dict["value"] = value
