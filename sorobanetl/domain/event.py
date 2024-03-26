@@ -40,16 +40,16 @@ class SorobanEvent:
         try:
             json_dict["value"] = str(convert_xdr(SCVal.from_xdr(json_dict["value"]["xdr"])))
         except:
-            json_dict["value"] = None
             logging.warning(f"Error to convert the event value {json_dict.get('value')} id {json_dict['id']}")
+            json_dict["value"] = None
 
         topic: list[str] = []
         try:
             for _topic in json_dict["topic"]:
                 topic.append(str(convert_xdr(SCVal.from_xdr(_topic))))
         finally:
-            json_dict["topic"] = None
             logging.warning(f"Error to convert the event topic {json_dict.get('topic')} id {json_dict['id']}")
+            json_dict["topic"] = None
 
         return SorobanEvent(**json_dict)
     
