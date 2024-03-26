@@ -38,7 +38,8 @@ class SorobanEvent:
         del json_dict["type"]
 
         try:
-            json_dict["value"] = str(convert_xdr(SCVal.from_xdr(json_dict["value"]["xdr"])))
+            value = convert_xdr(SCVal.from_xdr(json_dict["value"]))
+            json_dict["value"] = value if value is None else str(value)
         except Exception as e:
             logging.warning(f"Error to convert the event value {json_dict.get('value')} id {json_dict['id']}, {e}")
             json_dict["value"] = None
