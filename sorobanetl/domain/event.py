@@ -39,7 +39,7 @@ class SorobanEvent:
         try:
             json_dict["value"] = convert_xdr(SCVal.from_xdr(json_dict["value"]["xdr"]))
         except:
-            json_dict["value"] = None
+            json_dict["value"] = ""
 
         topic = []
         try:
