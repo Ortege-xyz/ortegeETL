@@ -40,7 +40,7 @@ class SorobanStreamerAdapter:
 
     def export_all(self, start_ledger, end_ledger):
         # Export blocks and transactions
-        ledgers_and_transactions_item_exporter = InMemoryItemExporter(item_types=['ledger', 'transaction', 'event'])
+        ledgers_and_transactions_item_exporter = InMemoryItemExporter(item_types=['ledger', 'transaction'])
 
         ledgers_and_transactions_job = ExportLedgersJob(
             start_ledger=start_ledger,
@@ -54,23 +54,25 @@ class SorobanStreamerAdapter:
         )
         ledgers_and_transactions_job.run()
 
+        events = []
         if self.enable_events:
+            events_item_exporter = InMemoryItemExporter(item_types=['event'])
             events_job = ExportEventsJob(
                 start_ledger=start_ledger,
                 end_ledger=end_ledger,
                 batch_size=self.batch_size,
                 soroban_rpc=ThreadLocalProxy(lambda: SorobanRpc(self.rpc_url)), # type: ignore
                 max_workers=self.max_workers,
-                item_exporter=ledgers_and_transactions_item_exporter
+                item_exporter=events_item_exporter
             )
             
             events_job.run()
+            events = events_item_exporter.get_items('event')
 
         ledgers = ledgers_and_transactions_item_exporter.get_items('ledger')
         transactions = ledgers_and_transactions_item_exporter.get_items('transaction')
-        events = ledgers_and_transactions_item_exporter.get_items('event')
 
-        logging.info('Exporting with ' + type(self.item_exporter).__name__)
+        logging.info('Exporting with {type(self.item_exporter).__name__}')
 
         all_items = ledgers + transactions + events
 
