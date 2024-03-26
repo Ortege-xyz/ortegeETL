@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass, asdict
 from datetime import datetime
 from stellar_sdk.xdr import SCVal
@@ -14,8 +15,8 @@ class SorobanEvent:
     tx_hash: str
     id: str
     paging_token: str
-    topic: list[Any]
-    value: Any
+    topic: Optional[list[str]]
+    value: Optional[str]
     in_successful_contract_call: bool
 
     @staticmethod
@@ -37,16 +38,18 @@ class SorobanEvent:
         del json_dict["type"]
 
         try:
-            json_dict["value"] = convert_xdr(SCVal.from_xdr(json_dict["value"]["xdr"]))
+            json_dict["value"] = str(convert_xdr(SCVal.from_xdr(json_dict["value"]["xdr"])))
         except:
-            json_dict["value"] = ""
+            json_dict["value"] = None
+            logging.warning(f"Error to convert the event value {json_dict.get('value')} id {json_dict['id']}")
 
-        topic = []
+        topic: list[str] = []
         try:
             for _topic in json_dict["topic"]:
-                topic.append(convert_xdr(SCVal.from_xdr(_topic)))
+                topic.append(str(convert_xdr(SCVal.from_xdr(_topic))))
         finally:
-            json_dict["topic"] = topic
+            json_dict["topic"] = None
+            logging.warning(f"Error to convert the event topic {json_dict.get('topic')} id {json_dict['id']}")
 
         return SorobanEvent(**json_dict)
     
