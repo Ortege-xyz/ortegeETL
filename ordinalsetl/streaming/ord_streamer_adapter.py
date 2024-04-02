@@ -1,6 +1,6 @@
 import logging
 import json
-
+from ordinalsetl.rpc.ord_rpc import OrdRpc
 from ordinalsetl.streaming.ord_json_transformer import OrdJsonTransformer
 from blockchainetl.jobs.exporters.console_item_exporter import ConsoleItemExporter
 
@@ -8,7 +8,7 @@ from blockchainetl.jobs.exporters.console_item_exporter import ConsoleItemExport
 class OrdStreamerAdapter:
     def __init__(
             self,
-            ord_rpc,
+            ord_rpc: OrdRpc,
             item_exporter=ConsoleItemExporter(),
             batch_size=2,
             max_workers=5):

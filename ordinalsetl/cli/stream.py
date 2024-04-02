@@ -29,6 +29,7 @@ def stream(last_synced_block_file, lag, provider_uri, output, start_block,
     configure_logging(log_file)
     configure_signals()
 
+    from ordinalsetl.rpc.hiro_ord import HiroOrdAPI
     from ordinalsetl.rpc.ord_rpc import OrdRpc
     from ordinalsetl.streaming.ord_streamer_adapter import OrdStreamerAdapter
     from blockchainetl.jobs.exporters.console_item_exporter import ConsoleItemExporter
@@ -42,8 +43,13 @@ def stream(last_synced_block_file, lag, provider_uri, output, start_block,
             },
             message_attributes=('item_id',))
 
+    if provider_uri.find('api.hiro.so') != 1:
+        ord_rpc = HiroOrdAPI(provider_uri)
+    else:
+        ord_rpc = ThreadLocalProxy(lambda: OrdRpc(provider_uri))
+
     streamer_adapter = OrdStreamerAdapter(
-        ord_rpc=ThreadLocalProxy(lambda: OrdRpc(provider_uri)),
+        ord_rpc=ord_rpc,
         item_exporter=item_exporter,
         batch_size=batch_size,
         max_workers=max_workers
