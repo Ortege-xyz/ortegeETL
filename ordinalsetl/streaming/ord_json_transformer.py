@@ -9,7 +9,7 @@ class OrdJsonTransformer(object):
             'item_id': 'inscription_' + ins_json.get('inscription_id'),
             # Regular fields
             'inscription_id': ins_json.get('inscription_id'),
-            'inscription_number': ins_json.get('number'),
+            'number': ins_json.get('number'),
             'address': ins_json.get('address'),
             'genesis_address': ins_json.get('genesis_address'),
             'genesis_height': ins_json.get('genesis_height'),
