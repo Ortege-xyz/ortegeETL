@@ -16,6 +16,7 @@ class OrdJsonTransformer(object):
             'genesis_hash': ins_json.get('genesis_hash'),
             'genesis_tx_id': ins_json.get('genesis_tx_id'),
             'genesis_fee': ins_json.get('genesis_fee'),
+            'genesis_timestamp': ins_json.get('genesis_timestamp'),
             'value': ins_json.get('output_value'),
             'output': ins_json.get('output'),
             'offset': ins_json.get('offset'),
