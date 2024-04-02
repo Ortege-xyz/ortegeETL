@@ -39,7 +39,6 @@ class HiroOrdAPI(OrdRpc, ApiRequester):
             data = response.json()
             data['inscription_id'] = data.pop('id')
             return data
-        logging.error(f"response text {response.text}")
         return None
 
     def get_inscriptions_by_block(self, block_number: int):
