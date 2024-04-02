@@ -29,6 +29,7 @@ from ethereumetl.cli import evm
 from bitcoinetl.cli import btc
 from stacketl.cli import stacks
 from sorobanetl.cli import soroban
+from ordinalsetl.cli import ordinals
 
 
 @click.group()
@@ -38,11 +39,8 @@ def cli(ctx):
     pass
 
 
-def todo():
-    print("TODO")
-
-
 cli.add_command(evm)
 cli.add_command(btc)
 cli.add_command(stacks)
 cli.add_command(soroban)
+cli.add_command(ordinals)
