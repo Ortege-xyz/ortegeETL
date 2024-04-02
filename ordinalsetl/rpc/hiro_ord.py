@@ -1,4 +1,3 @@
-import logging
 from blockchainetl.api_requester import ApiRequester
 from ordinalsetl.rpc.ord_rpc import OrdRpc
 from typing import Optional
@@ -38,6 +37,7 @@ class HiroOrdAPI(OrdRpc, ApiRequester):
         if response.ok:
             data = response.json()
             data['inscription_id'] = data.pop('id')
+            data['genesis_height'] = data.pop('genesis_block_height')
             return data
         return None
 
