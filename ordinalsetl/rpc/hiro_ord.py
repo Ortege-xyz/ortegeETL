@@ -4,7 +4,7 @@ from typing import Optional
 
 GET_STATUS = "ordinals/v1/"
 GET_INSCRIPTION_ID = "ordinals/v1/inscriptions/{id}"
-GET_INSCRIPTION_TRANSFER = "ordinals/v1/inscriptions/transfers"
+GET_INSCRIPTIONS = "ordinals/v1/inscriptions"
 
 class HiroOrdAPI(OrdRpc, ApiRequester):
 
@@ -44,8 +44,8 @@ class HiroOrdAPI(OrdRpc, ApiRequester):
 
     def get_inscriptions_by_block(self, block_number: int):
         response = self._make_get_request(
-            GET_INSCRIPTION_TRANSFER,
-            params={'block': block_number},
+            GET_INSCRIPTIONS,
+            params={'genesis_block': block_number},
             headers=self.headers,
             timeout=self.timeout
         )
