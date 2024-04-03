@@ -39,6 +39,7 @@ class HiroOrdAPI(OrdRpc, ApiRequester):
             data['inscription_id'] = data.pop('id')
             data['genesis_height'] = data.pop('genesis_block_height')
             data['genesis_hash'] = data.pop('genesis_block_hash')
+            data['output_value'] = data.pop('value')
             return data
         return None
 
