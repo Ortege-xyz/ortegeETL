@@ -56,7 +56,11 @@ class AptosNodeApi(ApiRequester):
         """Get all blocks by the numbers"""
         blocks: list[AptosBlock] = []
         for block_dict in self._generate_blocks(blocks_numbers, with_transactions):
-            blocks.append(AptosBlock.from_dict(block_dict))
+            block = AptosBlock.from_dict(block_dict)
+            if with_transactions:
+                for transaction in block_dict['transactions']:
+                    block.transactions.append(AptosTransaction.from_dict(transaction))
+            blocks.append(block)
             
         return blocks
 
