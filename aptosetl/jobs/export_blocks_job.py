@@ -49,7 +49,7 @@ class ExportBlocksJob(BaseJob):
             self._export_block(block)
 
     def _export_block(self, block: AptosBlock):
-        if self.export_ledgers:
+        if self.export_blocks:
             self.item_exporter.export_item(block.to_dict())
         if self.export_transactions:
             for tx in block.transactions:
