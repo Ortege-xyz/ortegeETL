@@ -28,7 +28,7 @@ class AbiType(TypedDict):
     visibility: str
     is_entry: bool
     is_view: bool
-    generic_type_params: dict
+    generic_type_params: GenericTypeParams
     params: List[str]
     return_type: List[str]
 
@@ -118,7 +118,6 @@ class AptosTransaction:
         filtered_data["proposer"] = json_dict.get('proposer')
         filtered_data["failed_proposer_indices"] = json_dict.get('failed_proposer_indices')
         filtered_data["signature"] = json_dict.get('signature')
-        filtered_data["changes"] = json_dict.get('changes', [])
 
         events: TransactionEvents = json_dict.get('events')
         if events:
@@ -137,6 +136,14 @@ class AptosTransaction:
 
         filtered_data["payload"] = payload
 
+        changes: List[ChangesType] = json_dict.get('changes', [])
+        if changes:
+            for change in changes:
+                data = change.get("data")
+                if data:
+                    change['data'] = str(data)
+        filtered_data["changes"] = changes
+        
         return AptosTransaction(**filtered_data)
 
     def to_dict(self):
