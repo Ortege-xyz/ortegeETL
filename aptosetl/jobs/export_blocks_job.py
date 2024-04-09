@@ -43,7 +43,7 @@ class ExportBlocksJob(BaseJob):
         )
 
     def _export_batch(self, block_number_batch: list[int]):
-        blocks = self.aptos_node_api.get_blocks(block_number_batch[0], block_number_batch[-1], self.export_transactions)
+        blocks = self.aptos_node_api.get_blocks(block_number_batch, self.export_transactions)
 
         for block in blocks:
             self._export_block(block)
