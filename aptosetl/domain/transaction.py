@@ -4,10 +4,13 @@ from typing import Any, List, Optional, TypedDict
 class SignatureType(TypedDict):
     type: str
     public_key: str
-    signature: str
+    signature: Optional[str]
+    signatures: Optional[List[str]]
+    threshold: Optional[int]
+    bitmap: Optional[str]
 
 class GenericTypeParams(TypedDict):
-    constraints: list[str]
+    constraints: List[str]
 
 class AbiType(TypedDict):
     name: str
@@ -15,8 +18,8 @@ class AbiType(TypedDict):
     is_entry: bool
     is_view: bool
     generic_type_params: dict
-    params: list[str]
-    return_type: list[str]
+    params: List[str]
+    return_type: List[str]
 
 class CodeType(TypedDict):
     bytecode: str
@@ -24,8 +27,8 @@ class CodeType(TypedDict):
 
 class ScriptType(TypedDict):
     code: CodeType
-    type_arguments: list[str]
-    arguments: list[str]
+    type_arguments: List[str]
+    arguments: List[str]
 
 class WriteSetType(TypedDict):
     type: str
@@ -35,8 +38,8 @@ class WriteSetType(TypedDict):
 class TransactionPayload(TypedDict):
     type: str
     function: str
-    type_arguments: list[str]
-    arguments: list[str]
+    type_arguments: List[str]
+    arguments: List[str]
     write_set: WriteSetType
 
 class TransactionEventsGuid(TypedDict):
@@ -60,7 +63,7 @@ class AptosTransaction:
     success: bool
     vm_status: str
     accumulator_root_hash: str
-    changes: list[Any]
+    changes: List[Any]
     tx_type: str
     
     #optionals parameters
@@ -71,13 +74,13 @@ class AptosTransaction:
     round: Optional[str]
     previous_block_votes_bitvec: Optional[List[int]]
     proposer: Optional[str]
-    failed_proposer_indices: Optional[list[int]]
+    failed_proposer_indices: Optional[List[int]]
     timestamp: Optional[int]
     max_gas_amount: Optional[int]
     gas_unit_price: Optional[int]
     expiration_timestamp_secs: Optional[int]
     payload: Optional[TransactionPayload]
-    events: Optional[list[TransactionEvents]]
+    events: Optional[List[TransactionEvents]]
     signature: Optional[SignatureType]
 
     @staticmethod
@@ -111,7 +114,7 @@ class AptosTransaction:
                 event['data'] = str(event['data'])
                 return event
 
-            events = list(map(_convert_event, events))
+            events = List(map(_convert_event, events))
         filtered_data["events"] = events
         
         payload: TransactionPayload = json_dict.get('payload')
