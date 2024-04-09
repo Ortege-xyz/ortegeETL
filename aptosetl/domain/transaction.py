@@ -1,5 +1,15 @@
 from dataclasses import dataclass, asdict, fields
-from typing import Any, List, Optional
+from typing import Any, List, Optional, TypedDict
+
+class TransactionEventsGuid(TypedDict):
+    creation_number: int
+    account_address: str
+
+class TransactionEvents(TypedDict):
+    guid: TransactionEventsGuid
+    sequence_number: int
+    type: str
+    data: str
 
 @dataclass
 class AptosTransaction:
@@ -13,7 +23,6 @@ class AptosTransaction:
     vm_status: str
     accumulator_root_hash: str
     changes: list[Any]
-    events: Optional[list[Any]]
     tx_type: str
     
     #optionals parameters
@@ -30,6 +39,7 @@ class AptosTransaction:
     gas_unit_price: Optional[int]
     expiration_timestamp_secs: Optional[int]
     payload: Optional[dict]
+    events: Optional[list[TransactionEvents]]
 
     @staticmethod
     def from_dict(json_dict: dict):
@@ -55,13 +65,19 @@ class AptosTransaction:
         filtered_data["proposer"] = json_dict.get('proposer')
         filtered_data["failed_proposer_indices"] = json_dict.get('failed_proposer_indices')
         filtered_data["payload"] = json_dict.get('payload')
-        filtered_data["events"] = json_dict.get('events')
+
+        events = json_dict.get('events')
+        if events:
+            def _convert_event(event: dict[str, Any]):
+                event['data'] = str(event['data'])
+                return event
+
+            events = list(map(_convert_event, events))
+        filtered_data["events"] = events
 
         return AptosTransaction(**filtered_data)
-    
     def to_dict(self):
         transaction_dict = asdict(self)
         transaction_dict['type'] = "transaction"
 
         return transaction_dict
-
