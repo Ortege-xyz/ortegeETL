@@ -1,38 +1,40 @@
 from dataclasses import dataclass, asdict, fields
-from typing import Any, List, TypedDict
-
-class TransactionSignature(TypedDict):
-    type: str
-    public_key: str
-    signatura: str
-
-class TransactionPayload(TypedDict):
-    type: str
-    function: str
-    type_arguments: List[str]
-    arguments: List[Any]
+from typing import Any, List, Optional
 
 @dataclass
 class AptosTransaction:
     hash: str
-    sender: str
-    sequence_number: int
-    max_gas_amount: int
-    gas_unit_price: int
-    expiration_timestamp_secs: int
-    payload: TransactionPayload
-    signature: TransactionSignature
+    block_number: int
+    state_change_hash: str
+    event_root_hash: str
+    version: int
+    gas_used: int
+    success: bool
+    vm_status: str
+    accumulator_root_hash: str
+    changes: list[Any]
+    events: list[Any]
     tx_type: str
+    
+    #optionals parameters
+    state_checkpoint_hash: Optional[str]
+    payload: Optional[dict]
+    id: Optional[str]
+    epoch: Optional[str]
+    round: Optional[str]
+    previous_block_votes_bitvec: Optional[List[int]]
+    proposer: Optional[str]
+    failed_proposer_indices: Optional[list[str]]
+    timestamp: Optional[int]
 
     @staticmethod
     def from_dict(json_dict: dict):
         valid_fields = {field.name for field in fields(AptosTransaction)}
         filtered_data = {key: value for key, value in json_dict.items() if key in valid_fields} # Remove the extra keys in the dict
 
-        filtered_data["sequence_number"] = int(json_dict['sequence_number'])
-        filtered_data["max_gas_amount"] = int(json_dict['max_gas_amount'])
-        filtered_data["gas_unit_price"] = int(json_dict['gas_unit_price'])
-        filtered_data["expiration_timestamp_secs"] = int(json_dict['expiration_timestamp_secs'])
+        filtered_data["block_number"] = int(json_dict['block_number'])
+        filtered_data["version"] = int(json_dict['version'])
+        filtered_data["gas_used"] = int(json_dict['gas_used'])
         filtered_data["tx_type"] = json_dict['type']
 
         return AptosTransaction(**filtered_data)

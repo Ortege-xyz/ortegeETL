@@ -36,9 +36,9 @@ class AptosNodeApi(ApiRequester):
     def get_block(self, block_number: int, with_transactions: bool = False) -> dict[str, Any]:
         """Get the block by the number"""
         params = {
-            'with_transactions': with_transactions
+            'with_transactions': str(with_transactions).lower()
         }
-        
+
         response = self._make_get_request(
             endpoint=GET_BLOCK_BY_NUMBER.format(block_number=block_number),
             headers=self.headers,
@@ -59,6 +59,7 @@ class AptosNodeApi(ApiRequester):
             block = AptosBlock.from_dict(block_dict)
             if with_transactions:
                 for transaction in block_dict['transactions']:
+                    transaction['block_number'] = block.number
                     block.transactions.append(AptosTransaction.from_dict(transaction))
             blocks.append(block)
             
