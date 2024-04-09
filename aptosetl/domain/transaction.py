@@ -1,6 +1,17 @@
 from dataclasses import dataclass, asdict, fields
 from typing import Any, List, Optional, TypedDict
 
+class ChangesType(TypedDict):
+    type: str
+    address: Optional[str]
+    state_key_hash: str
+    module: Optional[str]
+    resource: Optional[str]
+    key: Optional[str]
+    handle: Optional[str]
+    value: Optional[str]
+    data: Optional[str]
+
 class SignatureType(TypedDict):
     type: str
     public_key: str
@@ -63,7 +74,7 @@ class AptosTransaction:
     success: bool
     vm_status: str
     accumulator_root_hash: str
-    changes: List[Any]
+    changes: List[ChangesType]
     tx_type: str
     
     #optionals parameters
@@ -107,6 +118,7 @@ class AptosTransaction:
         filtered_data["proposer"] = json_dict.get('proposer')
         filtered_data["failed_proposer_indices"] = json_dict.get('failed_proposer_indices')
         filtered_data["signature"] = json_dict.get('signature')
+        filtered_data["changes"] = json_dict.get('changes', [])
 
         events: TransactionEvents = json_dict.get('events')
         if events:
