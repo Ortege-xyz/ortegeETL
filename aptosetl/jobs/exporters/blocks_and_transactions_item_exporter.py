@@ -10,14 +10,31 @@ BLOCK_FIELDS_TO_EXPORT = [
 
 TRANSACTION_FIELDS_TO_EXPORT = [
     'hash',
+    'block_number',
+    'state_change_hash',
+    'event_root_hash',
+    'version',
+    'gas_used',
+    'success',
+    'vm_status',
+    'accumulator_root_hash',
+    'changes',
+    'tx_type',
     'sender',
-    'sequence_number',
+    'state_checkpoint_hash',
+    'id',
+    'epoch',
+    'round',
+    'previous_block_votes_bitvec',
+    'proposer',
+    'failed_proposer_indices',
+    'timestamp',
     'max_gas_amount',
     'gas_unit_price',
     'expiration_timestamp_secs',
     'payload',
+    'events',
     'signature',
-    'tx_type',
 ]
 
 def blocks_and_transactions_item_exporter(blocks_output=None, transactions_output=None):

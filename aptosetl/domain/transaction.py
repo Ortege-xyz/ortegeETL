@@ -138,6 +138,7 @@ class AptosTransaction:
         filtered_data["payload"] = payload
 
         return AptosTransaction(**filtered_data)
+
     def to_dict(self):
         transaction_dict = asdict(self)
         transaction_dict['type'] = "transaction"
