@@ -24,9 +24,9 @@ class AptosBlock:
         filtered_data["first_version"] = int(json_dict['first_version'])
         filtered_data["last_version"] = int(json_dict['last_version'])
         
-        json_dict["transactions"] = []
+        filtered_data["transactions"] = []
 
-        return AptosBlock(**json_dict)
+        return AptosBlock(**filtered_data)
     
     def to_dict(self):
         block_dict = asdict(self)
