@@ -1,6 +1,11 @@
 from dataclasses import dataclass, asdict, fields
 from typing import Any, List, Optional, TypedDict
 
+class SignatureType(TypedDict):
+    type: str
+    public_key: str
+    signature: str
+
 class GenericTypeParams(TypedDict):
     constraints: list[str]
 
@@ -71,8 +76,9 @@ class AptosTransaction:
     max_gas_amount: Optional[int]
     gas_unit_price: Optional[int]
     expiration_timestamp_secs: Optional[int]
-    payload: Optional[dict]
+    payload: Optional[TransactionPayload]
     events: Optional[list[TransactionEvents]]
+    signature: Optional[SignatureType]
 
     @staticmethod
     def from_dict(json_dict: dict):
@@ -97,6 +103,7 @@ class AptosTransaction:
         filtered_data["previous_block_votes_bitvec"] = json_dict.get('previous_block_votes_bitvec')
         filtered_data["proposer"] = json_dict.get('proposer')
         filtered_data["failed_proposer_indices"] = json_dict.get('failed_proposer_indices')
+        filtered_data["signature"] = json_dict.get('signature')
 
         events: TransactionEvents = json_dict.get('events')
         if events:
