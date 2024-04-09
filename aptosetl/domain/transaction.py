@@ -126,7 +126,7 @@ class AptosTransaction:
                 event['data'] = str(event['data'])
                 return event
 
-            events = List(map(_convert_event, events))
+            events = list(map(_convert_event, events))
         filtered_data["events"] = events
         
         payload: TransactionPayload = json_dict.get('payload')
