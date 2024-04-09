@@ -1,6 +1,39 @@
 from dataclasses import dataclass, asdict, fields
 from typing import Any, List, Optional, TypedDict
 
+class GenericTypeParams(TypedDict):
+    constraints: list[str]
+
+class AbiType(TypedDict):
+    name: str
+    visibility: str
+    is_entry: bool
+    is_view: bool
+    generic_type_params: dict
+    params: list[str]
+    return_type: list[str]
+
+class CodeType(TypedDict):
+    bytecode: str
+    abi: AbiType
+
+class ScriptType(TypedDict):
+    code: CodeType
+    type_arguments: list[str]
+    arguments: list[str]
+
+class WriteSetType(TypedDict):
+    type: str
+    execute_as: str
+    script: ScriptType
+
+class TransactionPayload(TypedDict):
+    type: str
+    function: str
+    type_arguments: list[str]
+    arguments: list[str]
+    write_set: WriteSetType
+
 class TransactionEventsGuid(TypedDict):
     creation_number: int
     account_address: str
@@ -64,9 +97,8 @@ class AptosTransaction:
         filtered_data["previous_block_votes_bitvec"] = json_dict.get('previous_block_votes_bitvec')
         filtered_data["proposer"] = json_dict.get('proposer')
         filtered_data["failed_proposer_indices"] = json_dict.get('failed_proposer_indices')
-        filtered_data["payload"] = json_dict.get('payload')
 
-        events = json_dict.get('events')
+        events: TransactionEvents = json_dict.get('events')
         if events:
             def _convert_event(event: dict[str, Any]):
                 event['data'] = str(event['data'])
@@ -74,6 +106,14 @@ class AptosTransaction:
 
             events = list(map(_convert_event, events))
         filtered_data["events"] = events
+        
+        payload: TransactionPayload = json_dict.get('payload')
+        if payload:
+            payload_write_set = payload.get('write_set')
+            if payload_write_set is not None and payload_write_set.get('script', {}).get('code', {}).get('abi', {}).get('return'):
+               payload_write_set['script']['code']['abi']['return_type'] = payload_write_set.get('script', {}).get('code', {}).get('abi', {}).get('return')
+
+        filtered_data["payload"] = payload
 
         return AptosTransaction(**filtered_data)
     def to_dict(self):
