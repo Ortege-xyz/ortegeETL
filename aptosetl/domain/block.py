@@ -18,7 +18,7 @@ class AptosBlock:
         valid_fields = {field.name for field in fields(AptosTransaction)}
         filtered_data = {key: value for key, value in json_dict.items() if key in valid_fields} # Remove the extra keys in the dict
 
-        filtered_data["hash"] = int(json_dict['block_hash'])
+        filtered_data["hash"] = json_dict['block_hash']
         filtered_data["number"] = int(json_dict['block_height'])
         filtered_data["timestamp"] = int(json_dict['max_gas_amount'])
         filtered_data["first_version"] = int(json_dict['block_timestamp'])
