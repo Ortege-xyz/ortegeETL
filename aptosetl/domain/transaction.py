@@ -46,18 +46,27 @@ class WriteSetType(TypedDict):
     execute_as: str
     script: ScriptType
 
-class TransactionPayload(TypedDict):
+class TransactionPayloadTransaction(TypedDict):
     type: str
     function: str
     type_arguments: List[str]
     arguments: List[str]
-    write_set: WriteSetType
+
+class TransactionPayload(TypedDict):
+    type: str
+    function: Optional[str]
+    type_arguments: Optional[List[str]]
+    arguments: Optional[List[str]]
+    multisig_address: Optional[str]
+    transaction_payload: Optional[TransactionPayloadTransaction]
+    write_set: Optional[WriteSetType]
+    code: Optional[CodeType]
 
 class TransactionEventsGuid(TypedDict):
     creation_number: int
     account_address: str
 
-class TransactionEvents(TypedDict):
+class TransactionEvent(TypedDict):
     guid: TransactionEventsGuid
     sequence_number: int
     type: str
@@ -91,7 +100,7 @@ class AptosTransaction:
     gas_unit_price: Optional[int]
     expiration_timestamp_secs: Optional[int]
     payload: Optional[TransactionPayload]
-    events: Optional[List[TransactionEvents]]
+    events: Optional[List[TransactionEvent]]
     signature: Optional[SignatureType]
 
     @staticmethod
@@ -119,10 +128,11 @@ class AptosTransaction:
         filtered_data["failed_proposer_indices"] = json_dict.get('failed_proposer_indices')
         filtered_data["signature"] = json_dict.get('signature')
 
-        events: TransactionEvents = json_dict.get('events')
+        events: Optional[List[TransactionEvent]] = json_dict.get('events')
         if events:
-            def _convert_event(event: dict[str, Any]):
+            def _convert_event(event: TransactionEvent):
                 event['data'] = str(event['data'])
+                event['sequence_number'] = int(event['sequence_number'] )
                 return event
 
             events = list(map(_convert_event, events))
@@ -130,10 +140,33 @@ class AptosTransaction:
         
         payload: TransactionPayload = json_dict.get('payload')
         if payload:
+            def convert_code(code: CodeType):
+                code['abi']['return_type'] = code.get('abi', {}).get('return')
+                return code
+
             payload_write_set = payload.get('write_set')
             if payload_write_set is not None and payload_write_set.get('script', {}).get('code', {}).get('abi', {}).get('return'):
-               payload_write_set['script']['code']['abi']['return_type'] = payload_write_set.get('script', {}).get('code', {}).get('abi', {}).get('return')
+               payload_write_set['script']['code'] = convert_code(payload_write_set.get('script', {}).get('code', {}))
 
+            payload_arguments = payload.get('arguments')
+            if payload_arguments:
+                for i, payload_argument in enumerate(payload_arguments):
+                    payload_arguments[i] = str(payload_argument)
+                    
+            payload_code = payload.get('code')
+            if payload_code:
+                payload_code = convert_code(payload_write_set.get('script', {}).get('code', {}))
+                
+            payload_transaction_payload = payload.get('transaction_payload')
+            if payload_transaction_payload:
+                for i, payload_argument in enumerate(payload_transaction_payload['arguments']):
+                    payload_transaction_payload['arguments'][i] = str(payload_argument)
+
+            payload['write_set'] = payload_write_set
+            payload['arguments'] = payload_arguments
+            payload['code'] = payload_code
+            payload['transaction_payload'] = payload_transaction_payload
+            
         filtered_data["payload"] = payload
 
         changes: List[ChangesType] = json_dict.get('changes', [])
