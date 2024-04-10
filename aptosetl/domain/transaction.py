@@ -132,7 +132,8 @@ class AptosTransaction:
         if events:
             def _convert_event(event: TransactionEvent):
                 event['data'] = str(event['data'])
-                event['sequence_number'] = int(event['sequence_number'] )
+                event['sequence_number'] = int(event['sequence_number'])
+                event['guid']['creation_number'] = int(event['guid']['creation_number'])
                 return event
 
             events = list(map(_convert_event, events))
