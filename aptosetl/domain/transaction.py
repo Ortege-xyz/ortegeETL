@@ -1,6 +1,16 @@
 from dataclasses import dataclass, asdict, fields
 from typing import Any, List, Optional, TypedDict
 
+class TransactionEventsGuid(TypedDict):
+    creation_number: int
+    account_address: str
+
+class TransactionEvent(TypedDict):
+    guid: TransactionEventsGuid
+    sequence_number: int
+    type: str
+    data: str
+
 class ChangesType(TypedDict):
     type: str
     address: Optional[str]
@@ -43,8 +53,10 @@ class ScriptType(TypedDict):
 
 class WriteSetType(TypedDict):
     type: str
-    execute_as: str
-    script: ScriptType
+    execute_as: Optional[str]
+    script: Optional[str]
+    changes: Optional[List[str]]
+    events: Optional[List[TransactionEvent]]
 
 class TransactionPayloadTransaction(TypedDict):
     type: str
@@ -61,16 +73,6 @@ class TransactionPayload(TypedDict):
     transaction_payload: Optional[TransactionPayloadTransaction]
     write_set: Optional[WriteSetType]
     code: Optional[CodeType]
-
-class TransactionEventsGuid(TypedDict):
-    creation_number: int
-    account_address: str
-
-class TransactionEvent(TypedDict):
-    guid: TransactionEventsGuid
-    sequence_number: int
-    type: str
-    data: str
 
 @dataclass
 class AptosTransaction:
@@ -129,14 +131,16 @@ class AptosTransaction:
         filtered_data["signature"] = json_dict.get('signature')
 
         events: Optional[List[TransactionEvent]] = json_dict.get('events')
-        if events:
-            def _convert_event(event: TransactionEvent):
+
+        def _convert_event(event: TransactionEvent):
                 event['data'] = str(event['data'])
                 event['sequence_number'] = int(event['sequence_number'])
                 event['guid']['creation_number'] = int(event['guid']['creation_number'])
                 return event
 
+        if events:
             events = list(map(_convert_event, events))
+
         filtered_data["events"] = events
         
         payload: TransactionPayload = json_dict.get('payload')
@@ -146,8 +150,16 @@ class AptosTransaction:
                 return code
 
             payload_write_set = payload.get('write_set')
-            if payload_write_set is not None and payload_write_set.get('script', {}).get('code', {}).get('abi', {}).get('return'):
-               payload_write_set['script']['code'] = convert_code(payload_write_set.get('script', {}).get('code', {}))
+            if payload_write_set:
+                if payload_write_set.get('script', {}).get('code', {}).get('abi', {}).get('return'):
+                    payload_write_set['script']['code'] = convert_code(payload_write_set.get('script', {}).get('code', {}))
+
+                if payload_write_set.get('changes'):
+                    for i, change in enumerate(changes):
+                        payload_write_set['changes'][i] = str(change)
+
+                if payload_write_set.get('events'):
+                    payload_write_set['events'] = list(map(_convert_event, payload_write_set['events']))
 
             payload_arguments = payload.get('arguments')
             if payload_arguments:
