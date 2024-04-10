@@ -3,7 +3,7 @@ import logging
 from blockchainetl.thread_local_proxy import ThreadLocalProxy
 from aptosetl.api.aptos_node import AptosNodeApi
 from aptosetl.jobs.export_blocks_job import ExportBlocksJob
-from sorobanetl.streaming.soroban_item_id_calculator import SorobanItemIdCalculator
+from aptosetl.streaming.aptos_item_id_calculator import AptosItemIdCalculator
 from blockchainetl.jobs.exporters.console_item_exporter import ConsoleItemExporter
 from blockchainetl.jobs.exporters.in_memory_item_exporter import InMemoryItemExporter
 
@@ -24,7 +24,7 @@ class AptosStreamerAdapter:
         self.enable_blocks = enable_blocks
         self.enable_transactions = enable_transactions
         self.max_workers = max_workers
-        self.item_id_calculator = SorobanItemIdCalculator()
+        self.item_id_calculator = AptosItemIdCalculator()
 
     def open(self):
         self.item_exporter.open()
