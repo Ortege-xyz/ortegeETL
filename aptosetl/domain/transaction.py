@@ -155,7 +155,7 @@ class AptosTransaction:
                     payload_write_set['script']['code'] = convert_code(payload_write_set.get('script', {}).get('code', {}))
 
                 if payload_write_set.get('changes'):
-                    for i, change in enumerate(changes):
+                    for i, change in enumerate(payload_write_set['changes']):
                         payload_write_set['changes'][i] = str(change)
 
                 if payload_write_set.get('events'):
