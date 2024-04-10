@@ -32,18 +32,18 @@ class AptosStreamerAdapter:
     def get_current_block_number(self):
         return self.aptos_node_api.get_latest_block()
 
-    def export_all(self, start_ledger, end_ledger):
+    def export_all(self, start_block, end_block):
         # Export blocks and transactions
         blocks_and_transactions_item_exporter = InMemoryItemExporter(item_types=['block', 'transaction'])
 
         blocks_and_transactions_job = ExportBlocksJob(
-            start_ledger=start_ledger,
-            end_ledger=end_ledger,
+            start_block=start_block,
+            end_block=end_block,
             batch_size=self.batch_size,
-            horizon_api=self.horizon_api,
+            aptos_node_api=self.aptos_node_api,
             max_workers=self.max_workers,
             item_exporter=blocks_and_transactions_item_exporter,
-            export_ledgers=self.enable_ledgers,
+            export_blocks=self.enable_blocks,
             export_transactions=self.enable_transactions,
         )
         blocks_and_transactions_job.run()
