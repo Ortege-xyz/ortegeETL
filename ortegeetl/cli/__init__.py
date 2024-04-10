@@ -30,6 +30,7 @@ from bitcoinetl.cli import btc
 from stacketl.cli import stacks
 from sorobanetl.cli import soroban
 from ordinalsetl.cli import ordinals
+from aptosetl.cli import aptos
 
 
 @click.group()
@@ -44,3 +45,4 @@ cli.add_command(btc)
 cli.add_command(stacks)
 cli.add_command(soroban)
 cli.add_command(ordinals)
+cli.add_command(aptos)

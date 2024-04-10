@@ -5,7 +5,7 @@ from sorobanetl.cli.export_ledgers_and_transactions import export_ledgers_and_tr
 
 @click.group()
 def soroban():
-    """All commands related with stack-like chains."""
+    """All commands related with stellar-like chains."""
     pass
 
 soroban.add_command(export_ledgers_and_transactions, "export_ledgers_and_transactions")
