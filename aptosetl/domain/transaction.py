@@ -168,7 +168,7 @@ class AptosTransaction:
                     
             payload_code = payload.get('code')
             if payload_code:
-                payload_code = convert_code(payload_write_set.get('script', {}).get('code', {}))
+                payload_code = convert_code(payload_code)
                 
             payload_transaction_payload = payload.get('transaction_payload')
             if payload_transaction_payload:
