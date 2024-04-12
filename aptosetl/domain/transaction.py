@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass, asdict, fields
 from typing import Any, List, Optional, TypedDict
 
@@ -133,10 +134,15 @@ class AptosTransaction:
         events: Optional[List[TransactionEvent]] = json_dict.get('events')
 
         def _convert_event(event: TransactionEvent):
-                event['data'] = str(event['data'])
-                event['sequence_number'] = int(event['sequence_number'])
-                event['guid']['creation_number'] = int(event['guid']['creation_number'])
-                return event
+            data = event['data']
+            if isinstance(data, list, dict):
+                event['data'] = json.dumps(data)
+            else:
+                event['data'] = str(data)
+
+            event['sequence_number'] = int(event['sequence_number'])
+            event['guid']['creation_number'] = int(event['guid']['creation_number'])
+            return event
 
         if events:
             events = list(map(_convert_event, events))
