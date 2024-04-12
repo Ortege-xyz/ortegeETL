@@ -203,19 +203,19 @@ class AptosTransaction:
             for change in changes:
                 data: ChangesDataType = change.get("data")
                 if data:
-                    if change['data']['abi']:
+                    if change['data'].get('abi'):
                         abi: Any = change['data']['abi']
                         change['data']['abi'] = json.dumps(abi) if isinstance(abi, (list, dict)) else str(abi)
                     
-                    if change['data']['value']:
+                    if change['data'].get('value'):
                         data_value: Any = change['data']['value']
                         change['data']['value'] = json.dumps(data_value) if isinstance(data_value, (list, dict)) else str(data_value)
 
-                    if change['data']['data']:
+                    if change['data'].get('data'):
                         data_data: Any = change['data']['data']
                         change['data']['data'] = json.dumps(data_data) if isinstance(data_data, (list, dict)) else str(data_data)
 
-                    if change['data']['key']:
+                    if change['data'].get('key'):
                         data_key = change['data']['key']
                         change['data']['key'] = json.dumps(data_key) if isinstance(data_key, (list, dict)) else str(data_key)
         filtered_data["changes"] = changes
