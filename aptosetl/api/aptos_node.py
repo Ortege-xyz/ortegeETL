@@ -17,7 +17,7 @@ class AptosNodeApi(ApiRequester):
         See more in https://fullnode.devnet.aptoslabs.com/v1/spec#/
     """
     def __init__(self, api_url: str):
-        rate_limit = 1 # 1 request per second
+        rate_limit = 15 # 15 request per second https://aptos.dev/apis/fullnode-rest-api/#understanding-rate-limitsre
 
         super().__init__(api_url, api_key=None, rate_limit=rate_limit)
 

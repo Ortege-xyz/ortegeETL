@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass, asdict, fields
 from typing import Any, List, Optional, TypedDict
 
@@ -10,17 +11,6 @@ class TransactionEvent(TypedDict):
     sequence_number: int
     type: str
     data: str
-
-class ChangesType(TypedDict):
-    type: str
-    address: Optional[str]
-    state_key_hash: str
-    module: Optional[str]
-    resource: Optional[str]
-    key: Optional[str]
-    handle: Optional[str]
-    value: Optional[str]
-    data: Optional[str]
 
 class SignatureType(TypedDict):
     type: str
@@ -73,6 +63,27 @@ class TransactionPayload(TypedDict):
     transaction_payload: Optional[TransactionPayloadTransaction]
     write_set: Optional[WriteSetType]
     code: Optional[CodeType]
+
+class ChangesDataType(TypedDict):
+    key: Optional[str]
+    key_type: Optional[str]
+    type: Optional[str]
+    data: Optional[str]
+    value: Optional[str]
+    value_type: Optional[str]
+    bytecode: Optional[str]
+    abi: Optional[str]
+
+class ChangesType(TypedDict):
+    type: str
+    address: Optional[str]
+    state_key_hash: str
+    module: Optional[str]
+    resource: Optional[str]
+    key: Optional[str]
+    handle: Optional[str]
+    value: Optional[str]
+    data: Optional[ChangesDataType]
 
 @dataclass
 class AptosTransaction:
@@ -133,10 +144,15 @@ class AptosTransaction:
         events: Optional[List[TransactionEvent]] = json_dict.get('events')
 
         def _convert_event(event: TransactionEvent):
-                event['data'] = str(event['data'])
-                event['sequence_number'] = int(event['sequence_number'])
-                event['guid']['creation_number'] = int(event['guid']['creation_number'])
-                return event
+            data = event['data']
+            if isinstance(data, (list, dict)):
+                event['data'] = json.dumps(data)
+            else:
+                event['data'] = str(data)
+
+            event['sequence_number'] = int(event['sequence_number'])
+            event['guid']['creation_number'] = int(event['guid']['creation_number'])
+            return event
 
         if events:
             events = list(map(_convert_event, events))
@@ -185,9 +201,23 @@ class AptosTransaction:
         changes: List[ChangesType] = json_dict.get('changes', [])
         if changes:
             for change in changes:
-                data = change.get("data")
+                data: ChangesDataType = change.get("data")
                 if data:
-                    change['data'] = str(data)
+                    if change['data'].get('abi'):
+                        abi: Any = change['data']['abi']
+                        change['data']['abi'] = json.dumps(abi) if isinstance(abi, (list, dict)) else str(abi)
+                    
+                    if change['data'].get('value'):
+                        data_value: Any = change['data']['value']
+                        change['data']['value'] = json.dumps(data_value) if isinstance(data_value, (list, dict)) else str(data_value)
+
+                    if change['data'].get('data'):
+                        data_data: Any = change['data']['data']
+                        change['data']['data'] = json.dumps(data_data) if isinstance(data_data, (list, dict)) else str(data_data)
+
+                    if change['data'].get('key'):
+                        data_key = change['data']['key']
+                        change['data']['key'] = json.dumps(data_key) if isinstance(data_key, (list, dict)) else str(data_key)
         filtered_data["changes"] = changes
         
         return AptosTransaction(**filtered_data)
