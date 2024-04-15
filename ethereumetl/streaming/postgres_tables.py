@@ -49,6 +49,9 @@ BLOCKS = Table(
     Column('gas_used', BigInteger),
     Column('transaction_count', BigInteger),
     Column('base_fee_per_gas', BigInteger),
+    Column('withdrawals_root', String),
+    Column('blob_gas_used', BigInteger),
+    Column('excess_blob_gas', BigInteger),
 )
 
 TRANSACTIONS = Table(
@@ -78,6 +81,10 @@ TRANSACTIONS = Table(
     Column('receipt_l1_gas_used', BigInteger),
     Column('receipt_l1_gas_price', BigInteger),
     Column('receipt_l1_fee_scalar', Float),
+    Column('max_fee_per_blob_gas', BigInteger),
+    Column('blob_versioned_hashes', String),
+    Column('receipt_blob_gas_price', BigInteger),
+    Column('receipt_blob_gas_used', BigInteger),
 )
 
 LOGS = Table(
