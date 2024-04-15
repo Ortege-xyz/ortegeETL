@@ -30,8 +30,10 @@
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 
-
 class SimpleItemConverter:
+
+    def __init__(self, field_converters=None):
+        self.field_converters = field_converters
 
     def convert_item(self, item):
         return {
@@ -39,4 +41,7 @@ class SimpleItemConverter:
         }
 
     def convert_field(self, key, value):
-        return value
+        if self.field_converters is not None and key in self.field_converters:
+            return self.field_converters[key](value)
+        else:
+            return value
