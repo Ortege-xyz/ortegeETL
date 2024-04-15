@@ -44,7 +44,9 @@ BLOCK_FIELDS_TO_EXPORT = [
     'transaction_count',
     'base_fee_per_gas',
     'withdrawals_root',
-    'withdrawals'
+    'withdrawals',
+    'blob_gas_used',
+    'excess_blob_gas'
 ]
 
 TRANSACTION_FIELDS_TO_EXPORT = [

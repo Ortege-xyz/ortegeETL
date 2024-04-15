@@ -76,7 +76,9 @@ def enrich_transactions(transactions, receipts):
             'block_hash',
             'max_fee_per_gas',
             'max_priority_fee_per_gas',
-            'transaction_type'
+            'transaction_type',
+            'max_fee_per_blob_gas',
+            'blob_versioned_hashes'
         ],
         right_fields=[
             ('cumulative_gas_used', 'receipt_cumulative_gas_used'),
@@ -88,8 +90,9 @@ def enrich_transactions(transactions, receipts):
             ('l1_fee', 'receipt_l1_fee'),
             ('l1_gas_used', 'receipt_l1_gas_used'),
             ('l1_gas_price', 'receipt_l1_gas_price'),
-            ('l1_fee_scalar', 'receipt_l1_fee_scalar')
-
+            ('l1_fee_scalar', 'receipt_l1_fee_scalar'),
+            ('blob_gas_price', 'receipt_blob_gas_price'),
+            ('blob_gas_used', 'receipt_blob_gas_used')
         ]))
 
     if len(result) != len(transactions):

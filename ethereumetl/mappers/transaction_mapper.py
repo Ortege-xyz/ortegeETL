@@ -44,7 +44,10 @@ class EthTransactionMapper(object):
         transaction.max_priority_fee_per_gas = hex_to_dec(json_dict.get('maxPriorityFeePerGas'))
         transaction.transaction_type = hex_to_dec(json_dict.get('type'))
         transaction.max_fee_per_blob_gas = hex_to_dec(json_dict.get('maxFeePerBlobGas'))
-        transaction.blob_versioned_hashes += json_dict.get('blobVersionedHashes', [])
+
+        if 'blobVersionedHashes' in json_dict and isinstance(json_dict['blobVersionedHashes'], list):
+            transaction.blob_versioned_hashes = json_dict['blobVersionedHashes']
+
         return transaction
 
     def transaction_to_dict(self, transaction):
