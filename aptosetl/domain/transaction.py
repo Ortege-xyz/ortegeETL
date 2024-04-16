@@ -130,7 +130,7 @@ class AptosTransaction:
         filtered_data["gas_unit_price"] = int(json_dict.get('gas_unit_price')) if json_dict.get('gas_unit_price') else None
         filtered_data["expiration_timestamp_secs"] = int(json_dict.get('expiration_timestamp_secs')) if json_dict.get('expiration_timestamp_secs') else None
         # the timestamp in microseconds we need to divide to get the seconds
-        filtered_data["timestamp"] = int(json_dict.get('timestamp')) / 1_000_000 if json_dict.get('timestamp') else None
+        filtered_data["timestamp"] = int(json_dict.get('timestamp')) // 1_000_000 if json_dict.get('timestamp') else None
 
         filtered_data["sender"] = json_dict.get('sender')
         filtered_data["state_checkpoint_hash"] = json_dict.get('state_checkpoint_hash')
