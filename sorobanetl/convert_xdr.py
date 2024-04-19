@@ -1,3 +1,4 @@
+import json
 from stellar_sdk import StrKey
 from stellar_sdk.xdr import (
     Int32,
@@ -122,8 +123,12 @@ def convert_xdr(value: object, value_name: Optional[str] = None):
         for attr_value in value_Dict.values():
             if attr_value is None:
                 continue
+            sc_value = convert_xdr(attr_value)
             
-            return convert_xdr(attr_value)
+            if isinstance(sc_value, (dict, list)):
+                return json.dumps(sc_value)   
+
+            return sc_value
         return None
     if isinstance(value, (List, tuple, set)):
         return [convert_xdr(item) for item in value]
