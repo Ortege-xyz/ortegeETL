@@ -140,7 +140,7 @@ def convert_xdr(value: object, value_name: Optional[str] = None):
             if item is not None:
                 coverted_item = convert_xdr(item)
                 if coverted_item is not None:
-                    items.append(item)
+                    items.append(coverted_item)
         return items
     if isinstance(value, (bytes, bytearray)):
         return value.hex()
