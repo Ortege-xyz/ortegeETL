@@ -104,7 +104,9 @@ def convert_xdr(value: object, value_name: Optional[str] = None):
     if isinstance(value, SCVec):
         vec: List[Any] = []
         for vec_value in value.sc_vec:
-            vec.append(convert_xdr(vec_value))
+            _vec_value = convert_xdr(vec_value)
+            if _vec_value is not None:
+                vec.append(_vec_value)
         return vec
     if isinstance(value, SCMap):
         sc_map: Dict[str, Any] = {}
@@ -132,7 +134,7 @@ def convert_xdr(value: object, value_name: Optional[str] = None):
                 return sc_value
         return None
     if isinstance(value, (List, tuple, set)):
-        return [convert_xdr(item) for item in value if value is not None]
+        return [convert_xdr(item) for item in value if item is not None]
     if isinstance(value, (bytes, bytearray)):
         return value.hex()
     if isinstance(value, (int, float, str, bool)):
