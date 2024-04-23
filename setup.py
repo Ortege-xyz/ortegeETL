@@ -11,7 +11,7 @@ long_description = read('README.md') if os.path.isfile("README.md") else ""
 
 setup(
     name='ortegeetl',
-    version='1.4.7',
+    version='1.4.8',
     author='Ortege',
     author_email='',
     description='Tools for exporting Blockchain data to CSV or JSON',
