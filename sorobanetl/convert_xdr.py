@@ -128,10 +128,11 @@ def convert_xdr(value: object, value_name: Optional[str] = None):
             if isinstance(sc_value, (dict, list)):
                 return json.dumps(sc_value)   
 
-            return sc_value
-        return "null"
+            if sc_value is not None:
+                return sc_value
+        return None
     if isinstance(value, (List, tuple, set)):
-        return [convert_xdr(item) for item in value]
+        return [convert_xdr(item) for item in value if value is not None]
     if isinstance(value, (bytes, bytearray)):
         return value.hex()
     if isinstance(value, (int, float, str, bool)):
