@@ -120,8 +120,9 @@ def convert_xdr(value: object, value_name: Optional[str] = None):
         return value.nonce.int64
     if isinstance(value, SCVal):
         value_Dict = value.__dict__
-        del value_Dict['type']
-        
+        if value_Dict.get('type') is not None:
+            del value_Dict['type']
+
         for attr_value in value_Dict.values():
             if attr_value is None:
                 continue
