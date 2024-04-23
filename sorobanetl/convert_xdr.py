@@ -129,7 +129,7 @@ def convert_xdr(value: object, value_name: Optional[str] = None):
                 return json.dumps(sc_value)   
 
             return sc_value
-        return None
+        return "null"
     if isinstance(value, (List, tuple, set)):
         return [convert_xdr(item) for item in value]
     if isinstance(value, (bytes, bytearray)):
