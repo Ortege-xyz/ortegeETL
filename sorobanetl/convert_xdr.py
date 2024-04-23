@@ -134,7 +134,13 @@ def convert_xdr(value: object, value_name: Optional[str] = None):
                 return sc_value
         return None
     if isinstance(value, (List, tuple, set)):
-        return [convert_xdr(item) for item in value if item is not None]
+        items = []
+        for item in value:
+            if item is not None:
+                coverted_item = convert_xdr(item)
+                if coverted_item is not None:
+                    items.append(item)
+        return items
     if isinstance(value, (bytes, bytearray)):
         return value.hex()
     if isinstance(value, (int, float, str, bool)):
