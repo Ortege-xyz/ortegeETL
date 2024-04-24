@@ -1,5 +1,5 @@
-from sorobanetl.api.horizon_api import HorizonApi
-from sorobanetl.domain.ledger import SorobanLedger
+from stellaretl.api.horizon_api import HorizonApi
+from stellaretl.domain.ledger import StellarLedger
 from blockchainetl.executors.batch_work_executor import BatchWorkExecutor
 from blockchainetl.jobs.base_job import BaseJob
 from blockchainetl.utils import validate_range
@@ -61,7 +61,7 @@ class ExportLedgersJob(BaseJob):
         for ledger in ledgers:
             self._export_ledger(ledger)
 
-    def _export_ledger(self, ledger: SorobanLedger):
+    def _export_ledger(self, ledger: StellarLedger):
         if self.export_ledgers:
             self.item_exporter.export_item(ledger.ledger_to_dict())
         if self.export_transactions:

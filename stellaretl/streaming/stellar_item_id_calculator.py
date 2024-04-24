@@ -2,7 +2,7 @@ import json
 import logging
 
 
-class SorobanItemIdCalculator:
+class StellarItemIdCalculator:
 
     def calculate(self, item):
         if item is None or not isinstance(item, dict):

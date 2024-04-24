@@ -1,10 +1,10 @@
-from sorobanetl.api.soroban_rpc import SorobanRpc
-from sorobanetl.domain.event import SorobanEvent
+from stellaretl.api.soroban_rpc import SorobanRpc
+from stellaretl.domain.event import SorobanEvent
 from blockchainetl.executors.batch_work_executor import BatchWorkExecutor
 from blockchainetl.jobs.base_job import BaseJob
 from blockchainetl.utils import validate_range
 from blockchainetl.classes.base_item_exporter import BaseItemExporter
-from sorobanetl.service.soroban_service import SorobanService
+from stellaretl.service.soroban_service import SorobanService
 
 # Exports events
 class ExportEventsJob(BaseJob):

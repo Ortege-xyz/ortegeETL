@@ -3,7 +3,7 @@ from datetime import datetime
 from stellar_sdk.xdr import FeeBumpTransaction, TransactionResult, TransactionEnvelope
 from typing import Any, List, Dict, TypedDict, Optional
 
-from sorobanetl.convert_xdr import convert_xdr
+from stellaretl.convert_xdr import convert_xdr
 
 class Timebounds(TypedDict):
     min_time: Optional[str]
@@ -23,7 +23,7 @@ class Preconditions(TypedDict):
 
 
 @dataclass
-class SorobanTransaction:
+class StellarTransaction:
     id: str
     paging_token: str
     successful: bool
@@ -57,7 +57,7 @@ class SorobanTransaction:
         timestamp_obj = datetime.fromisoformat(json_dict["created_at"].rstrip("Z"))
         json_dict["timestamp"] = int(timestamp_obj.timestamp())
 
-        valid_fields = {field.name for field in fields(SorobanTransaction)}
+        valid_fields = {field.name for field in fields(StellarTransaction)}
         filtered_data = {key: value for key, value in json_dict.items() if key in valid_fields} # Remove the extra keys in the dict
 
         valid_after = filtered_data.get("valid_after")
@@ -93,7 +93,7 @@ class SorobanTransaction:
         except:
             filtered_data["fee_meta"] = None
 
-        return SorobanTransaction(**filtered_data)
+        return StellarTransaction(**filtered_data)
     
     def transaction_to_dict(self):
         transaction_dict = asdict(self)

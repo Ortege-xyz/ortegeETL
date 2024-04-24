@@ -1,15 +1,15 @@
 import logging
 
 from blockchainetl.thread_local_proxy import ThreadLocalProxy
-from sorobanetl.api.horizon_api import HorizonApi
-from sorobanetl.api.soroban_rpc import SorobanRpc
-from sorobanetl.jobs.export_events_job import ExportEventsJob
-from sorobanetl.jobs.export_ledgers_job import ExportLedgersJob
-from sorobanetl.streaming.soroban_item_id_calculator import SorobanItemIdCalculator
+from stellaretl.api.horizon_api import HorizonApi
+from stellaretl.api.soroban_rpc import SorobanRpc
+from stellaretl.jobs.export_events_job import ExportEventsJob
+from stellaretl.jobs.export_ledgers_job import ExportLedgersJob
+from stellaretl.streaming.stellar_item_id_calculator import StellarItemIdCalculator
 from blockchainetl.jobs.exporters.console_item_exporter import ConsoleItemExporter
 from blockchainetl.jobs.exporters.in_memory_item_exporter import InMemoryItemExporter
 
-class SorobanStreamerAdapter:
+class StellarStreamerAdapter:
     def __init__(
             self,
             api_url: str,
@@ -30,7 +30,7 @@ class SorobanStreamerAdapter:
         self.enable_transactions = enable_transactions
         self.enable_events = enable_events
         self.max_workers = max_workers
-        self.item_id_calculator = SorobanItemIdCalculator()
+        self.item_id_calculator = StellarItemIdCalculator()
 
     def open(self):
         self.item_exporter.open()
