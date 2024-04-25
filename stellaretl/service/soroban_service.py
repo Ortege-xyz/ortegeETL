@@ -1,7 +1,7 @@
-from sorobanetl.api.soroban_rpc import SorobanRpc
+from stellaretl.api.soroban_rpc import SorobanRpc
 from typing import Any, Optional, Union
 
-from sorobanetl.domain.event import SorobanEvent
+from stellaretl.domain.event import SorobanEvent
 
 class SorobanService():
     def __init__(self, soroban_rpc: SorobanRpc):

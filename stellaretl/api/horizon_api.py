@@ -1,7 +1,7 @@
 from typing import Any
 
-from sorobanetl.domain.ledger import SorobanLedger
-from sorobanetl.domain.transaction import SorobanTransaction
+from stellaretl.domain.ledger import StellarLedger
+from stellaretl.domain.transaction import StellarTransaction
 from blockchainetl.api_requester import ApiRequester
 
 TRANSACTION_LIMIT = 200
@@ -27,13 +27,13 @@ class HorizonApi(ApiRequester):
             'Accept': 'application/json'
         }
 
-    def get_latest_ledger(self) -> SorobanLedger:
+    def get_latest_ledger(self) -> StellarLedger:
         """Get the last ledger"""
         response = self._make_get_request(GET_LAST_LEDGER, headers=self.headers)
 
         data = response.json()
 
-        return SorobanLedger.json_dict_to_ledger(data["_embedded"]["records"][0])
+        return StellarLedger.json_dict_to_ledger(data["_embedded"]["records"][0])
 
     def get_ledger(self, ledger_number: int) -> dict[str, Any]:
         """Get the ledger by the number"""
@@ -45,7 +45,7 @@ class HorizonApi(ApiRequester):
         return response.json()
 
     def get_ledger_in_sequence(self, start_ledger, end_ledger, limit=200):
-        ledgers: list[SorobanLedger] = []
+        ledgers: list[StellarLedger] = []
         params = {
             "limit": limit,
             "order": "asc",
@@ -61,7 +61,7 @@ class HorizonApi(ApiRequester):
                 ledger_sequence = int(record['sequence'])
                 if ledger_sequence > end_ledger:
                     return ledgers
-                ledgers.append(SorobanLedger.json_dict_to_ledger(record))
+                ledgers.append(StellarLedger.json_dict_to_ledger(record))
 
             next_link = data['_links']['next']['href']
             cursor = next_link.split("cursor=")[1].split("&")[0]
@@ -100,19 +100,19 @@ class HorizonApi(ApiRequester):
 
     def get_ledgers(self, ledgers_numbers: list[int]):
         """Get all ledgers by the numbers"""
-        ledgers: list[SorobanLedger] = []
+        ledgers: list[StellarLedger] = []
         for ledger_detail_result in self._generate_ledgers(ledgers_numbers):
-            ledgers.append(SorobanLedger.json_dict_to_ledger(ledger_detail_result))
+            ledgers.append(StellarLedger.json_dict_to_ledger(ledger_detail_result))
             
         return ledgers
 
     def get_ledgers_transactions(self, ledgers_numbers: list[int]):
         """Get all ledger transactions by numbers"""
-        transactions: list[list[SorobanTransaction]] = []
+        transactions: list[list[StellarTransaction]] = []
         for transactions_result in self._generate_ledgers_transactions(ledgers_numbers):
             txs = []
             for transaction in transactions_result:
-                txs.append(SorobanTransaction.json_dict_to_transaction(transaction))
+                txs.append(StellarTransaction.json_dict_to_transaction(transaction))
             transactions.append(txs)
 
         return transactions

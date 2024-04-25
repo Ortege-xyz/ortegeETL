@@ -1,8 +1,8 @@
 import click
 
-from sorobanetl.jobs.export_ledgers_job import ExportLedgersJob
-from sorobanetl.jobs.exporters.ledgers_and_transactions_item_exporter import ledgers_and_transactions_item_exporter
-from sorobanetl.api.horizon_api import HorizonApi
+from stellaretl.jobs.export_ledgers_job import ExportLedgersJob
+from stellaretl.jobs.exporters.ledgers_and_transactions_item_exporter import ledgers_and_transactions_item_exporter
+from stellaretl.api.horizon_api import HorizonApi
 from blockchainetl.logging_utils import logging_basic_config
 
 logging_basic_config()

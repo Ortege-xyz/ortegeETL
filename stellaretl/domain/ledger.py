@@ -3,11 +3,11 @@ from datetime import datetime
 from stellar_sdk.xdr import LedgerHeader
 from typing import Any, Dict, List, Optional
 
-from sorobanetl.convert_xdr import convert_xdr
-from sorobanetl.domain.transaction import SorobanTransaction
+from stellaretl.convert_xdr import convert_xdr
+from stellaretl.domain.transaction import StellarTransaction
 
 @dataclass
-class SorobanLedger:
+class StellarLedger:
     id: str
     sequence: int
     hash: str
@@ -25,7 +25,7 @@ class SorobanLedger:
     header_xdr: str
     header: Optional[Dict[str, Any]]
 
-    transactions: List[SorobanTransaction]
+    transactions: List[StellarTransaction]
     successful_transaction_count: int
     failed_transaction_count: int
     operation_count: int
@@ -47,7 +47,7 @@ class SorobanLedger:
 
         json_dict["header"] = decoded_header
 
-        return SorobanLedger(**json_dict)
+        return StellarLedger(**json_dict)
     
     def ledger_to_dict(self):
         ledger_dict = asdict(self)

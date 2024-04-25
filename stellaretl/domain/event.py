@@ -4,7 +4,7 @@ from datetime import datetime
 from stellar_sdk.xdr import SCVal
 from typing import Any, Optional
 
-from sorobanetl.convert_xdr import convert_xdr
+from stellaretl.convert_xdr import convert_xdr
 
 @dataclass
 class SorobanEvent:

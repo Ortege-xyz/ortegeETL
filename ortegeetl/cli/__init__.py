@@ -28,13 +28,13 @@ import click
 from ethereumetl.cli import evm
 from bitcoinetl.cli import btc
 from stacketl.cli import stacks
-from sorobanetl.cli import soroban
+from stellaretl.cli import stellar
 from ordinalsetl.cli import ordinals
 from aptosetl.cli import aptos
 
 
 @click.group()
-@click.version_option(version='1.0.0')
+@click.version_option(version='1.4.9')
 @click.pass_context
 def cli(ctx):
     pass
@@ -43,6 +43,6 @@ def cli(ctx):
 cli.add_command(evm)
 cli.add_command(btc)
 cli.add_command(stacks)
-cli.add_command(soroban)
+cli.add_command(stellar)
 cli.add_command(ordinals)
 cli.add_command(aptos)

@@ -1,8 +1,8 @@
 import click
 
-from sorobanetl.jobs.export_events_job import ExportEventsJob
-from sorobanetl.jobs.exporters.events_item_exporter import events_item_exporter
-from sorobanetl.api.soroban_rpc import SorobanRpc
+from stellaretl.jobs.export_events_job import ExportEventsJob
+from stellaretl.jobs.exporters.events_item_exporter import events_item_exporter
+from stellaretl.api.soroban_rpc import SorobanRpc
 from blockchainetl.logging_utils import logging_basic_config
 from blockchainetl.thread_local_proxy import ThreadLocalProxy
 
