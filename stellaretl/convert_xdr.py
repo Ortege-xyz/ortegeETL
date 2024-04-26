@@ -127,9 +127,6 @@ def convert_xdr(value: object, value_name: Optional[str] = None):
             if attr_value is None:
                 continue
             sc_value = convert_xdr(attr_value)
-            
-            if isinstance(sc_value, (dict, list)):
-                return json.dumps(sc_value)   
 
             if sc_value is not None:
                 return sc_value
