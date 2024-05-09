@@ -34,7 +34,7 @@ from aptosetl.cli import aptos
 
 
 @click.group()
-@click.version_option(version='1.5.1')
+@click.version_option(version='1.5.2')
 @click.pass_context
 def cli(ctx):
     pass
