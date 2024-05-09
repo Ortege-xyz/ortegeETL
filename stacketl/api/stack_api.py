@@ -17,6 +17,7 @@ GET_CONTRACT_INFO_PATH = 'extended/v1/contract/{contract_id}'
 GET_LAST_BLOCK_PATH = 'extended/v2/blocks?limit=1'
 GET_TRANSACTION_PATH = 'extended/v1/tx/{hash}'
 GET_LIST_OF_TRANSACTIONS_PATH = 'extended/v1/tx/multiple?{transactions}'
+GET_CURRENT_POX_PATH = 'v2/pox'
 
 class StackApi(ApiRequester):
     def __init__(self, api_url: str, api_key: Optional[str]):
@@ -172,6 +173,11 @@ class StackApi(ApiRequester):
 
         if str(response.status_code).startswith(('4', '5')):
             return None
+
+        return response.json()
+
+    def get_current_pox_data(self) -> dict[str, Any]:
+        response = self._make_get_request(GET_CURRENT_POX_PATH, headers=self.headers, timeout=4)
 
         return response.json()
 
