@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Optional
+from typing import Any, Dict, List, Optional
 
 from stacketl.mappers.block_mapper import StackBlockMapper
 from stacketl.mappers.contract_mapper import StackContractMapper
@@ -51,7 +51,7 @@ class StackApi(ApiRequester):
             raise e
         return block
 
-    def get_block(self, block_number: int) -> Optional[dict[str, Any]]:
+    def get_block(self, block_number: int) -> Optional[Dict[str, Any]]:
         """Get the block by the number"""
         response = self._make_get_request(
             endpoint=GET_BLOCK_PATH.format(number=block_number),
@@ -64,7 +64,7 @@ class StackApi(ApiRequester):
         
         return response.json()
     
-    def get_block_transactions(self, block_number: int) -> list[dict[str, Any]]:
+    def get_block_transactions(self, block_number: int) -> List[Dict[str, Any]]:
         """Get all block transactions by the number"""
         params = {
             'limit': TRANSACTION_LIMIT,
@@ -92,18 +92,18 @@ class StackApi(ApiRequester):
 
         return transactions
 
-    def get_details_transactions(self, transactions: list[str]) -> dict[str, dict[str, Any]]:
+    def get_details_transactions(self, transactions: List[str]) -> Dict[str, Dict[str, Any]]:
         """Get the details of a list of transactions"""
         transactions = list(map(lambda tx: "tx_id="+tx, transactions))
 
-        transaction_mapping: dict[str, dict[str, Any]] = {}
+        transaction_mapping: Dict[str, Dict[str, Any]] = {}
 
         params = {
             'event_limit': 50,
             'event_offset': 0,
         }
 
-        def get_transactions(_transactions: list[str]):
+        def get_transactions(_transactions: List[str]):
             _transactions_mapping = {}
             # split the list in 40 elements to make the requets
             for i in range(0, len(_transactions), 40):
@@ -125,7 +125,7 @@ class StackApi(ApiRequester):
         # some transactions have a mismatch of the event_count with the lenght of events array
         # for example tx 0x45d7d56659be739cb2fae927dc119f3c4267011210736ce29a162a956be8f586 only return 33 events and have the event_count 85
         finished_transactions = {}
-        def filter_txs(tx: dict[str, Any]):
+        def filter_txs(tx: Dict[str, Any]):
             tx_hash = tx["result"].get('tx_id', '')
             event_count = tx["result"].get('event_count', 0)
             events = tx["result"].get('events', [])
@@ -164,7 +164,7 @@ class StackApi(ApiRequester):
 
         return transaction_mapping
 
-    def get_contract_info(self, contract_id: str) -> Optional[dict[str, Any]]:
+    def get_contract_info(self, contract_id: str) -> Optional[Dict[str, Any]]:
         response = self._make_get_request(
             endpoint=GET_CONTRACT_INFO_PATH.format(contract_id=contract_id),
             headers=self.headers,
@@ -176,28 +176,28 @@ class StackApi(ApiRequester):
 
         return response.json()
 
-    def get_current_pox_data(self) -> dict[str, Any]:
+    def get_current_pox_data(self) -> Dict[str, Any]:
         response = self._make_get_request(GET_CURRENT_POX_PATH, headers=self.headers, timeout=4)
 
         return response.json()
 
-    def get_blocks(self, blocks_numbers: list[int]):
+    def get_blocks(self, blocks_numbers: List[int]):
         """Get all blocks by the numbers"""
-        blocks: list[Optional[StackBlock]] = []
+        blocks: List[Optional[StackBlock]] = []
         for block_detail_result in self._generate_blocks(blocks_numbers):
             if block_detail_result:
                 blocks.append(self.block_mapper.json_dict_to_block(block_detail_result) if block_detail_result is not None else block_detail_result)
             
         return blocks
 
-    def get_blocks_transactions(self, blocks_numbers: list[int], get_details: bool = True):
+    def get_blocks_transactions(self, blocks_numbers: List[int], get_details: bool = True):
         """Get all block transactions by numbers"""
-        _transactions: list[dict[str, Any]] = []
+        _transactions: List[Dict[str, Any]] = []
         for block_transactions_result in self._generate_blocks_transactions(blocks_numbers):
                 _transactions.extend(block_transactions_result)
 
-        def get_invalid_transactions(transaction: dict[str, Any]):
-            events: Optional[list] = transaction.get('events')
+        def get_invalid_transactions(transaction: Dict[str, Any]):
+            events: Optional[List] = transaction.get('events')
             event_count: Optional[int] = transaction.get('event_count')
             return events is not None and event_count is not None and len(events) != event_count
 
@@ -206,7 +206,7 @@ class StackApi(ApiRequester):
         if get_details:
             transactions_mapping = self.get_details_transactions(txs_hash)
 
-            transactions: list[StackTransaction] = list(
+            transactions: List[StackTransaction] = list(
                 map(lambda tx: self.transaction_mapper.json_dict_to_transaction(tx),
                     filter(
                         lambda tx: not get_invalid_transactions(tx), # get the valid transactions
@@ -222,22 +222,22 @@ class StackApi(ApiRequester):
 
         return transactions
 
-    def get_contracts_infos(self, contracts_ids: list[str]):
-        contracts: list[StackContract] = []
+    def get_contracts_infos(self, contracts_ids: List[str]):
+        contracts: List[StackContract] = []
         for contract_result in self._generate_get_contracts_info(contracts_ids):
             if contract_result:
                 contracts.append(self.contract_mapper.json_dict_to_contract(contract_result))
 
         return contracts
 
-    def _generate_blocks(self, blocks_numbers: list[int]):
+    def _generate_blocks(self, blocks_numbers: List[int]):
         for block_number in blocks_numbers:
             yield self.get_block(block_number)
 
-    def _generate_blocks_transactions(self, blocks_numbers: list[int]):
+    def _generate_blocks_transactions(self, blocks_numbers: List[int]):
         for block_number in blocks_numbers:
             yield self.get_block_transactions(block_number)
     
-    def _generate_get_contracts_info(self, contracts_ids: list[str]):
+    def _generate_get_contracts_info(self, contracts_ids: List[str]):
         for contract_id in contracts_ids:
             yield self.get_contract_info(contract_id)

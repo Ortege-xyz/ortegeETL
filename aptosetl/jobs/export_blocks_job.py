@@ -1,3 +1,5 @@
+from typing import List
+
 from aptosetl.api.aptos_node import AptosNodeApi
 from aptosetl.domain.block import AptosBlock
 from blockchainetl.executors.batch_work_executor import BatchWorkExecutor
@@ -42,7 +44,7 @@ class ExportBlocksJob(BaseJob):
             total_items=self.end_block - self.start_block + 1
         )
 
-    def _export_batch(self, block_number_batch: list[int]):
+    def _export_batch(self, block_number_batch: List[int]):
         blocks = self.aptos_node_api.get_blocks(block_number_batch, self.export_transactions)
 
         for block in blocks:

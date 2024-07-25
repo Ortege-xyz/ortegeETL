@@ -1,6 +1,6 @@
 from blockchainetl.api_requester import ApiRequester
 from ordinalsetl.rpc.ord_rpc import OrdRpc
-from typing import Optional
+from typing import List, Optional
 
 GET_STATUS = "ordinals/v1/"
 GET_INSCRIPTION_ID = "ordinals/v1/inscriptions/{id}"
@@ -61,7 +61,7 @@ class HiroOrdAPI(OrdRpc, ApiRequester):
         return None
     
     def get_inscriptions_by_blocks(self, from_block: int, to_block: int):
-        inscriptions: list[dict] = []
+        inscriptions: List[dict] = []
         offset = 0
         while True:
             response = self._make_get_request(

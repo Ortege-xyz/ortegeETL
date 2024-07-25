@@ -1,5 +1,6 @@
 import json
 import logging
+from typing import List
 from stacketl.api.stack_api import StackApi
 from stacketl.domain.block import StackBlock
 from stacketl.domain.contract import StackContract
@@ -56,7 +57,7 @@ class ExportBlocksJob(BaseJob):
             total_items=self.end_block - self.start_block + 1
         )
 
-    def _export_batch(self, block_number_batch: list[int]):
+    def _export_batch(self, block_number_batch: List[int]):
         blocks = self.stack_api.get_blocks(block_number_batch)
 
         if self.export_transactions or self.export_contracts:
@@ -72,7 +73,7 @@ class ExportBlocksJob(BaseJob):
                 def filter_deploy_contracts_txs(transaction: StackTransaction) -> bool:
                     return transaction.tx_type == "smart_contract" and transaction.tx_status == "success"
 
-                txs_contract: list[StackTransaction] = list(filter(filter_deploy_contracts_txs, transactions))
+                txs_contract: List[StackTransaction] = list(filter(filter_deploy_contracts_txs, transactions))
 
                 if(len(txs_contract) == 0):
                     return

@@ -1,6 +1,6 @@
 import json
 import logging
-
+from typing import List
 from blockchainetl.executors.batch_work_executor import BatchWorkExecutor
 from blockchainetl.jobs.base_job import BaseJob
 from blockchainetl.utils import validate_range
@@ -43,13 +43,13 @@ class ExportContractsJob(BaseJob):
             total_items=self.end_block - self.start_block + 1
         )
 
-    def _export_contracts(self, block_number_batch: list[int]):
+    def _export_contracts(self, block_number_batch: List[int]):
         transactions = self.stack_api.get_blocks_transactions(block_number_batch)
 
         def filter_contracts(transaction: StackTransaction) -> bool:
             return transaction.tx_type == "smart_contract" and transaction.tx_status == "success"
 
-        txs_contract: list[StackTransaction] = list(filter(filter_contracts, transactions))
+        txs_contract: List[StackTransaction] = list(filter(filter_contracts, transactions))
 
         if(len(txs_contract) == 0):
             return

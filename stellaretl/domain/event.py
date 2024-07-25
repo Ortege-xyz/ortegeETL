@@ -2,7 +2,7 @@ import logging
 from dataclasses import dataclass, asdict
 from datetime import datetime
 from stellar_sdk.xdr import SCVal
-from typing import Any, Optional
+from typing import Any, Dict, List, Optional
 
 from stellaretl.convert_xdr import convert_xdr
 
@@ -15,12 +15,12 @@ class SorobanEvent:
     tx_hash: str
     id: str
     paging_token: str
-    topic: Optional[list[str]]
+    topic: Optional[List[str]]
     value: Optional[str]
     in_successful_contract_call: bool
 
     @staticmethod
-    def from_dict(json_dict: dict[str, Any]):
+    def from_dict(json_dict: Dict[str, Any]):
         timestamp_obj = datetime.fromisoformat(json_dict["ledgerClosedAt"].rstrip("Z"))
         json_dict["ledger_closed_at"] = int(timestamp_obj.timestamp())
         json_dict["paging_token"] = json_dict["pagingToken"]
@@ -49,7 +49,7 @@ class SorobanEvent:
             logging.warning(f"Error to convert the event value {json_dict.get('value')} id {json_dict['id']}, {e}")
             json_dict["value"] = None
 
-        topic: Optional[list[str]] = []
+        topic: Optional[List[str]] = []
         try:
             for _topic in json_dict["topic"]:
                 topic.append(str(convert_xdr(SCVal.from_xdr(_topic))))

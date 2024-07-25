@@ -1,3 +1,4 @@
+from typing import List
 from stellaretl.api.horizon_api import HorizonApi
 from stellaretl.domain.ledger import StellarLedger
 from blockchainetl.executors.batch_work_executor import BatchWorkExecutor
@@ -42,7 +43,7 @@ class ExportLedgersJob(BaseJob):
             total_items=self.end_ledger - self.start_ledger + 1
         )
 
-    def _export_batch(self, ledger_number_batch: list[int]):
+    def _export_batch(self, ledger_number_batch: List[int]):
         ledgers = self.horizon_api.get_ledger_in_sequence(ledger_number_batch[0], ledger_number_batch[-1], min(200, self.batch_size)) # Let's assume the ledger number is in sequence, bacause of line 40, if no need to change the method
 
         if self.export_transactions:

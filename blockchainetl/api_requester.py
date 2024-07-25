@@ -1,7 +1,7 @@
 import requests
 import time
 from threading import Lock
-from typing import Any, Optional, Union
+from typing import Any, Dict, Optional, Union
 
 class ApiRequester:
     """
@@ -27,7 +27,7 @@ class ApiRequester:
         self.last_request_time = None
         self.lock = Lock()
         
-    def _make_get_request(self, endpoint: str, params: Optional[dict[str, Any]] = None, headers: Optional[dict[str, Any]] = None, timeout: Union[float, int] = 5):
+    def _make_get_request(self, endpoint: str, params: Optional[Dict[str, Any]] = None, headers: Optional[Dict[str, Any]] = None, timeout: Union[float, int] = 5):
         with self.lock:
             # Handle rate limiting
             if self.last_request_time:

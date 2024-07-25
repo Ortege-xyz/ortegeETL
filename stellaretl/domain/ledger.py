@@ -41,7 +41,7 @@ class StellarLedger:
 
         try:
             header = LedgerHeader.from_xdr(json_dict["header_xdr"])
-            decoded_header: dict[str, Any] = convert_xdr(header) # type: ignore
+            decoded_header: Dict[str, Any] = convert_xdr(header) # type: ignore
         except:
             decoded_header = None # type: ignore
 

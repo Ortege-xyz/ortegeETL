@@ -2,7 +2,7 @@ import decimal
 import json
 import re
 import requests
-from typing import Any, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 class SorobanRpc:
 
@@ -10,7 +10,7 @@ class SorobanRpc:
         self.provider_uri = provider_uri
         self.timeout = timeout
 
-    def batch(self, commands: list[list[Union[str, dict]]]):
+    def batch(self, commands: List[List[Union[str, dict]]]):
         rpc_calls = []
         for i, command in enumerate(commands, 1):
             method: str = command.pop(0) # type: ignore
@@ -39,11 +39,11 @@ class SorobanRpc:
             result.append(resp_item.get('result'))
         return result
 
-    def getLedgerEntries(self, param: dict[str, Any]):
+    def getLedgerEntries(self, param: Dict[str, Any]):
         response = self.batch([['getLedgerEntries', param]])
         return response[0] if len(response) > 0 else None
     
-    def getEvents(self, param: dict[str, Any]) -> Optional[dict[str, Any]]:
+    def getEvents(self, param: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         response = self.batch([['getEvents', param]])
         return response[0] if len(response) > 0 else None
 

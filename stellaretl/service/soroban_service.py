@@ -1,5 +1,5 @@
 from stellaretl.api.soroban_rpc import SorobanRpc
-from typing import Any, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 from stellaretl.domain.event import SorobanEvent
 
@@ -18,10 +18,10 @@ class SorobanService():
     def get_events(
         self,
         start_ledger: int,
-        filters: Optional[list[dict[str, Any]]] = None,
-        pagination: Optional[dict[str, Union[str, int, None]]] = None
-    ) -> list[SorobanEvent]:
-        param: dict[str, Any] = {
+        filters: Optional[List[Dict[str, Any]]] = None,
+        pagination: Optional[Dict[str, Union[str, int, None]]] = None
+    ) -> List[SorobanEvent]:
+        param: Dict[str, Any] = {
             'startLedger': start_ledger,
         }
         
@@ -39,7 +39,7 @@ class SorobanService():
 
         return [SorobanEvent.from_dict(event) for event in events]
 
-    def get_ledger_entries(self, entries_keys: list[str]) -> list[dict[str, Union[str, int]]]:
+    def get_ledger_entries(self, entries_keys: List[str]) -> List[Dict[str, Union[str, int]]]:
         param = {
             'keys': entries_keys,
         }

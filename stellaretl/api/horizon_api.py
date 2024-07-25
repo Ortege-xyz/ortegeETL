@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict, List
 
 from stellaretl.domain.ledger import StellarLedger
 from stellaretl.domain.transaction import StellarTransaction
@@ -35,7 +35,7 @@ class HorizonApi(ApiRequester):
 
         return StellarLedger.json_dict_to_ledger(data["_embedded"]["records"][0])
 
-    def get_ledger(self, ledger_number: int) -> dict[str, Any]:
+    def get_ledger(self, ledger_number: int) -> Dict[str, Any]:
         """Get the ledger by the number"""
         response = self._make_get_request(
             endpoint=GET_LEDGER.format(number=ledger_number),
@@ -45,7 +45,7 @@ class HorizonApi(ApiRequester):
         return response.json()
 
     def get_ledger_in_sequence(self, start_ledger, end_ledger, limit=200):
-        ledgers: list[StellarLedger] = []
+        ledgers: List[StellarLedger] = []
         params = {
             "limit": limit,
             "order": "asc",
@@ -74,7 +74,7 @@ class HorizonApi(ApiRequester):
         return ledgers
 
 
-    def get_ledger_transactions(self, ledger_number: int) -> list[dict[str, Any]]:
+    def get_ledger_transactions(self, ledger_number: int) -> List[Dict[str, Any]]:
         """Get all ledger transactions by the number"""
         transactions = []
         endpoint = GET_LEDGER_TRANSACTIONS_PATH.format(number=ledger_number) + f'?limit={TRANSACTION_LIMIT}&order=asc'
@@ -98,17 +98,17 @@ class HorizonApi(ApiRequester):
 
         return transactions
 
-    def get_ledgers(self, ledgers_numbers: list[int]):
+    def get_ledgers(self, ledgers_numbers: List[int]):
         """Get all ledgers by the numbers"""
-        ledgers: list[StellarLedger] = []
+        ledgers: List[StellarLedger] = []
         for ledger_detail_result in self._generate_ledgers(ledgers_numbers):
             ledgers.append(StellarLedger.json_dict_to_ledger(ledger_detail_result))
             
         return ledgers
 
-    def get_ledgers_transactions(self, ledgers_numbers: list[int]):
+    def get_ledgers_transactions(self, ledgers_numbers: List[int]):
         """Get all ledger transactions by numbers"""
-        transactions: list[list[StellarTransaction]] = []
+        transactions: List[List[StellarTransaction]] = []
         for transactions_result in self._generate_ledgers_transactions(ledgers_numbers):
             txs = []
             for transaction in transactions_result:
@@ -117,10 +117,10 @@ class HorizonApi(ApiRequester):
 
         return transactions
 
-    def _generate_ledgers(self, ledgers_numbers: list[int]):
+    def _generate_ledgers(self, ledgers_numbers: List[int]):
         for ledger_number in ledgers_numbers:
             yield self.get_ledger(ledger_number)
 
-    def _generate_ledgers_transactions(self, ledgers_numbers: list[int]):
+    def _generate_ledgers_transactions(self, ledgers_numbers: List[int]):
         for ledger_number in ledgers_numbers:
             yield self.get_ledger_transactions(ledger_number)

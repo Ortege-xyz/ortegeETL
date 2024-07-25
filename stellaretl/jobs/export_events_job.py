@@ -1,3 +1,4 @@
+from typing import Dict, List
 from stellaretl.api.soroban_rpc import SorobanRpc
 from stellaretl.domain.event import SorobanEvent
 from blockchainetl.executors.batch_work_executor import BatchWorkExecutor
@@ -26,8 +27,8 @@ class ExportEventsJob(BaseJob):
         self.item_exporter = item_exporter
 
         self.service = SorobanService(soroban_rpc)
-        self.ledger_events_cache: dict[int, dict[str, SorobanEvent]] = {}
-        self.ledgers_with_all_events: dict[int, bool] = {}
+        self.ledger_events_cache: Dict[int, Dict[str, SorobanEvent]] = {}
+        self.ledgers_with_all_events: Dict[int, bool] = {}
 
     def _start(self):
         self.item_exporter.open()
@@ -39,7 +40,7 @@ class ExportEventsJob(BaseJob):
             total_items=self.end_ledger - self.start_ledger + 1
         )
 
-    def _export_batch(self, ledger_sequence_batch: list[int]):
+    def _export_batch(self, ledger_sequence_batch: List[int]):
         last_event_ledger = 0
         for ledger_sequence in ledger_sequence_batch:
             # As we cannot get the events for a specific ledger
@@ -70,7 +71,7 @@ class ExportEventsJob(BaseJob):
             if ledger_sequence in self.ledger_events_cache:
                 del self.ledgers_with_all_events[ledger_sequence]
 
-    def _export_events(self, events: list[SorobanEvent]):
+    def _export_events(self, events: List[SorobanEvent]):
         for event in events:
             self.item_exporter.export_item(event.to_dict())
 

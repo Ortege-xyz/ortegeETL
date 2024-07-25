@@ -22,7 +22,7 @@
 from eth_utils import function_signature_to_4byte_selector
 
 from ethereum_dasm.evmdasm import EvmCode, Contract
-
+from typing import List
 
 class EthContractService:
 
@@ -36,7 +36,7 @@ class EthContractService:
                 push4_instructions = set()
                 for basic_block in basic_blocks:
                     instructions = basic_block.instructions
-                    block_push4_instructions: list[str] = []
+                    block_push4_instructions: List[str] = []
                     for inst in instructions:
                         if inst.name == 'PUSH4':
                             block_push4_instructions.append(inst.operand)

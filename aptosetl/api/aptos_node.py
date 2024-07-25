@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict, List
 
 from aptosetl.domain.block import AptosBlock
 from aptosetl.domain.transaction import AptosTransaction
@@ -33,7 +33,7 @@ class AptosNodeApi(ApiRequester):
 
         return int(data['block_height'])
 
-    def get_block(self, block_number: int, with_transactions: bool = False) -> dict[str, Any]:
+    def get_block(self, block_number: int, with_transactions: bool = False) -> Dict[str, Any]:
         """Get the block by the number"""
         params = {
             'with_transactions': str(with_transactions).lower()
@@ -47,14 +47,14 @@ class AptosNodeApi(ApiRequester):
 
         return response.json()
 
-    def get_block_transactions(self, block_number: int) -> list[dict[str, Any]]:
+    def get_block_transactions(self, block_number: int) -> List[Dict[str, Any]]:
         block = self.get_block(block_number, True)
 
         return block["transactions"]
 
-    def get_blocks(self, blocks_numbers: list[int], with_transactions: bool = False):
+    def get_blocks(self, blocks_numbers: List[int], with_transactions: bool = False):
         """Get all blocks by the numbers"""
-        blocks: list[AptosBlock] = []
+        blocks: List[AptosBlock] = []
         for block_dict in self._generate_blocks(blocks_numbers, with_transactions):
             block = AptosBlock.from_dict(block_dict)
             if with_transactions:
@@ -65,9 +65,9 @@ class AptosNodeApi(ApiRequester):
             
         return blocks
 
-    def get_blocks_transactions(self, blocks_numbers: list[int]):
+    def get_blocks_transactions(self, blocks_numbers: List[int]):
         """Get all block transactions by numbers"""
-        transactions: list[list[AptosTransaction]] = []
+        transactions: List[List[AptosTransaction]] = []
         for transactions_result in self._generate_blocks_transactions(blocks_numbers):
             txs = []
             for transaction in transactions_result:
@@ -76,10 +76,10 @@ class AptosNodeApi(ApiRequester):
 
         return transactions
 
-    def _generate_blocks(self, blocks_numbers: list[int], with_transactions: bool = False):
+    def _generate_blocks(self, blocks_numbers: List[int], with_transactions: bool = False):
         for block_number in blocks_numbers:
             yield self.get_block(block_number, with_transactions)
 
-    def _generate_blocks_transactions(self, blocks_numbers: list[int]):
+    def _generate_blocks_transactions(self, blocks_numbers: List[int]):
         for block_number in blocks_numbers:
             yield self.get_block_transactions(block_number)
