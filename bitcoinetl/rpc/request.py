@@ -1,5 +1,5 @@
 import hashlib
-
+from ratelimit import limits, sleep_and_retry
 import requests
 
 _session_cache = {}
@@ -11,7 +11,12 @@ def _get_session(endpoint_uri):
         _session_cache[cache_key] = requests.Session()
     return _session_cache[cache_key]
 
+CALLS = 250
+PERIOD = 1  # seconds
 
+# Due to quicknode rpc limit, we can do max 300 requests per seconds
+@sleep_and_retry
+@limits(calls=CALLS, period=PERIOD)
 def make_post_request(endpoint_uri, data, *args, **kwargs):
     kwargs.setdefault('timeout', 10)
     session = _get_session(endpoint_uri)

@@ -8,3 +8,4 @@ urllib3<2
 base58
 requests
 stellar-sdk==9.2.0
+ratelimit==2.2.1
