@@ -22,7 +22,8 @@ class AptosNodeApi(ApiRequester):
         super().__init__(api_url, api_key=None, rate_limit=rate_limit)
 
         self.headers = {
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
         }
 
     def get_latest_block(self) -> int:
