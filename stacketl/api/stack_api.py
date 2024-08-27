@@ -34,7 +34,7 @@ class StackApi(ApiRequester):
 
         if self.api_key:
             self.headers = {
-                'x-hiro-api-key': self.api_key
+                'X-API-Key': self.api_key
             }
         else:
             self.headers = None
