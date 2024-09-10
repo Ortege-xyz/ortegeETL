@@ -57,6 +57,11 @@ class StacksStreamerAdapter:
             blocks = blocks_transactions_contracts_item_exporter.get_items('block')
             transactions = blocks_transactions_contracts_item_exporter.get_items('transaction')
             contracts = blocks_transactions_contracts_item_exporter.get_items('contract')
+            
+            logging.info(f"Number of blocks: {len(blocks)}")
+            logging.info(f"Number of transactions: {len(transactions)}")
+            logging.info(f"Number of contracts: {len(contracts)}")
+            
             all_items.extend(blocks)
             all_items.extend(transactions)
             all_items.extend(contracts)

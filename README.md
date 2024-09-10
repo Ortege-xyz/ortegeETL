@@ -8,6 +8,9 @@ We've merged a few different codebases into a singular codebase to make it easie
 [EthereumETL](https://github.com/blockchain-etl/ethereum-etl)
 [BitcoinETL](https://github.com/blockchain-etl/bitcoin-etl)
 
+# Create Wheel
+`python setup.py bdist_wheel`
+
 ## Quickstart
 
 Install Ortege ETL:
