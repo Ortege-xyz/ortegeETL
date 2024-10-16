@@ -33,7 +33,7 @@ class Streamer:
     def __init__(
             self,
             blockchain_streamer_adapter=StreamerAdapterStub(),
-            last_synced_block_file='last_synced_block.txt',
+            last_synced_block=None,  # Accept last_synced_block directly
             lag=0,
             start_block=None,
             end_block=None,
@@ -44,7 +44,7 @@ class Streamer:
             should_write_last_synced=True,
             ):
         self.blockchain_streamer_adapter = blockchain_streamer_adapter
-        self.last_synced_block_file = last_synced_block_file
+        self.last_synced_block = last_synced_block
         self.lag = lag
         self.start_block = start_block
         self.end_block = end_block
@@ -54,10 +54,12 @@ class Streamer:
         self.pid_file = pid_file
         self.should_write_last_synced = should_write_last_synced
 
-        if self.start_block is not None or not os.path.isfile(self.last_synced_block_file):
-            init_last_synced_block_file((self.start_block or 0) - 1, self.last_synced_block_file, should_write_last_synced)
-
-        self.last_synced_block = read_last_synced_block(self.last_synced_block_file)
+        # Initialize last_synced_block if not provided or start_block is specified
+        if self.last_synced_block is None:
+            if self.start_block is not None:
+                self.last_synced_block = self.start_block - 1
+            else:
+                raise ValueError("Either last_synced_block or start_block must be provided.")
 
     def stream(self):
         try:
@@ -99,9 +101,8 @@ class Streamer:
 
         if blocks_to_sync != 0:
             self.blockchain_streamer_adapter.export_all(self.last_synced_block + 1, target_block)
-            logging.info('Writing last synced block {}'.format(target_block))
-            write_last_synced_block(self.last_synced_block_file, target_block, self.should_write_last_synced)
-            self.last_synced_block = target_block
+            logging.info('Last synced block updated to {}'.format(target_block))
+            self.last_synced_block = target_block  # Update last_synced_block directly
 
         return blocks_to_sync
 
@@ -110,7 +111,6 @@ class Streamer:
         target_block = min(target_block, last_synced_block + self.block_batch_size)
         target_block = min(target_block, self.end_block) if self.end_block is not None else target_block
         return target_block
-
 
 def delete_file(file):
     try:
