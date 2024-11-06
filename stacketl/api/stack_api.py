@@ -241,3 +241,20 @@ class StackApi(ApiRequester):
     def _generate_get_contracts_info(self, contracts_ids: List[str]):
         for contract_id in contracts_ids:
             yield self.get_contract_info(contract_id)
+    
+    # Inside the StackApi class
+
+    def get_transaction(self, tx_id: str) -> Optional[Dict[str, Any]]:
+        """Get transaction details by transaction ID."""
+        response = self._make_get_request(
+            endpoint=GET_TRANSACTION_PATH.format(hash=tx_id),
+            headers=self.headers,
+            timeout=4
+        )
+
+        if str(response.status_code).startswith(('4', '5')):
+            logging.error(f"Failed to fetch transaction {tx_id}: {response.text}")
+            return None
+        
+        return response.json()
+
